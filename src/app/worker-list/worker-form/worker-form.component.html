@@ -1,1 +1,35 @@
-<p>worker-form works!</p>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h2>Enregistrer un nouveau ouvrier</h2>
+    <form [formGroup]="workerForm" (ngSubmit)="onSaveWorker()">
+      <div class="form-group">
+        <label for="name">Nom</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          formControlName="name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="salaire">Salaire</label>
+        <input
+          currencyMask
+          cursorAtEnd
+          id="salaire"
+          class="form-control"
+          formControlName="salaire"
+        />
+
+        <input type="test" (click)="test()" class="form-control" value="hello" />
+      </div>
+      <button
+        class="btn btn-primary"
+        [disabled]="workerForm.invalid"
+        type="submit"
+      >
+        Enregistrer
+      </button>
+    </form>
+  </div>
+</div>

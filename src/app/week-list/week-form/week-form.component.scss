@@ -1,0 +1,150 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  line-height: 1.25;
+}
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  // font-size: 1.5em;
+  // margin: .5em 0 .75em;
+}
+
+table tr {
+  // background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  // padding: .0em;
+}
+
+table th,
+table td {
+  padding: 0.35em;
+  text-align: center;
+}
+
+table th {
+  background-color: #f8f8f8;
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+#allTotal td span {
+  background-color: #ecd8d8;
+}
+
+.cash {
+  background-color: rgb(247, 194, 194);
+}
+
+.input-textarea {
+  width: 100%;
+  padding: 1px 3px !important;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input-main {
+  width: 100%;
+  padding: 1px 3px !important;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  text-align: center;
+  text-align-last: center;
+}
+
+.input-main:read-only {
+  background-color: rgb(226, 226, 226);
+}
+
+select {
+  background-color: white !important;
+}
+
+.red {
+  background-color: red !important;
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+
+  .hideOnMobile {
+    display: none !important;
+  }
+}
+
+input[readonly] {
+  outline: none;
+  border: none;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.invalidInput {
+  background-color: red;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

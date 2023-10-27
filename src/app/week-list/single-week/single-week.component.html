@@ -1,0 +1,299 @@
+<h3>
+  Semaine : {{ weekNumber }} - {{ week?.year }}
+  <div class="btn-group hideOnPrint">
+    <button class="btn btn-primary" (click)="goToPreviousWeek()">
+      <span class="glyphicon glyphicon-arrow-left"></span>
+    </button>
+    <button class="btn btn-primary" (click)="goToNextWeek()">
+      <span class="glyphicon glyphicon-arrow-right"></span>
+    </button>
+  </div>
+  <div
+    class="btn-group hideOnPrint"
+    style="margin-left: 50px"
+    *ngIf="isEditable()"
+  >
+    <button class="btn btn-warning" (click)="editWeek()">
+      <i class="glyphicon glyphicon-edit"></i>
+    </button>
+  </div>
+  <h5 class="pull-right">
+    <div>
+      Cash S {{ weekNumber - 1 }} :
+      <span [ngClass]="{ negativeAmount: this.previousCheckout < 0 }"
+        >{{ this.conversion(this.previousCheckout) }} €</span
+      >
+    </div>
+    <div>
+      Cash S {{ weekNumber }} :
+      <span [ngClass]="{ negativeAmount: this.currentCheckout < 0 }"
+        >{{ this.conversion(this.currentCheckout) }} €</span
+      >
+    </div>
+  </h5>
+</h3>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
+      <h5>Liste des ouvriers</h5>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Jour</th>
+            <th>Salaire</th>
+            <th>Solde</th>
+            <th>Suppl.</th>
+            <th>Fourn.</th>
+            <th>Cash</th>
+            <th>Bank</th>
+            <th>Solde</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let worker of workerWeekList">
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Nom"
+              style="cursor: pointer"
+              (click)="onDetailsWorker(worker.name)"
+            >
+              {{ worker.name }}
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Jour"
+              [ngClass]="{ negativeAmount: worker.workingDays < 0 }"
+            >
+              {{ worker.workingDays }}
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Salaire"
+              [ngClass]="{ negativeAmount: worker.salary < 0 }"
+            >
+              {{ this.conversion(worker.salary) }} €
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Solde"
+              [ngClass]="{ negativeAmount: worker.previousBalance < 0 }"
+            >
+              {{ this.conversion(worker.previousBalance) }} €
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Supplément"
+              [ngClass]="{ negativeAmount: worker.extra < 0 }"
+            >
+              {{ this.conversion(worker.extra) }} €
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Fournitures"
+              [ngClass]="{ negativeAmount: worker.cashFromSupplies < 0 }"
+            >
+              {{ this.conversion(worker.cashFromSupplies) }} €
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Cash"
+              [ngClass]="{ negativeAmount: worker.totalCash < 0 }"
+            >
+              {{ this.conversion(worker.paiementCash) }} €
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Virement"
+              [ngClass]="{ negativeAmount: worker.paiementBank < 0 }"
+            >
+              {{ this.conversion(worker.paiementBank) }} €
+            </td>
+            <td
+              *ngIf="isWorkedThisWeek(worker)"
+              data-label="Solde"
+              [ngClass]="{ negativeAmount: worker.currentBalance < 0 }"
+            >
+              {{ this.conversion(worker.currentBalance) }} €
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="hideOnMobile">
+            <th>TOTAL</th>
+            <th></th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[5] < 0 }">
+              {{ this.conversion(this.workersTotal[5]) }} €
+            </th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[0] < 0 }">
+              {{ this.conversion(this.workersTotal[0]) }} €
+            </th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[1] < 0 }">
+              {{ this.conversion(this.workersTotal[1]) }} €
+            </th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[2] < 0 }">
+              {{ this.conversion(this.workersTotal[6]) }} €
+            </th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[2] < 0 }">
+              {{ this.conversion(this.workersTotal[2]) }} €
+            </th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[3] < 0 }">
+              {{ this.conversion(this.workersTotal[3]) }} €
+            </th>
+            <th [ngClass]="{ negativeAmount: this.workersTotal[4] < 0 }">
+              {{ this.conversion(this.workersTotal[4]) }} €
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div
+      *ngIf="paiementBankList.length > 0"
+      class="col-lg-5 col-md-6 col-sm-12 col-xs-12"
+    >
+      <h5>Détails des virements</h5>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Nom</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let paiement of paiementBankList">
+            <td>{{ paiement.date }}</td>
+            <td
+              style="cursor: pointer"
+              (click)="onDetailsWorker(paiement.name)"
+            >
+              {{ paiement.name }}
+            </td>
+            <td [ngClass]="{ negativeAmount: paiement.amount < 0 }">
+              {{ this.conversion(paiement.amount) }} €
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>TOTAL</th>
+            <th></th>
+            <th [ngClass]="{ negativeAmount: this.paiementBankTotal < 0 }">
+              {{ this.conversion(this.paiementBankTotal) }} €
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div *ngIf="checkoutList" class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+      <h5>Acompte / retrait</h5>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Nom</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let checkout of checkoutList">
+            <td data-label="Date">{{ checkout.date }}</td>
+            <td data-label="Nom">{{ checkout.name }}</td>
+            <td
+              data-label="Montant"
+              [ngClass]="{ negativeAmount: checkout.amount < 0 }"
+            >
+              {{ this.conversion(checkout.amount) }} €
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>TOTAL</th>
+            <th></th>
+            <th [ngClass]="{ negativeAmount: this.checkoutTotal < 0 }">
+              {{ this.conversion(this.checkoutTotal) }} €
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div *ngIf="suppliesList" class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
+      <h5>Fournitures</h5>
+      <table>
+        <thead>
+          <tr>
+            <th>Fournisseur</th>
+            <th>Date</th>
+            <th>Payé par</th>
+            <th>Pour</th>
+            <th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let supply of suppliesList">
+            <td data-label="Nom">{{ supply.name }}</td>
+            <td data-label="Date">{{ supply.date }}</td>
+            <td
+              data-label="Par"
+              style="cursor: pointer"
+              (click)="onDetailsWorker(supply.payedBy)"
+            >
+              {{ supply.payedBy }}
+            </td>
+            <td
+              data-label="Pour"
+              style="cursor: pointer"
+              (click)="onDetailsWorker(supply.payedFor)"
+            >
+              {{ supply.payedFor }}
+            </td>
+            <td
+              data-label="Montant"
+              [ngClass]="{ negativeAmount: supply.amount < 0 }"
+            >
+              {{ this.conversion(supply.amount) }} €
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>TOTAL</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th [ngClass]="{ negativeAmount: this.suppliesTotal < 0 }">
+              {{ this.conversion(this.suppliesTotal) }} €
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div
+      *ngIf="remarkList.length > 0"
+      class="col-lg-5 col-md-6 col-sm-12 col-xs-12"
+    >
+      <h5>Remarques</h5>
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align: left">Remarques</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let remark of remarkList">
+            <td style="text-align: left">
+              <span>{{ remark.name }} : </span>
+              <span style="white-space: pre-wrap">{{ remark.remark }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

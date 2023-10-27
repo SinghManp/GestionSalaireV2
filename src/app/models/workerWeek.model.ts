@@ -1,20 +1,20 @@
-import { OneWorkerWeek } from "./oneWorkerWeek.model";
-import { Checkout } from "./checkout.model";
-import { Supply } from "./supply.model";
-import { Remark } from "./remark.model";
+import { OneWorkerWeek } from './oneWorkerWeek.model';
+import { Checkout } from './checkout.model';
+import { Supply } from './supply.model';
+import { Remark } from './remark.model';
 
 export class WorkerWeek {
-  weekNumber: number;
-  author: string;
-  authorMail: string;
-  lastChanges: string;
-  cashFlow: number;
-  previousCheckout: number;
-  currentCheckout: number;
-  checkoutList: Checkout[];
-  suppliesList: Supply[];
-  remarksList: Remark[];
-  year: number;
+  weekNumber!: number;
+  author!: string;
+  authorMail!: string;
+  lastChanges!: string;
+  cashFlow!: number;
+  previousCheckout!: number;
+  currentCheckout!: number;
+  checkoutList!: Checkout[];
+  suppliesList!: Supply[];
+  remarksList!: Remark[];
+  year!: number;
 
   constructor(public workerList: OneWorkerWeek[]) {}
 

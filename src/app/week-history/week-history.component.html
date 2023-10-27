@@ -1,1 +1,10 @@
-<p>week-history works!</p>
+<h2>L'historique</h2>
+
+<div *ngFor="let item of history ; let i = index">
+    Semaine {{i}}
+    <div *ngFor="let item2 of item | keyvalue; let i = index">
+        <pre>
+            {{item2.value |json}}
+        </pre>
+    </div>
+</div>

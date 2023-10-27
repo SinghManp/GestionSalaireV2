@@ -1,1 +1,54 @@
-<p>header works!</p>
+<nav class="navbar navbar-default" style="margin-bottom: 0">
+  <div class="container-fluid">
+    <div>
+      <ul class="nav navbar-nav">
+        <li routerLinkActive="active" *ngIf="isAuth">
+          <a routerLink="weeks/">Semaines</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="isAuth">
+          <a routerLink="workers">Ouvriers</a>
+        </li>
+        <li
+          routerLinkActive="active"
+          *ngIf="isAuth && authService.matchRole('admin')"
+        >
+          <a routerLink="history">Historique</a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li routerLinkActive="active" *ngIf="!isAuth">
+          <a routerLink="signIn">Connexion </a>
+        </li>
+
+        <li
+          routerLinkActive="active"
+          *ngIf="isAuth && authService.matchRole('admin')"
+        >
+          <a routerLink="signUp">Nouveau compte</a>
+        </li>
+        <label class="switch">
+          <input type="checkbox" checked (click)="onToggleDarkMode()" />
+          <span class="slider round"></span>
+        </label>
+        <li>
+          <a (click)="onSignOut()" *ngIf="isAuth" style="cursor: pointer"
+            >Déconnexion
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<span
+  style="display: flex; justify-content: end; margin-right: 20px"
+  class="hideOnPrint"
+>
+  Bonjour {{ userName }} !
+</span>
+<span
+  style="background-color: red; color: white; margin: 0px 10px"
+  *ngIf="!env.production"
+>
+  DB : {{ env?.name }}
+</span>

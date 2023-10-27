@@ -10,6 +10,8 @@ export class OneWorkerWeek {
     public paiementBankList: any,
     public previousBalance: number,
     public currentBalance: number,
-    public remark: string
+    public remark: string,
+    public cashFromSupplies: number,
+    public totalCash: number
   ) {}
 }

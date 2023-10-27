@@ -1,0 +1,128 @@
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  margin-top: 2%;
+  margin-bottom: 1%;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table tr {
+  border: 1px solid #ddd;
+  padding: 0.35em;
+}
+
+table th,
+table td {
+  padding: 0.625em;
+  text-align: center;
+}
+
+thead {
+  background-color: rgb(250, 201, 161);
+}
+
+tfoot {
+  background-color: rgb(255, 255, 205);
+}
+
+table th {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+#allTotal td span {
+  background-color: #ecd8d8;
+}
+
+.negativeAmount {
+  color: red;
+}
+
+@media screen and (max-width: 740px) {
+  table td {
+    font-size: 0.8em;
+  }
+  table th {
+    font-size: 0.7em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+  }
+
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
+
+  .hideOnMobile {
+    display: none !important;
+  }
+}
+
+@media print {
+  * {
+    padding: 0;
+  }
+
+  @page {
+    margin: 0;
+  }
+
+  thead {
+    background-color: rgb(250, 201, 161) !important;
+  }
+
+  th,
+  td {
+    padding: 3px !important;
+  }
+
+  tfoot {
+    background-color: rgb(255, 255, 205) !important;
+  }
+
+  .negativeAmount {
+    color: red !important;
+  }
+
+  .hideOnPrint {
+    display: none;
+  }
+}

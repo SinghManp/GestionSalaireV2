@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeekFormComponent } from './week-form.component';
+import { WeekListComponent } from './week-list.component';
 
-describe('WeekFormComponent', () => {
-  let component: WeekFormComponent;
-  let fixture: ComponentFixture<WeekFormComponent>;
+describe('WeekListComponent', () => {
+  let component: WeekListComponent;
+  let fixture: ComponentFixture<WeekListComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WeekFormComponent]
+      declarations: [WeekListComponent]
     });
-    fixture = TestBed.createComponent(WeekFormComponent);
+    fixture = TestBed.createComponent(WeekListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

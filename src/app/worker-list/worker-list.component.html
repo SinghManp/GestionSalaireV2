@@ -1,1 +1,46 @@
-<p>worker-list works!</p>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>
+      Les ouvriers
+      <div class="btn-group">
+        <button class="btn btn-success" (click)="onNewWorker()">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      </div>
+    </h2>
+    <div class="list-group">
+      <button
+        class="list-group-item"
+        *ngFor="let worker of workers; let i = index"
+      >
+        <div class="pull-left" (click)="onDetailsWorker(i)">
+          <h3 class="list-group-item-heading">
+            {{ worker.name }}
+          </h3>
+          <p class="list-group-item-text">{{ worker.salaire }} €</p>
+        </div>
+        <div
+          class="btn-group pull-right"
+          *ngIf="authService.matchRole('admin')"
+        >
+          TODO : Pas supprimer mais faut archiver
+          <button
+            class="btn btn-warning"
+            type="button"
+            (click)="onViewWorker(i)"
+          >
+            <span class="glyphicon glyphicon-edit"></span>
+            <span> Modifier</span>
+          </button>
+          <button
+            class="btn btn-danger"
+            type="button"
+            (click)="onDeleteWorker(worker)"
+          >
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

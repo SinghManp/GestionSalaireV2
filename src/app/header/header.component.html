@@ -1,54 +1,51 @@
-<nav class="navbar navbar-default" style="margin-bottom: 0">
+<nav class="navbar navbar-default" style="margin-bottom: 0" *ngIf="isAuth">
   <div class="container-fluid">
     <div>
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active" *ngIf="isAuth">
+        <li routerLinkActive="active">
           <a routerLink="weeks/">Semaines</a>
         </li>
-        <li routerLinkActive="active" *ngIf="isAuth">
+        <li routerLinkActive="active">
           <a routerLink="workers">Ouvriers</a>
         </li>
-        <li
-          routerLinkActive="active"
-          *ngIf="isAuth && authService.matchRole('admin')"
-        >
+        <li routerLinkActive="active" *ngIf="authService.matchRole('admin')">
           <a routerLink="history">Historique</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li routerLinkActive="active" *ngIf="!isAuth">
-          <a routerLink="signIn">Connexion </a>
+        <li class="darkMode">
+          <img
+            src="assets/icons/darkMode.png"
+            alt="darkMode"
+            width="25px"
+            (click)="onToggleDarkMode()"
+          />
         </li>
+        <!-- <li routerLinkActive="active" *ngIf="!isAuth">
+          <a routerLink="signIn">Connexion </a>
+        </li> -->
 
-        <li
-          routerLinkActive="active"
-          *ngIf="isAuth && authService.matchRole('admin')"
-        >
+        <li routerLinkActive="active" *ngIf="authService.matchRole('admin')">
           <a routerLink="signUp">Nouveau compte</a>
         </li>
-        <label class="switch">
-          <input type="checkbox" checked (click)="onToggleDarkMode()" />
-          <span class="slider round"></span>
-        </label>
+
         <li>
-          <a (click)="onSignOut()" *ngIf="isAuth" style="cursor: pointer"
-            >Déconnexion
-          </a>
+          <a (click)="onSignOut()" style="cursor: pointer">Déconnexion </a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-
-<span
-  style="display: flex; justify-content: end; margin-right: 20px"
-  class="hideOnPrint"
->
-  Bonjour {{ userName }} !
-</span>
-<span
-  style="background-color: red; color: white; margin: 0px 10px"
-  *ngIf="!env.production"
->
-  DB : {{ env?.name }}
-</span>
+<div class="hideOnPrint">
+  <div class="banner">
+    <div>
+      <span
+        *ngIf="!env.production"
+        style="background-color: red; color: white; padding: 0 5px"
+      >
+        DB : {{ env?.name }}
+      </span>
+    </div>
+    <div *ngIf="isAuth">Bonjour {{ userName }} !</div>
+  </div>
+</div>

@@ -24,6 +24,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { WeekListComponent } from './week-list/week-list.component';
 import { WeekFormComponent } from './week-list/week-form/week-form.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { VersionComponent } from './version/version.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     SignupComponent,
     CursorAtEndDirective,
     WeekFormComponent,
+    VersionComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,9 +55,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     provideAuth(() => getAuth()),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [

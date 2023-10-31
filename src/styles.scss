@@ -33,7 +33,7 @@ body.dark-mode {
   }
 
   th {
-    background-color: #2b2b2b;
+    background-color: #2b2b2b !important;
   }
 
   .list-group-item:hover {
@@ -49,5 +49,50 @@ body.dark-mode {
   .navbar-default .navbar-nav > .active > a:focus {
     background-color: #232323 !important;
     color: #cccccc;
+  }
+
+  td > .input-main:read-only,
+  .btn-default,
+  select.input-main {
+    background-color: #121212 !important;
+    color: #cccccc;
+  }
+
+  th > .input-main:read-only {
+    background-color: #2b2b2b !important;
+  }
+
+  input {
+    background-color: #414141;
+    border: none !important;
+  }
+  #allTotal .input-main {
+    border: none;
+  }
+
+  .defaultBtn {
+    background-color: #121212 !important;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+  }
+
+  .defaultBtn:hover {
+    background-color: #cccccc;
+    opacity: 0.5;
+    color: #121212;
+  }
+
+  .defaultBtn:active {
+    opacity: 1;
+  }
+}
+
+h2 {
+  margin-top: 10px;
+}
+
+@media print {
+  .hideOnPrint {
+    display: none;
   }
 }

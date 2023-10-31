@@ -3,10 +3,13 @@ table {
   border-collapse: collapse;
   margin: 0;
   padding: 0;
-  margin-top: 2%;
-  margin-bottom: 1%;
   width: 100%;
-  table-layout: fixed;
+  // table-layout: fixed;
+  // overflow-x: auto;
+}
+
+.testScroll {
+  overflow-x: auto;
 }
 
 table tr {
@@ -21,11 +24,14 @@ table td {
 }
 
 thead {
-  background-color: rgb(250, 201, 161);
+  // background-color: rgb(250, 201, 161);
+  background-color: rgb(63 122 173);
+  color: white;
 }
 
 tfoot {
-  background-color: rgb(255, 255, 205);
+  // background-color: rgb(255, 255, 205);
+  background-color: rgb(255 186 86);
 }
 
 table th {
@@ -43,58 +49,56 @@ table th {
 }
 
 @media screen and (max-width: 740px) {
-  table td {
-    font-size: 0.8em;
-  }
+  table td,
   table th {
-    font-size: 0.7em;
+    min-width: 95px;
   }
 }
 
-@media screen and (max-width: 600px) {
-  table {
-    border: 0;
-  }
+// @media screen and (max-width: 600px) {
+//   table {
+//     border: 0;
+//   }
 
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
+//   table thead {
+//     border: none;
+//     clip: rect(0 0 0 0);
+//     height: 1px;
+//     margin: -1px;
+//     overflow: hidden;
+//     padding: 0;
+//     position: absolute;
+//     width: 1px;
+//   }
 
-  table tr {
-    border-bottom: 3px solid #ddd;
-    display: block;
-    margin-bottom: 0.625em;
-  }
+//   table tr {
+//     border-bottom: 3px solid #ddd;
+//     display: block;
+//     margin-bottom: 0.625em;
+//   }
 
-  table td {
-    border-bottom: 1px solid #ddd;
-    display: block;
-    font-size: 0.8em;
-    text-align: right;
-  }
+//   table td {
+//     border-bottom: 1px solid #ddd;
+//     display: block;
+//     font-size: 0.8em;
+//     text-align: right;
+//   }
 
-  table td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+//   table td::before {
+//     content: attr(data-label);
+//     float: left;
+//     font-weight: bold;
+//     text-transform: uppercase;
+//   }
 
-  table td:last-child {
-    border-bottom: 0;
-  }
+//   table td:last-child {
+//     border-bottom: 0;
+//   }
 
-  .hideOnMobile {
-    display: none !important;
-  }
-}
+//   .hideOnMobile {
+//     display: none !important;
+//   }
+// }
 
 @media print {
   * {
@@ -122,7 +126,16 @@ table th {
     color: red !important;
   }
 
-  .hideOnPrint {
-    display: none;
+  .row {
+    padding: 0 15px;
   }
+}
+
+.changeWeekBtn {
+  background-color: rgb(63 122 173);
+  color: white;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
 }

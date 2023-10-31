@@ -42,9 +42,9 @@
               <th class="text-center">Nom</th>
               <th class="text-center">Jour</th>
               <th class="text-center">Salaire</th>
-              <th class="text-center">Solde</th>
+              <!-- <th class="text-center">Solde</th>
               <th class="text-center">Suppl.</th>
-              <th class="text-center">Fournitures</th>
+              <th class="text-center">Fournitures</th> -->
               <th class="text-center">Cash</th>
               <th class="text-center">Virement</th>
               <th class="text-center">Solde</th>
@@ -184,7 +184,7 @@
               <td></td>
               <td>
                 <button
-                  class="pull-right"
+                  class="pull-right defaultBtn"
                   type="button"
                   (click)="addBankPaiement(hobbyControl)"
                 >
@@ -205,7 +205,7 @@
                       <tr style="border: none">
                         <td>
                           <button
-                            type="button"
+                            type="button defaultBtn"
                             (click)="removeBankPaiement(hobbyControl, j)"
                           >
                             <span class="glyphicon glyphicon-trash"></span>
@@ -234,45 +234,45 @@
               </td>
             </tr>
           </tbody>
-          <tbody class="hideOnMobile">
+          <tfoot class="hideOnMobile">
             <tr id="allTotal">
-              <td>
+              <th>
                 <span class="input-main">TOTAL</span>
-              </td>
-              <td></td>
-              <td>
+              </th>
+              <th></th>
+              <th>
                 <span class="input-main">{{ conversion(allSalary) }} €</span>
-              </td>
-              <td>
+              </th>
+              <th>
                 <span class="input-main"
                   >{{ conversion(allPreviousSoldeTotal) }} €</span
                 >
-              </td>
-              <td>
+              </th>
+              <th>
                 <span class="input-main"
                   >{{ conversion(allExtraTotal) }} €</span
                 >
-              </td>
-              <td>
+              </th>
+              <th>
                 <span class="input-main"
                   >{{ conversion(allCashFromSuppliesTotal) }} €</span
                 >
-              </td>
-              <td>
+              </th>
+              <th>
                 <span class="input-main"
                   >{{ conversion(allPaiementCashTotal) }} €</span
                 >
-              </td>
-              <td>
+              </th>
+              <th>
                 <span class="input-main">{{ conversion(allBankTotal) }} €</span>
-              </td>
-              <td>
+              </th>
+              <th>
                 <span class="input-main"
                   >{{ conversion(allCurrentSoldeTotal) }} €</span
                 >
-              </td>
+              </th>
             </tr>
-          </tbody>
+          </tfoot>
         </table>
         <div class="row" *ngIf="workers && workers.length > 0">
           <div class="form-group col-md-3">
@@ -346,7 +346,7 @@
               </td>
               <td data-label="Montant">
                 <tr style="border: none">
-                  <td>
+                  <td style="border: none">
                     <input
                       currencyMask
                       class="input-main"
@@ -355,8 +355,12 @@
                       (ngModelChange)="countExtra()"
                     />
                   </td>
-                  <td>
-                    <button type="button" (click)="onRemoveSupply(i)">
+                  <td style="border: none">
+                    <button
+                      class="defaultBtn"
+                      type="button"
+                      (click)="onRemoveSupply(i)"
+                    >
                       <span class="glyphicon glyphicon-trash"></span>
                     </button>
                   </td>
@@ -378,7 +382,7 @@
 
       <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
         <h5>Acompte / retrait</h5>
-        <table class="" id="checkout" [hidden]="!checkoutList">
+        <table  id="checkout" [hidden]="!checkoutList">
           <thead>
             <tr>
               <th>Date</th>
@@ -408,9 +412,9 @@
                   placeholder="Nom"
                 />
               </td>
-              <td data-label="Montant" class="input-group">
-                <tr>
-                  <td>
+              <td  data-label="Montant" class="input-group">
+                <tr style="border: none">
+                  <td style="border: none">
                     <input
                       currencyMask
                       class="input-main"
@@ -419,8 +423,12 @@
                       placeholder="Montant"
                     />
                   </td>
-                  <td>
-                    <button type="button" (click)="onRemoveCheckout(i)">
+                  <td style="border: none">
+                    <button
+                      class="defaultBtn"
+                      type="button"
+                      (click)="onRemoveCheckout(i)"
+                    >
                       <span class="glyphicon glyphicon-trash"></span>
                     </button>
                   </td>

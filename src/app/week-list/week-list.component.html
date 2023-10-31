@@ -3,7 +3,7 @@
     <h2>
       Semaines
       <select id="year" [(ngModel)]="year" (change)="changeYear()">
-        <option  *ngFor="let item of yearList" [value]="item">
+        <option *ngFor="let item of yearList" [value]="item">
           {{ item }}
         </option>
       </select>
@@ -34,9 +34,6 @@
             {{ week["lastChanges"] | date : "dd/MM/yy à HH:mm" }}
           </h5>
           <h5>Modifié par : {{ week["author"] }}</h5>
-          <!-- <div>
-              {{ getDateRangeByWeekNumber(week["weekNumber"], week["year"]) }}
-            </div> -->
         </span>
       </button>
       <div *ngIf="weeks.length == 0 && !isLoading">

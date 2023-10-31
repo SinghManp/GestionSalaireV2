@@ -8,7 +8,7 @@ import { getDatabase, ref, set, onValue, child, get } from 'firebase/database';
   providedIn: 'root',
 })
 export class WorkersService {
-  workers: Worker[] = [];
+  workers: any[] = [];
   workersSubject = new Subject<Worker[]>();
   weekList!: any[];
 

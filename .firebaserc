@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "gest-sal-dev",
+    "staging": "gest-sal-dev"
+  },
+  "targets": {},
+  "etags": {}
+}

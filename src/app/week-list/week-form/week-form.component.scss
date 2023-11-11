@@ -11,7 +11,10 @@ table {
   margin-top: 2%;
   margin-bottom: 1%;
   width: 100%;
-  table-layout: fixed;
+}
+
+.tableScroll {
+  overflow-x: auto;
 }
 
 table caption {
@@ -36,6 +39,9 @@ table th {
   font-size: 0.85em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  .sticky {
+    background-color: #f8f8f8;
+  }
 }
 
 #allTotal td span {
@@ -78,50 +84,24 @@ select {
   background-color: red !important;
 }
 
+.sticky {
+  position: sticky;
+  left: 0;
+  background-color: white;
+}
+
 @media screen and (max-width: 600px) {
-  table {
-    border: 0;
-  }
-
-  table caption {
-    font-size: 1.3em;
-  }
-
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
-
-  table tr {
-    display: block;
-    margin-bottom: 0.625em;
-  }
-
-  table td {
-    display: block;
-    font-size: 0.8em;
-    text-align: right;
-  }
-
-  table td::before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  table td:last-child {
-    border-bottom: 0;
-  }
 
   .hideOnMobile {
+    background-color: red!important;
     display: none !important;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  table td,
+  table th {
+    min-width: 95px;
   }
 }
 

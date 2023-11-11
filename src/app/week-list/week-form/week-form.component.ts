@@ -9,6 +9,7 @@ import { WorkerWeek } from 'src/app/models/workerWeek.model';
 import { WorkerWeekService } from 'src/app/services/worker-week.service';
 import { WorkersService } from 'src/app/services/workers.service';
 import * as $ from 'jquery';
+import { FirebaseDataService } from 'src/app/services/firebase-data.service';
 
 @Component({
   selector: 'app-week-form',
@@ -41,15 +42,27 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   week!: WorkerWeek;
 
+  checkoutNames: any = [];
+  supplierNames: any = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private workWeekService: WorkerWeekService,
     private workersSerivce: WorkersService,
+    private firebaseService: FirebaseDataService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit() {
+    this.firebaseService.getCheckoutNames().then((names: any) => {
+      this.checkoutNames = names;
+    });
+
+    this.firebaseService.getSuppliersNames().then((names: any) => {
+      this.supplierNames = names;
+    });
+
     if (this.route.snapshot.params['id'] != undefined) {
       this.weekNumber = this.route.snapshot.params['id'];
       this.workWeekService.getWokersWeek(this.weekNumber);
@@ -294,10 +307,40 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   onSaveWorker() {
     console.log('this.workerWeekForm.value', this.workerWeekForm.value);
+    this.saveCheckoutNames();
+    this.saveSupplierNames();
     this.workerWeekForm.get('weekNumber')?.setValue(+this.weekNumber);
     this.workWeekService.saveWorkersWeek(this.workerWeekForm.value);
     this.workWeekService.updateAllWeeks();
     this.router.navigate(['/week', this.weekNumber]);
+  }
+
+  saveCheckoutNames() {
+    let isNewCheckoutName: boolean = false;
+    this.workerWeekForm.value.checkoutList.forEach((element: any) => {
+      if (this.checkoutNames.indexOf(element.name) == -1) {
+        this.checkoutNames.push(element.name);
+        isNewCheckoutName = true;
+      }
+    });
+
+    if (isNewCheckoutName) {
+      this.firebaseService.updateCheckoutNames(this.checkoutNames);
+    }
+  }
+
+  saveSupplierNames() {
+    let isNewSupplierName: boolean = false;
+    this.workerWeekForm.value.suppliesList.forEach((element: any) => {
+      if (this.supplierNames.indexOf(element.name) == -1) {
+        this.supplierNames.push(element.name);
+        isNewSupplierName = true;
+      }
+    });
+
+    if (isNewSupplierName) {
+      this.firebaseService.updateSuppliersNames(this.supplierNames);
+    }
   }
 
   goBack() {

@@ -35,16 +35,16 @@
         </div>
       </h3>
 
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 tableScroll">
         <table id="workers">
           <thead>
             <tr>
-              <th class="text-center">Nom</th>
+              <th class="text-center sticky">Nom</th>
               <th class="text-center">Jour</th>
               <th class="text-center">Salaire</th>
-              <!-- <th class="text-center">Solde</th>
-              <th class="text-center">Suppl.</th>
-              <th class="text-center">Fournitures</th> -->
+              <th class="text-center hideOnMobile">Solde</th>
+              <th class="text-center hideOnMobile">Suppl.</th>
+              <th class="text-center hideOnMobile">Fournitures</th>
               <th class="text-center">Cash</th>
               <th class="text-center">Virement</th>
               <th class="text-center">Solde</th>
@@ -61,8 +61,7 @@
               [formGroupName]="i"
               [ngClass]="{ invalidInput: hobbyControl.invalid }"
             >
-              <!-- -->
-              <td data-label="Nom">
+              <td data-label="Nom" class="sticky">
                 <input
                   type="text"
                   class="input-main text-center clickable"
@@ -164,7 +163,7 @@
                   />
                 </div>
               </td>
-              <td class="{{ 'details' + i }}" hidden colspan="3">
+              <td class="{{ 'details' + i }}" hidden colspan="2">
                 Remarque :
                 <textarea
                   style="resize: vertical"
@@ -179,9 +178,9 @@
               <td class="{{ 'td' + i }}"></td>
               <td class="{{ 'td' + i }}"></td>
               <td class="{{ 'td' + i }}"></td>
-              <td class="{{ 'td' + i }}"></td>
-              <td class="{{ 'td' + i }}"></td>
-              <td></td>
+              <td class="{{ 'td' + i }} hideOnMobile"></td>
+              <td class="{{ 'td' + i }} hideOnMobile"></td>
+              <td class="hideOnMobile"></td>
               <td>
                 <button
                   class="pull-right defaultBtn"
@@ -234,26 +233,26 @@
               </td>
             </tr>
           </tbody>
-          <tfoot class="hideOnMobile">
+          <tfoot>
             <tr id="allTotal">
-              <th>
+              <th class="sticky">
                 <span class="input-main">TOTAL</span>
               </th>
               <th></th>
               <th>
                 <span class="input-main">{{ conversion(allSalary) }} €</span>
               </th>
-              <th>
+              <th class="hideOnMobile">
                 <span class="input-main"
                   >{{ conversion(allPreviousSoldeTotal) }} €</span
                 >
               </th>
-              <th>
+              <th class="hideOnMobile">
                 <span class="input-main"
                   >{{ conversion(allExtraTotal) }} €</span
                 >
               </th>
-              <th>
+              <th class="hideOnMobile">
                 <span class="input-main"
                   >{{ conversion(allCashFromSuppliesTotal) }} €</span
                 >
@@ -286,89 +285,92 @@
 
       <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
         <h5>Fournitures</h5>
-        <table id="supply" [hidden]="!suppliesList">
-          <thead>
-            <tr>
-              <th class="text-center">Fournisseur</th>
-              <th class="text-center">Date</th>
-              <th class="text-center">Payé par</th>
-              <th class="text-center">Pour</th>
-              <th class="text-center">Montant</th>
-            </tr>
-          </thead>
-          <tbody
-            formArrayName="suppliesList"
-            *ngFor="let h of getSuppliesList()?.controls; let i = index"
-          >
-            <tr [formGroupName]="i">
-              <td data-label="Fournisseur">
-                <input
-                  type="text"
-                  class="input-main"
-                  formControlName="name"
-                  placeholder="Nom"
-                />
-              </td>
-              <td data-label="Date">
-                <input
-                  type="date"
-                  class="input-main"
-                  formControlName="date"
-                  placeholder="Date"
-                  (input)="onChangeSupplyDate(h)"
-                />
-              </td>
-              <td data-label="Payé par">
-                <select
-                  class="input-main"
-                  formControlName="payedBy"
-                  placeholder="Payé par"
-                  (change)="countExtra()"
-                >
-                  <option value="" disabled>⚠️</option>
-                  <option [value]="worker" *ngFor="let worker of payerName">
-                    {{ worker }}
-                  </option>
-                </select>
-              </td>
-              <td data-label="Pour">
-                <select
-                  class="input-main"
-                  formControlName="payedFor"
-                  placeholder="Payé pour"
-                  (change)="countExtra()"
-                >
-                  <option value="" disabled>⚠️</option>
-                  <option [value]="worker" *ngFor="let worker of payerName">
-                    {{ worker }}
-                  </option>
-                </select>
-              </td>
-              <td data-label="Montant">
-                <tr style="border: none">
-                  <td style="border: none">
-                    <input
-                      currencyMask
-                      class="input-main"
-                      formControlName="amount"
-                      placeholder="Montant"
-                      (ngModelChange)="countExtra()"
-                    />
-                  </td>
-                  <td style="border: none">
-                    <button
-                      class="defaultBtn"
-                      type="button"
-                      (click)="onRemoveSupply(i)"
-                    >
-                      <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                  </td>
-                </tr>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="tableScroll">
+          <table id="supply" [hidden]="!suppliesList">
+            <thead>
+              <tr>
+                <th class="text-center sticky">Fournisseur</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Payé par</th>
+                <th class="text-center">Pour</th>
+                <th class="text-center">Montant</th>
+              </tr>
+            </thead>
+            <tbody
+              formArrayName="suppliesList"
+              *ngFor="let h of getSuppliesList()?.controls; let i = index"
+            >
+              <tr [formGroupName]="i">
+                <td data-label="Fournisseur" class="sticky">
+                  <input
+                    type="text"
+                    class="input-main"
+                    formControlName="name"
+                    placeholder="Nom"
+                    list="supplierNamestOptions"
+                  />
+                </td>
+                <td data-label="Date">
+                  <input
+                    type="date"
+                    class="input-main"
+                    formControlName="date"
+                    placeholder="Date"
+                    (input)="onChangeSupplyDate(h)"
+                  />
+                </td>
+                <td data-label="Payé par">
+                  <select
+                    class="input-main"
+                    formControlName="payedBy"
+                    placeholder="Payé par"
+                    (change)="countExtra()"
+                  >
+                    <option value="" disabled>⚠️</option>
+                    <option [value]="worker" *ngFor="let worker of payerName">
+                      {{ worker }}
+                    </option>
+                  </select>
+                </td>
+                <td data-label="Pour">
+                  <select
+                    class="input-main"
+                    formControlName="payedFor"
+                    placeholder="Payé pour"
+                    (change)="countExtra()"
+                  >
+                    <option value="" disabled>⚠️</option>
+                    <option [value]="worker" *ngFor="let worker of payerName">
+                      {{ worker }}
+                    </option>
+                  </select>
+                </td>
+                <td data-label="Montant">
+                  <tr style="border: none">
+                    <td style="border: none">
+                      <input
+                        currencyMask
+                        class="input-main"
+                        formControlName="amount"
+                        placeholder="Montant"
+                        (ngModelChange)="countExtra()"
+                      />
+                    </td>
+                    <td style="border: none">
+                      <button
+                        class="defaultBtn"
+                        type="button"
+                        (click)="onRemoveSupply(i)"
+                      >
+                        <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="form-group col-md-4">
           <button
             class="btn btn-default"
@@ -382,72 +384,75 @@
 
       <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
         <h5>Acompte / retrait</h5>
-        <table  id="checkout" [hidden]="!checkoutList">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Nom</th>
-              <th>Montant</th>
-            </tr>
-          </thead>
-          <tbody
-            formArrayName="checkoutList"
-            *ngFor="let h of getCheckoutList()?.controls; let i = index"
-          >
-            <tr [formGroupName]="i">
-              <td data-label="Date">
-                <input
-                  type="text"
-                  class="input-main"
-                  formControlName="date"
-                  placeholder="Date"
-                  (input)="onChangeSupplyDate(h)"
-                />
-              </td>
-              <td data-label="Nom">
-                <input
-                  type="text"
-                  class="input-main"
-                  formControlName="name"
-                  placeholder="Nom"
-                />
-              </td>
-              <td  data-label="Montant" class="input-group">
-                <tr style="border: none">
-                  <td style="border: none">
-                    <input
-                      currencyMask
-                      class="input-main"
-                      formControlName="amount"
-                      (ngModelChange)="computeCheckoutTotal()"
-                      placeholder="Montant"
-                    />
-                  </td>
-                  <td style="border: none">
-                    <button
-                      class="defaultBtn"
-                      type="button"
-                      (click)="onRemoveCheckout(i)"
-                    >
-                      <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                  </td>
-                </tr>
-              </td>
-            </tr>
-          </tbody>
-          <tbody class="hideOnMobile">
-            <tr id="allTotal">
-              <td>
-                <span class="input-main">TOTAL</span>
-              </td>
-              <td></td>
-              <td>
-                <span class="input-main">{{ allCheckoutTotal }} €</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="tableScroll">
+          <table id="checkout" [hidden]="!checkoutList">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Nom</th>
+                <th>Montant</th>
+              </tr>
+            </thead>
+            <tbody
+              formArrayName="checkoutList"
+              *ngFor="let h of getCheckoutList()?.controls; let i = index"
+            >
+              <tr [formGroupName]="i">
+                <td data-label="Date">
+                  <input
+                    type="text"
+                    class="input-main"
+                    formControlName="date"
+                    placeholder="Date"
+                    (input)="onChangeSupplyDate(h)"
+                  />
+                </td>
+                <td data-label="Nom">
+                  <input
+                    type="text"
+                    class="input-main"
+                    formControlName="name"
+                    placeholder="Nom"
+                    list="datalistOptions"
+                  />
+                </td>
+                <td data-label="Montant" class="input-group">
+                  <tr style="border: none">
+                    <td style="border: none">
+                      <input
+                        currencyMask
+                        class="input-main"
+                        formControlName="amount"
+                        (ngModelChange)="computeCheckoutTotal()"
+                        placeholder="Montant"
+                      />
+                    </td>
+                    <td style="border: none">
+                      <button
+                        class="defaultBtn"
+                        type="button"
+                        (click)="onRemoveCheckout(i)"
+                      >
+                        <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hideOnMobile">
+              <tr id="allTotal">
+                <td>
+                  <span class="input-main">TOTAL</span>
+                </td>
+                <td></td>
+                <td>
+                  <span class="input-main">{{ allCheckoutTotal }} €</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="form-group col-md-4">
           <button
             class="btn btn-default"
@@ -461,3 +466,15 @@
     </div>
   </form>
 </div>
+
+<datalist id="datalistOptions">
+  <span *ngFor="let name of checkoutNames">
+    <option [value]="name"></option>
+  </span>
+</datalist>
+
+<datalist id="supplierNamestOptions">
+  <span *ngFor="let name of supplierNames">
+    <option [value]="name"></option>
+  </span>
+</datalist>

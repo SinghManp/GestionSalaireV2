@@ -46,14 +46,16 @@ export class WorkerListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/workers', 'new']);
   }
 
-  onDeleteWorker(worker: Worker) {
+  onDeleteWorker(worker: Worker, event: Event) {
+    event.stopPropagation();
     const conform = confirm('Voulez-vous vraiment supprimer ce travailleur ?');
     if (conform) {
       this.workersService.removeWorker(worker);
     }
   }
 
-  onViewWorker(id: number) {
+  onViewWorker(id: number, event: Event) {
+    event.stopPropagation();
     this.router.navigate(['/workers', 'view', id]);
   }
 

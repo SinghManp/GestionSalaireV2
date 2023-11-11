@@ -30,7 +30,6 @@ export class AuthService {
   constructor(authGuardService: AuthGuardService) {
     combineLatest([authGuardService.user$]).subscribe(([user]) => {
       this.currentUser = user;
-      console.log('current role 🟢: ', user?.role);
     });
   }
 
@@ -39,20 +38,16 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       this.getTeamIdByName(teamName)
         .then((existTeam: DataSnapshot) => {
-          console.log('team already exists : ', existTeam.key);
           //update team users
 
           const teamRef = ref(getDatabase(), 'teams/' + existTeam.key);
           let team = existTeam.val();
           team.users.push(userId);
-          console.log('team', team);
           set(teamRef, team).then((a) => {
-            console.log('updated team : ', a);
             resolve(existTeam.key);
           });
         })
         .catch((error) => {
-          console.log('team does not exist', error);
           push(ref(getDatabase(), 'teams/'), {
             name: teamName,
             createAt: new Date().toISOString(),
@@ -61,7 +56,6 @@ export class AuthService {
               getAuth().currentUser?.email,
             users: [userId],
           }).then((newTeam) => {
-            console.log('created team : ', newTeam.key);
             resolve(newTeam.key);
           });
         });
@@ -76,9 +70,6 @@ export class AuthService {
       const snapshot = await get(q);
       if (snapshot.exists()) {
         snapshot.forEach((childSnapshot) => {
-          const key = childSnapshot.key;
-          console.log(`The ID for team ${teamName} is: ${key}`);
-          console.log(snapshot.val());
           resolve(childSnapshot);
         });
       } else {
@@ -127,11 +118,9 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       signInWithEmailAndPassword(getAuth(), email, password).then(
         (user) => {
-          console.log('connected');
           resolve(user);
         },
         (error) => {
-          console.log('failed');
           reject(error);
         }
       );

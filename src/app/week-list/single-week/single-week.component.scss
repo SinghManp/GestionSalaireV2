@@ -1,19 +1,16 @@
 table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
+  border: 1px solid rgb(239, 239, 239);
+  border-collapse: separate;
   margin: 0;
   padding: 0;
   width: 100%;
-  // table-layout: fixed;
-  // overflow-x: auto;
 }
 
-.testScroll {
+.tableScroll {
   overflow-x: auto;
 }
 
 table tr {
-  border: 1px solid #ddd;
   padding: 0.35em;
 }
 
@@ -21,17 +18,33 @@ table th,
 table td {
   padding: 0.625em;
   text-align: center;
+  max-width: 50px;
+  overflow: hidden;
+}
+
+table td {
+  border: 1px solid rgb(239, 239, 239);
+}
+
+.sticky {
+  position: sticky;
+  left: 0;
+  background-color: white;
 }
 
 thead {
-  // background-color: rgb(250, 201, 161);
   background-color: rgb(63 122 173);
   color: white;
+  .sticky {
+    background-color: rgb(63 122 173);
+  }
 }
 
 tfoot {
-  // background-color: rgb(255, 255, 205);
   background-color: rgb(255 186 86);
+  .sticky {
+    background-color: rgb(255 186 86);
+  }
 }
 
 table th {
@@ -48,59 +61,88 @@ table th {
   color: red;
 }
 
-@media screen and (max-width: 740px) {
+.changeWeekBtn {
+  background-color: rgb(63 122 173);
+  color: white;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.mainC {
+  display: flex;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col1 {
+  width: 70%;
+  padding: 0 5px;
+}
+
+.col2 {
+  width: 30%;
+  padding: 0 5px;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  // justify-content: space-between;
+}
+
+@media screen and (max-width: 1000px) {
   table td,
   table th {
     min-width: 95px;
   }
+
+  .mainC {
+    flex-direction: column;
+  }
+
+  .col1,
+  .col2 {
+    width: 100% !important;
+  }
 }
 
-// @media screen and (max-width: 600px) {
-//   table {
-//     border: 0;
-//   }
-
-//   table thead {
-//     border: none;
-//     clip: rect(0 0 0 0);
-//     height: 1px;
-//     margin: -1px;
-//     overflow: hidden;
-//     padding: 0;
-//     position: absolute;
-//     width: 1px;
-//   }
-
-//   table tr {
-//     border-bottom: 3px solid #ddd;
-//     display: block;
-//     margin-bottom: 0.625em;
-//   }
-
-//   table td {
-//     border-bottom: 1px solid #ddd;
-//     display: block;
-//     font-size: 0.8em;
-//     text-align: right;
-//   }
-
-//   table td::before {
-//     content: attr(data-label);
-//     float: left;
-//     font-weight: bold;
-//     text-transform: uppercase;
-//   }
-
-//   table td:last-child {
-//     border-bottom: 0;
-//   }
-
-//   .hideOnMobile {
-//     display: none !important;
-//   }
-// }
-
 @media print {
+  .mainC {
+    flex-direction: column;
+    width: 100% !important;
+  }
+
+  .col1 {
+    width: 100% !important;
+  }
+
+  .col2 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100% !important;
+
+    .paimentBank,
+    .account {
+      flex: 1;
+    }
+
+    .paimentBank {
+      width: 100% !important;
+    }
+
+    .account {
+      width: 100% !important;
+      margin-left: 1% !important;
+    }
+
+    .remark {
+      width: 100% !important;
+    }
+  }
+
   * {
     padding: 0;
   }
@@ -125,17 +167,4 @@ table th {
   .negativeAmount {
     color: red !important;
   }
-
-  .row {
-    padding: 0 15px;
-  }
-}
-
-.changeWeekBtn {
-  background-color: rgb(63 122 173);
-  color: white;
-}
-
-.mb-15 {
-  margin-bottom: 15px;
 }

@@ -131,4 +131,8 @@ export class WorkerDetailsComponent implements OnInit {
   onGoToWeek(id: number) {
     this.router.navigate(['week', id]);
   }
+
+  onPrint() {
+    window.print();
+  }
 }

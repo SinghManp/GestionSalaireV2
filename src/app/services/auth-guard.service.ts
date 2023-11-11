@@ -19,7 +19,6 @@ export class AuthGuardService implements CanActivate {
           const userRef = ref(getDatabase(), 'users/' + user.uid);
           const snapshot = await get(userRef);
           const dbUser = snapshot.val();
-          console.log('changed', dbUser);
           this.user$.next(dbUser);
           resolve(true);
         } else {

@@ -12,8 +12,9 @@
       <button
         class="list-group-item"
         *ngFor="let worker of workers; let i = index"
+        (click)="onDetailsWorker(i)"
       >
-        <div class="pull-left" (click)="onDetailsWorker(i)">
+        <div class="pull-left">
           <h3 class="list-group-item-heading">
             {{ worker.name }}
           </h3>
@@ -26,7 +27,7 @@
           <button
             class="btn btn-warning"
             type="button"
-            (click)="onViewWorker(i)"
+            (click)="onViewWorker(i, $event)"
           >
             <span class="glyphicon glyphicon-edit"></span>
             <span> Modifier</span>
@@ -34,7 +35,7 @@
           <button
             class="btn btn-danger"
             type="button"
-            (click)="onDeleteWorker(worker)"
+            (click)="onDeleteWorker(worker, $event)"
           >
             <span class="glyphicon glyphicon-trash"></span>
           </button>

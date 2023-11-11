@@ -11,10 +11,15 @@ export class WeekHistoryComponent {
   history: any;
 
   constructor(private workerWeekService: WorkerWeekService) {
-    console.log('workerWeekService.getHistory()');
-    workerWeekService.getHistory().then((resp) => {
-      console.log('history', resp);
+    workerWeekService.getHistory().then((resp: any) => {
       this.history = resp;
+
+      console.log('history', this.history);
     });
+  }
+
+  getObjectKey(obj: any) {
+    if (obj == null) return [];
+    return Object.keys(obj);
   }
 }

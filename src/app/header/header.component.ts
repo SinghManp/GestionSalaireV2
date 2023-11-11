@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { getAuth, onAuthStateChanged } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-header',
@@ -31,6 +32,17 @@ export class HeaderComponent implements OnInit {
         this.userName = '';
       }
     });
+  }
+
+  closeNavbarMenu() {
+    if (window.innerWidth < 768) {
+      // Bootstrap 3 breakpoint for mobile
+      const navbarMenu = document.getElementById('navbar-menu');
+      if (navbarMenu?.classList.contains('in')) {
+        navbarMenu.classList.remove('in');
+        // Alternatively, if you're using jQuery: $('#navbar-menu').collapse('hide');
+      }
+    }
   }
 
   initEnv() {

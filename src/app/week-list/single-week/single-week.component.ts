@@ -6,6 +6,7 @@ import { Supply } from 'src/app/models/supply.model';
 import { WorkerWeek } from 'src/app/models/workerWeek.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { WorkerWeekService } from 'src/app/services/worker-week.service';
+declare let html2pdf: any;
 
 @Component({
   selector: 'app-single-week',
@@ -218,5 +219,9 @@ export class SingleWeekComponent implements OnInit {
 
     console.log('current week number: ', weekNumber);
     return weekNumber;
+  }
+
+  onPrint() {
+    window.print();
   }
 }

@@ -40,10 +40,10 @@ export class WorkerWeekService {
   }
 
   saveWorkersWeek(newWeek: any) {
-    this.saveHistory(newWeek);
-    newWeek.lastChanges = new Date() + '';
+    newWeek.lastChanges = new Date().toUTCString();
     newWeek.author = getAuth().currentUser?.displayName;
     newWeek.authorMail = getAuth().currentUser?.email;
+    this.saveHistory(newWeek);
 
     set(ref(getDatabase(), this.weekX + '/' + newWeek.weekNumber), newWeek);
 
@@ -51,17 +51,26 @@ export class WorkerWeekService {
   }
 
   saveHistory(newWeek: any) {
-    console.error('TODO : saveHistory', newWeek);
-    // let oldWeek = this.weekList.find(
-    //   (element: any) => element.weekNumber == newWeek.weekNumber
-    // );
-    // if (oldWeek) {
-    //   let diff = this.difference(oldWeek, newWeek);
-    //   firebase
-    //     .database()
-    //     .ref('history-' + this.weekX + '/' + newWeek['weekNumber'])
-    //     .push(diff);
-    // }
+    let oldWeek = this.weekList.find(
+      (element: any) => element?.weekNumber == newWeek.weekNumber
+    );
+    if (oldWeek) {
+      let diff = this.difference(oldWeek, newWeek);
+
+      diff.lastChanges = newWeek.lastChanges;
+      diff.author = newWeek.author;
+      diff.authorMail = newWeek.authorMail;
+
+      console.log('diff', diff);
+
+      push(
+        child(
+          ref(getDatabase()),
+          'history-' + this.weekX + '/' + newWeek['weekNumber']
+        ),
+        diff
+      );
+    }
   }
 
   /**
@@ -78,7 +87,7 @@ export class WorkerWeekService {
         result[key] =
           isObject(value) && isObject(base[key])
             ? this.difference(value, base[key])
-            : value;
+            : `${value} ➡️ ${base[key]}`;
       }
     });
   }
@@ -141,117 +150,120 @@ export class WorkerWeekService {
   }
 
   updateAllWeeks() {
-    for (let week = 2; week < this.weekList.length; week++) {
-      for (
-        let previousWorkerWeek = 0;
-        previousWorkerWeek < this.weekList[week - 1]['workerList'].length;
-        previousWorkerWeek++
-      ) {
-        const worker =
-          this.weekList[week - 1]['workerList'][previousWorkerWeek]['name'];
-        let workerFound: boolean = false;
-
-        this.weekList[week]['previousCheckout'] =
-          +this.weekList[week - 1]['currentCheckout'];
-        let currentCheckout: number = +this.weekList[week]['previousCheckout'];
+    if (this.weekList) {
+      for (let week = 2; week < this.weekList.length; week++) {
         for (
-          let currentWorkerWeek = 0;
-          currentWorkerWeek < this.weekList[week]['workerList'].length;
-          currentWorkerWeek++
+          let previousWorkerWeek = 0;
+          previousWorkerWeek < this.weekList[week - 1]['workerList'].length;
+          previousWorkerWeek++
         ) {
-          if (
-            worker ==
-            this.weekList[week]['workerList'][currentWorkerWeek]['name']
+          const worker =
+            this.weekList[week - 1]['workerList'][previousWorkerWeek]['name'];
+          let workerFound: boolean = false;
+
+          this.weekList[week]['previousCheckout'] =
+            +this.weekList[week - 1]['currentCheckout'];
+          let currentCheckout: number =
+            +this.weekList[week]['previousCheckout'];
+          for (
+            let currentWorkerWeek = 0;
+            currentWorkerWeek < this.weekList[week]['workerList'].length;
+            currentWorkerWeek++
           ) {
-            workerFound = true;
-            let previousBalance1 = parseFloat(
+            if (
+              worker ==
+              this.weekList[week]['workerList'][currentWorkerWeek]['name']
+            ) {
+              workerFound = true;
+              let previousBalance1 = parseFloat(
+                this.weekList[week]['workerList'][currentWorkerWeek][
+                  'previousBalance'
+                ]
+              );
+              let currentBalance = parseFloat(
+                this.weekList[week]['workerList'][currentWorkerWeek][
+                  'currentBalance'
+                ]
+              );
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'previousBalance'
-              ]
-            );
-            let currentBalance = parseFloat(
+              ] = parseFloat(
+                this.weekList[week - 1]['workerList'][previousWorkerWeek][
+                  'currentBalance'
+                ]
+              );
+              let previousBalance2 = parseFloat(
+                this.weekList[week]['workerList'][currentWorkerWeek][
+                  'previousBalance'
+                ]
+              );
+              let total: number =
+                +currentBalance - +previousBalance1 + (previousBalance2 + 0);
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'currentBalance'
-              ]
-            );
-            this.weekList[week]['workerList'][currentWorkerWeek][
-              'previousBalance'
-            ] = parseFloat(
+              ] = +total.toFixed(2);
+            }
+            currentCheckout -=
+              this.weekList[week]['workerList'][currentWorkerWeek]['totalCash'];
+            currentCheckout +=
+              this.weekList[week]['workerList'][currentWorkerWeek]['extra'];
+          }
+          if (!workerFound) {
+            const balance = parseFloat(
               this.weekList[week - 1]['workerList'][previousWorkerWeek][
                 'currentBalance'
               ]
             );
-            let previousBalance2 = parseFloat(
-              this.weekList[week]['workerList'][currentWorkerWeek][
-                'previousBalance'
+            const dailySalary = parseFloat(
+              this.weekList[week - 1]['workerList'][previousWorkerWeek][
+                'dailySalary'
               ]
             );
-            let total: number =
-              +currentBalance - +previousBalance1 + (previousBalance2 + 0);
-            this.weekList[week]['workerList'][currentWorkerWeek][
-              'currentBalance'
-            ] = +total.toFixed(2);
+            let workerNotFound = {
+              name: worker,
+              dailySalary: dailySalary,
+              workingDays: 0,
+              salary: 0,
+              extra: 0,
+              paiementBank: 0,
+              paiementCash: 0,
+              paiementBankList: {},
+              cashFromSupplies: 0,
+              totalCash: 0,
+              currentBalance: +balance,
+              previousBalance: +balance,
+            };
+            this.weekList[week]['workerList'].push(workerNotFound);
           }
-          currentCheckout -=
-            this.weekList[week]['workerList'][currentWorkerWeek]['totalCash'];
-          currentCheckout +=
-            this.weekList[week]['workerList'][currentWorkerWeek]['extra'];
-        }
-        if (!workerFound) {
-          const balance = parseFloat(
-            this.weekList[week - 1]['workerList'][previousWorkerWeek][
-              'currentBalance'
-            ]
-          );
-          const dailySalary = parseFloat(
-            this.weekList[week - 1]['workerList'][previousWorkerWeek][
-              'dailySalary'
-            ]
-          );
-          let workerNotFound = {
-            name: worker,
-            dailySalary: dailySalary,
-            workingDays: 0,
-            salary: 0,
-            extra: 0,
-            paiementBank: 0,
-            paiementCash: 0,
-            paiementBankList: {},
-            cashFromSupplies: 0,
-            totalCash: 0,
-            currentBalance: +balance,
-            previousBalance: +balance,
-          };
-          this.weekList[week]['workerList'].push(workerNotFound);
-        }
-        if (this.weekList[week]['checkoutList']) {
-          for (
-            let checkout = 0;
-            checkout < this.weekList[week]['checkoutList'].length;
-            checkout++
-          ) {
-            currentCheckout =
-              +currentCheckout +
-              this.weekList[week]['checkoutList'][checkout]['amount'];
+          if (this.weekList[week]['checkoutList']) {
+            for (
+              let checkout = 0;
+              checkout < this.weekList[week]['checkoutList'].length;
+              checkout++
+            ) {
+              currentCheckout =
+                +currentCheckout +
+                this.weekList[week]['checkoutList'][checkout]['amount'];
+            }
           }
-        }
-        if (this.weekList[week]['suppliesList']) {
-          for (
-            let supply = 0;
-            supply < this.weekList[week]['suppliesList'].length;
-            supply++
-          ) {
-            currentCheckout =
-              +currentCheckout +
-              this.weekList[week]['suppliesList'][supply]['amount'];
+          if (this.weekList[week]['suppliesList']) {
+            for (
+              let supply = 0;
+              supply < this.weekList[week]['suppliesList'].length;
+              supply++
+            ) {
+              currentCheckout =
+                +currentCheckout +
+                this.weekList[week]['suppliesList'][supply]['amount'];
+            }
           }
+          this.weekList[week]['currentCheckout'] = +currentCheckout.toFixed(2);
         }
-        this.weekList[week]['currentCheckout'] = +currentCheckout.toFixed(2);
       }
-    }
 
-    set(ref(getDatabase(), this.weekX), this.weekList);
-    this.emitWeek();
+      set(ref(getDatabase(), this.weekX), this.weekList);
+      this.emitWeek();
+    }
   }
 
   /** EN COURS DE DEVELOPPEMENT...

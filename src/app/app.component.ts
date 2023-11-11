@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
         window.location.reload();
+        alert('Application a été mise à jour !');
       });
     }
   }

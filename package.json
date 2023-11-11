@@ -1,6 +1,6 @@
 {
   "name": "gestion-salaire-v2",
-  "version": "2.0.6",
+  "version": "2.0.15",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -22,6 +22,7 @@
     "@angular/router": "^16.2.0",
     "@angular/service-worker": "^16.2.0",
     "bootstrap": "^3.4.1",
+    "html2pdf.js": "^0.10.1",
     "jquery": "^3.7.1",
     "ng2-currency-mask": "^13.0.3",
     "rxjs": "~7.8.0",

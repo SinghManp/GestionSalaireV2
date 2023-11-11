@@ -74,7 +74,7 @@
               <td data-label="Jour">
                 <input
                   id="nbDays"
-                  type="number"
+                  inputmode="numeric"
                   class="input-main text-center"
                   formControlName="workingDays"
                   placeholder="Jour"
@@ -118,6 +118,7 @@
                 <input
                   id="nbDays"
                   currencyMask
+                  inputmode="numeric"
                   class="input-main text-center"
                   formControlName="paiementCash"
                   (ngModelChange)="setCashTotal(i)"
@@ -349,6 +350,7 @@
                   <tr style="border: none">
                     <td style="border: none">
                       <input
+                        inputmode="numeric"
                         currencyMask
                         class="input-main"
                         formControlName="amount"
@@ -421,6 +423,7 @@
                     <td style="border: none">
                       <input
                         currencyMask
+                        inputmode="numeric"
                         class="input-main"
                         formControlName="amount"
                         (ngModelChange)="computeCheckoutTotal()"

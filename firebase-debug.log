@@ -1,0 +1,41 @@
+[debug] [2023-11-11T23:20:17.232Z] ----------------------------------------------------------------------
+[debug] [2023-11-11T23:20:17.233Z] Command:       /Users/singhmanp/.nvm/versions/node/v16.20.0/bin/node /Users/singhmanp/.nvm/versions/node/v16.20.0/bin/firebase deploy
+[debug] [2023-11-11T23:20:17.234Z] CLI Version:   12.7.0
+[debug] [2023-11-11T23:20:17.234Z] Platform:      darwin
+[debug] [2023-11-11T23:20:17.234Z] Node Version:  v16.20.0
+[debug] [2023-11-11T23:20:17.235Z] Time:          Sun Nov 12 2023 00:20:17 GMT+0100 (heure normale d’Europe centrale)
+[debug] [2023-11-11T23:20:17.235Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-11-11T23:20:17.271Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-11-11T23:20:17.272Z] > authorizing via signed-in user (gestionsalaire2020@gmail.com)
+[debug] [2023-11-11T23:20:17.272Z] [iam] checking project gest-sal-dev for permissions ["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]
+[debug] [2023-11-11T23:20:17.273Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/gest-sal-dev:testIamPermissions [none]
+[debug] [2023-11-11T23:20:17.273Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/gest-sal-dev:testIamPermissions x-goog-quota-user=projects/gest-sal-dev
+[debug] [2023-11-11T23:20:17.273Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gest-sal-dev:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}
+[debug] [2023-11-11T23:20:17.969Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/gest-sal-dev:testIamPermissions 200
+[debug] [2023-11-11T23:20:17.969Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gest-sal-dev:testIamPermissions {"permissions":["firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}
+[debug] [2023-11-11T23:20:17.970Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev [none]
+[debug] [2023-11-11T23:20:18.230Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev 200
+[debug] [2023-11-11T23:20:18.230Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev {"projectId":"gest-sal-dev","projectNumber":"890159545399","displayName":"gest-sal-dev","name":"projects/gest-sal-dev","resources":{"hostingSite":"gest-sal-dev","realtimeDatabaseInstance":"gest-sal-dev-default-rtdb"},"state":"ACTIVE","etag":"1_8b3a0c63-0fd3-4820-a3f6-8c4a2453d977"}
+[debug] [2023-11-11T23:20:18.231Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev [none]
+[debug] [2023-11-11T23:20:18.490Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev 200
+[debug] [2023-11-11T23:20:18.490Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev {"projectId":"gest-sal-dev","projectNumber":"890159545399","displayName":"gest-sal-dev","name":"projects/gest-sal-dev","resources":{"hostingSite":"gest-sal-dev","realtimeDatabaseInstance":"gest-sal-dev-default-rtdb"},"state":"ACTIVE","etag":"1_8b3a0c63-0fd3-4820-a3f6-8c4a2453d977"}
+[debug] [2023-11-11T23:20:19.545Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/gest-sal-dev/sites pageToken=&pageSize=10
+[debug] [2023-11-11T23:20:20.388Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/gest-sal-dev/sites 200
+[debug] [2023-11-11T23:20:20.388Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/gest-sal-dev/sites {"sites":[{"name":"projects/gest-sal-dev/sites/gest-sal-dev","defaultUrl":"https://gest-sal-dev.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2023-11-11T23:20:20.389Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/gest-sal-dev/sites 
+[debug] [2023-11-11T23:20:21.182Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/gest-sal-dev/sites 200
+[debug] [2023-11-11T23:20:21.182Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/gest-sal-dev/sites {"sites":[{"name":"projects/gest-sal-dev/sites/gest-sal-dev","defaultUrl":"https://gest-sal-dev.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2023-11-11T23:20:21.183Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev/webApps/-/config [none]
+[debug] [2023-11-11T23:20:21.825Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev/webApps/-/config 200
+[debug] [2023-11-11T23:20:21.826Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/gest-sal-dev/webApps/-/config {"projectId":"gest-sal-dev","appId":"1:890159545399:web:ff780092470725430f13b2","databaseURL":"https://gest-sal-dev-default-rtdb.europe-west1.firebasedatabase.app","storageBucket":"gest-sal-dev.appspot.com","apiKey":"AIzaSyDn2UdYwoXEzn_3N166kCkAWH9-cgSJxxk","authDomain":"gest-sal-dev.firebaseapp.com","messagingSenderId":"890159545399"}
+[info] 
+   Thank you for trying our early preview of Angular support on Firebase Hosting.
+   During the preview, support is best-effort and breaking changes can be expected. Proceed with caution.
+
+   Documentation: https://firebase.google.com/docs/hosting/frameworks/angular
+   File a bug: https://github.com/firebase/firebase-tools/issues/new?template=bug_report.md
+   Submit a feature request: https://github.com/firebase/firebase-tools/issues/new?template=feature_request.md
+
+   We'd love to learn from you. Express your interest in helping us shape the future of Firebase Hosting: https://goo.gle/41enW5X
+

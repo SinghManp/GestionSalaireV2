@@ -516,6 +516,13 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     let cash1 = this.workerWeekForm.get(
       'workerList.' + index + '.paiementCash'
     )?.value;
+
+    if (cash1 == null) {
+      this.workerWeekForm
+        .get('workerList.' + index + '.paiementCash')
+        ?.setValue(0);
+    }
+
     let cash2 = this.workerWeekForm.get(
       'workerList.' + index + '.cashFromSupplies'
     )?.value;

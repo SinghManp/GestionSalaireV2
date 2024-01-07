@@ -25,7 +25,7 @@ export class WorkerWeekService {
   weekList!: any[];
   weeksSubject = new Subject<WorkerWeek[]>();
 
-  weekX: any = 'year-2023';
+  weekX: any = 'year-' + new Date().getFullYear();
 
   constructor() {
     // this.getWeekListFromFirebase();
@@ -51,7 +51,7 @@ export class WorkerWeekService {
   }
 
   saveHistory(newWeek: any) {
-    let oldWeek = this.weekList.find(
+    let oldWeek = this.weekList?.find(
       (element: any) => element?.weekNumber == newWeek.weekNumber
     );
     if (oldWeek) {
@@ -61,7 +61,6 @@ export class WorkerWeekService {
       diff.author = newWeek.author;
       diff.authorMail = newWeek.authorMail;
 
-      console.log('diff', diff);
 
       push(
         child(
@@ -112,7 +111,14 @@ export class WorkerWeekService {
   getLastWeek() {
     return new Promise((resolve, reject) => {
       get(child(ref(getDatabase()), '/' + this.weekX)).then((snapshot) => {
-        resolve(snapshot.val());
+        if (snapshot.val() == undefined) {
+          const year = 'year-' + (this.weekX.substr(this.weekX.length - 4) - 1);
+          get(child(ref(getDatabase()), '/' + year)).then((snapshot) => {
+            resolve(snapshot.val());
+          });
+        } else {
+          resolve(snapshot.val());
+        }
       });
     });
   }
@@ -134,7 +140,6 @@ export class WorkerWeekService {
     return new Promise((resolve) => {
       const db = getDatabase();
 
-      console.log('weekX', this.weekX);
       const starCountRef = ref(db, 'history-' + this.weekX + '/');
       onValue(starCountRef, (snapshot) => {
         resolve(snapshot.val());

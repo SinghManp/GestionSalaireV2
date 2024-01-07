@@ -9,7 +9,6 @@ export class FirebaseDataService {
   getSuppliersNames() {
     return new Promise((resolve) => {
       get(child(ref(getDatabase()), 'suppliersNames')).then((snapshot) => {
-        console.log('snapshot', snapshot.val());
         const checkoutNames = snapshot.val() ? snapshot.val() : [];
         resolve(checkoutNames);
       });
@@ -23,7 +22,6 @@ export class FirebaseDataService {
   getCheckoutNames() {
     return new Promise((resolve) => {
       get(child(ref(getDatabase()), 'checkoutNames')).then((snapshot) => {
-        console.log('snapshot', snapshot.val());
         const checkoutNames = snapshot.val() ? snapshot.val() : [];
         resolve(checkoutNames);
       });

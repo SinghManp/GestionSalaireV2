@@ -57,7 +57,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let worker of workerWeekList">
+            <tr *ngFor="let worker of workerWeekList" >
               <td
                 *ngIf="isWorkedThisWeek(worker)"
                 data-label="Nom"
@@ -171,7 +171,7 @@
           <tbody>
             <tr *ngFor="let supply of suppliesList">
               <td class="sticky" data-label="Nom">{{ supply.name }}</td>
-              <td data-label="Date">{{ supply.date }}</td>
+              <td data-label="Date">{{ supply.date | date : "dd/MM/YYYY" }}</td>
               <td
                 data-label="Par"
                 style="cursor: pointer"
@@ -224,7 +224,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let paiement of paiementBankList">
-              <td>{{ paiement.date }}</td>
+              <td>{{ paiement.date | date : "dd/MM/YYYY" }}</td>
               <td
                 style="cursor: pointer"
                 (click)="onDetailsWorker(paiement.name)"
@@ -261,7 +261,9 @@
           </thead>
           <tbody>
             <tr *ngFor="let checkout of checkoutList">
-              <td data-label="Date">{{ checkout.date }}</td>
+              <td data-label="Date">
+                {{ checkout.date | date : "dd/MM/YYYY" }}
+              </td>
               <td data-label="Nom">{{ checkout.name }}</td>
               <td
                 data-label="Montant"
@@ -294,10 +296,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let remark of remarkList">
-              <td style="text-align: left">
-                <span>{{ remark.name }} : </span>
-                <span style="white-space: pre-wrap">{{ remark.remark }}</span>
+            <tr *ngFor="let remark of remarkList; let z = index">
+              <td style="text-align: left" [ngClass]="{ tdList: z % 2 == 1 }">
+                <div class="remark-item">
+                  <div>{{ remark.name }} :</div>
+                  <div style="white-space: pre-wrap; margin-left: 5px">
+                    {{ remark.remark }}
+                  </div>
+                </div>
               </td>
             </tr>
           </tbody>

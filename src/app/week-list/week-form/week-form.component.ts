@@ -45,6 +45,8 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   checkoutNames: any = [];
   supplierNames: any = [];
 
+  isNewYear: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private workWeekService: WorkerWeekService,
@@ -97,6 +99,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
       const newYear = lastWeek.year + 1;
       await this.workWeekService.getWeekListFromFirebase(newYear);
       this.weekNumber = 1;
+      this.isNewYear = true;
       lastWeek.year = newYear;
     }
 
@@ -306,7 +309,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   onSaveWorker() {
-    console.log('this.workerWeekForm.value', this.workerWeekForm.value);
     this.saveCheckoutNames();
     this.saveSupplierNames();
     this.workerWeekForm.get('weekNumber')?.setValue(+this.weekNumber);
@@ -367,18 +369,11 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   onRemoveWorker(nb: number) {
-    if (
-      this.workerWeekForm.get('workerList')?.value[nb]['previousBalance'] == 0
-    ) {
-      let workerName = this.workerWeekForm.get('workerList')?.value[nb]['name'];
-      if (prompt('Tapez "' + workerName + '" pour supprimer') == workerName) {
-        this.workers.push(
-          this.workerWeekForm.get('workerList')?.value[nb]['name']
-        );
-        this.getWorkerList().removeAt(nb);
-      }
-    } else {
-      alert('Vous ne pouvez pas supprimer cet élément');
+    const workerName = this.workerWeekForm.get('workerList')?.value[nb]['name'];
+    if (prompt('Tapez "' + workerName + '" pour supprimer') == workerName) {
+      this.workers.push(workerName);
+      this.getWorkerList().removeAt(nb);
+      this.computeAllTotal();
     }
   }
 
@@ -401,7 +396,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     this.payerName = this.workersSerivce.getWorkersNames();
     this.payerName.splice(0, 0, 'EGR');
 
-    console.log('workers', this.workers, this.payerName);
   }
 
   removeWorkerFromList(name: string) {
@@ -448,7 +442,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     let listPayedBy: any = [];
     let listPayedFor: any = [];
     suppliesList.forEach((supply: any) => {
-      console.log('supply', supply);
       if (supply.payedBy != '' && supply.payedFor != '') {
         if (supply.payedFor == 'EGR') {
           listPayedBy[supply.payedBy]
@@ -523,12 +516,14 @@ export class WeekFormComponent implements OnInit, OnDestroy {
         ?.setValue(0);
     }
 
-    let cash2 = this.workerWeekForm.get(
-      'workerList.' + index + '.cashFromSupplies'
-    )?.value;
+    // let cash2 = this.workerWeekForm.get(
+    //   'workerList.' + index + '.cashFromSupplies'
+    // )?.value;
+
     this.workerWeekForm
       .get('workerList.' + index + '.totalCash')
-      ?.setValue(cash1 + cash2);
+      ?.setValue(cash1);
+
     this.countWorkerSalary(index);
   }
 
@@ -546,9 +541,9 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     const currentCheckout =
       this.workerWeekForm.get('previousCheckout')?.value +
       this.allCheckoutTotal +
-      this.allSuppliesTotal +
-      this.allExtraTotal -
-      this.allCashTotal;
+      // this.allSuppliesTotal +
+      // this.allExtraTotal
+      -this.allCashTotal;
 
     this.workerWeekForm
       .get('currentCheckout')
@@ -562,6 +557,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     total += worker.salary;
     total += worker.previousBalance;
     total += worker.extra;
+    total -= worker.cashFromSupplies;
     total -= worker.totalCash;
     total -= worker.paiementBank;
 
@@ -693,7 +689,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
         }
         return false;
       } else if (e.keyCode == 9) {
-        console.log('tab');
         var self = $(this),
           form = self.parents('form:eq(0)'),
           focusable,
@@ -709,7 +704,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
         shiftPressed = true;
         setTimeout(() => {
           shiftPressed = false;
-        }, 1000);
+        }, 500);
         return true;
       } else {
         return true;
@@ -771,12 +766,12 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   onChangeSupplyDate(supply: any) {
-    let val = supply.value;
-    let convertDate = this.stringToDateFormat(val.date);
-    if (val.date != convertDate) {
-      val.date = convertDate;
-      supply.setValue(val);
-    }
+    // let val = supply.value;
+    // let convertDate = this.stringToDateFormat(val.date);
+    // if (val.date != convertDate) {
+    //   val.date = convertDate;
+    //   supply.setValue(val);
+    // }
   }
 
   stringToDateFormat(date: string) {

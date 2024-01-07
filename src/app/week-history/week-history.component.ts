@@ -14,7 +14,6 @@ export class WeekHistoryComponent {
     workerWeekService.getHistory().then((resp: any) => {
       this.history = resp;
 
-      console.log('history', this.history);
     });
   }
 

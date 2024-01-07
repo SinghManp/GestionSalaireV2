@@ -36,8 +36,4 @@ export class WorkerFormComponent implements OnInit {
     this.workersService.createNewWorker(newWorker);
     this.router.navigate(['/workers']);
   }
-
-  test() {
-    console.log('test');
-  }
 }

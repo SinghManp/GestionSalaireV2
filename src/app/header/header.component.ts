@@ -22,8 +22,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.initEnv();
 
-    onAuthStateChanged(getAuth(), (user) => {
-      console.log('useruseruseruseruser', user);
+    onAuthStateChanged(getAuth(), (user) => { 
       if (user) {
         this.isAuth = true;
         this.userName = user.displayName || '';

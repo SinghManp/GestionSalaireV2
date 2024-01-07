@@ -7,8 +7,7 @@ export class CursorAtEndDirective {
   constructor(private el: ElementRef) {}
 
   @HostListener('mousedown', ['$event'])
-  handleClick(event: Event) {
-    console.log('event');
+  handleClick(event: Event) { 
     const input = this.el.nativeElement;
     const len = input.value.length;
     if (input.setSelectionRange) {

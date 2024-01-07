@@ -35,10 +35,18 @@
         </div>
       </h3>
 
+      <h5 style="color: green" *ngIf="isNewYear">
+        Bonne année 🎉 <br />
+        Pensez à retirer tous les ouvriers qui ne travaillent plus. <br />
+        Cette action rendra le formulaire plus clair et plus simple à remplir.
+        😊
+      </h5>
+
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 tableScroll">
         <table id="workers">
           <thead>
             <tr>
+              <th *ngIf="isNewYear"></th>
               <th class="text-center sticky">Nom</th>
               <th class="text-center">Jour</th>
               <th class="text-center">Salaire</th>
@@ -61,6 +69,13 @@
               [formGroupName]="i"
               [ngClass]="{ invalidInput: hobbyControl.invalid }"
             >
+              <button
+                type="button defaultBtn"
+                (click)="onRemoveWorker(i)"
+                *ngIf="isNewYear"
+              >
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
               <td data-label="Nom" class="sticky">
                 <input
                   type="text"
@@ -75,6 +90,7 @@
                 <input
                   id="nbDays"
                   inputmode="numeric"
+                  type="number"
                   class="input-main text-center"
                   formControlName="workingDays"
                   placeholder="Jour"
@@ -214,6 +230,7 @@
                         <td>
                           <input
                             currencyMask
+                            inputmode="numeric"
                             class="input-main"
                             formControlName="amount"
                             (ngModelChange)="onPaiementBankChange(hobbyControl)"
@@ -223,6 +240,7 @@
                     </td>
                     <td>
                       <input
+                        type="date"
                         class="input-main text-center"
                         placeholder="Date"
                         formControlName="date"
@@ -236,6 +254,7 @@
           </tbody>
           <tfoot>
             <tr id="allTotal">
+              <th *ngIf="isNewYear"></th>
               <th class="sticky">
                 <span class="input-main">TOTAL</span>
               </th>
@@ -317,7 +336,6 @@
                     class="input-main"
                     formControlName="date"
                     placeholder="Date"
-                    (input)="onChangeSupplyDate(h)"
                   />
                 </td>
                 <td data-label="Payé par">
@@ -402,7 +420,7 @@
               <tr [formGroupName]="i">
                 <td data-label="Date">
                   <input
-                    type="text"
+                    type="date"
                     class="input-main"
                     formControlName="date"
                     placeholder="Date"

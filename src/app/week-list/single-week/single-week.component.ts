@@ -217,7 +217,6 @@ export class SingleWeekComponent implements OnInit {
 
     var weekNumber = Math.ceil(days / 7);
 
-    console.log('current week number: ', weekNumber);
     return weekNumber;
   }
 

@@ -7,11 +7,11 @@
           {{ item }}
         </option>
       </select>
-      <button class="btn btn-success" (click)="newWeek()">
+      <button class="btn btn-success" (click)="newWeek()" *ngIf="canAddNewWeek">
         <span class="glyphicon glyphicon-plus"></span>
       </button>
       <h5 class="pull-right">
-        Semaine actuelle: {{ currentWeek | date : "w - yyyy" }}
+        Semaine actuelle: {{ dateService.getWeekNumber(currentWeek) }}
       </h5>
     </h2>
   </div>

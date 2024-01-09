@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { WorkerWeekService } from '../services/worker-week.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WorkerWeek } from '../models/workerWeek.model';
+import { DateService } from '../services/date.service';
 
 @Component({
   selector: 'app-week-list',
@@ -19,10 +20,13 @@ export class WeekListComponent implements OnInit, OnDestroy {
 
   isLoading = true;
 
+  canAddNewWeek = false;
+
   constructor(
     private workWeekService: WorkerWeekService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public dateService: DateService
   ) {
     this.initYearList();
   }
@@ -37,6 +41,9 @@ export class WeekListComponent implements OnInit, OnDestroy {
         this.getWeeksNumbers();
         this.sortWeek();
         this.isLoading = false;
+        this.canAddNewWeek =
+          this.year == new Date().getFullYear() ||
+          !this.workWeekService.getIsWeekInCurrentYear();
       }
     );
     this.workWeekService.emitWeek();
@@ -68,7 +75,8 @@ export class WeekListComponent implements OnInit, OnDestroy {
   }
 
   initYearList() {
-    for (let index = 2021; index <= new Date().getFullYear(); index++) {
+    const currentYear = new Date().getFullYear();
+    for (let index = currentYear - 2; index <= currentYear; index++) {
       this.yearList.push(index);
     }
   }

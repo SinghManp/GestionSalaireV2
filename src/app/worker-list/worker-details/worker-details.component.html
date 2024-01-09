@@ -3,7 +3,7 @@
   <select id="year" [(ngModel)]="year" (change)="initDetails()">
     <option *ngFor="let item of yearList" [value]="item">{{ item }}</option>
   </select>
-  <div class="btn-group hideOnPrint" style="margin: 0 0 10px 15px "> 
+  <div class="btn-group hideOnPrint" style="margin: 0 0 10px 15px">
     <button class="btn btn-secondary" (click)="onPrint()">
       <span class="glyphicon glyphicon-print"></span>
     </button>
@@ -171,7 +171,9 @@
               <td data-label="Semaine" class="sticky">
                 {{ supply.weekNumber }}
               </td>
-              <td data-label="Date">{{ supply.supply.date }}</td>
+              <td data-label="Date">
+                {{ dateService.formatDate(supply.supply.date) }}
+              </td>
               <td data-label="Fournisseur">{{ supply.supply.name }}</td>
               <td data-label="Par">{{ supply.supply.payedBy }}</td>
               <td data-label="Pour">{{ supply.supply.payedFor }}</td>
@@ -223,7 +225,9 @@
               >
                 {{ paiement.weekNumber }}
               </td>
-              <td>{{ paiement.date }}</td>
+              <td>
+                {{ dateService.formatDate(paiement.date) }}
+              </td>
               <td
                 [ngClass]="{ negativeAmount: paiement.amount < 0 }"
                 class="amount"

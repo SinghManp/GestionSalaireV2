@@ -25,7 +25,15 @@
 
         <div class="form-inline pull-right">
           <h6 class="form-inline">
-            <span>Solde cash S {{ weekNumber - 1 }} : </span>
+            <span
+              >Solde cash
+              {{
+                weekNumber - 1 == 0
+                  ? workerWeekForm.get("year")?.value - 1
+                  : "S " + (weekNumber - 1)
+              }}
+              :
+            </span>
             <input currencyMask formControlName="previousCheckout" readonly />
           </h6>
           <h6 class="form-inline pull-right">
@@ -293,13 +301,15 @@
             </tr>
           </tfoot>
         </table>
-        <div class="row" *ngIf="workers && workers.length > 0">
-          <div class="form-group col-md-3">
-            <select class="input-main" (change)="onSelect($event)">
-              <option>Ajouter un ouvrier</option>
-              <option *ngFor="let worker of workers">{{ worker }}</option>
-            </select>
-          </div>
+        <div *ngIf="workers && workers.length > 0">
+          <select
+            class="input-main"
+            (change)="onSelect($event)"
+            style="width: 150px"
+          >
+            <option>Ajouter un ouvrier</option>
+            <option *ngFor="let worker of workers">{{ worker }}</option>
+          </select>
         </div>
       </div>
 

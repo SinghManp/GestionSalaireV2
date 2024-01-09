@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DateService } from 'src/app/services/date.service';
 import { WorkersService } from 'src/app/services/workers.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class WorkerDetailsComponent implements OnInit {
   constructor(
     private workerkService: WorkersService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dateService: DateService
   ) {}
 
   ngOnInit() {

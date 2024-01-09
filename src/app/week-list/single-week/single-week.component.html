@@ -3,7 +3,9 @@
 
   <h5 class="pull-right">
     <div>
-      Cash S {{ weekNumber - 1 }} :
+      Cash
+      {{ weekNumber - 1 != 0 ? "S " + (weekNumber - 1) : week.year - 1 }}
+      :
       <span [ngClass]="{ negativeAmount: this.previousCheckout < 0 }"
         >{{ this.conversion(this.previousCheckout) }} €</span
       >
@@ -57,7 +59,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let worker of workerWeekList" >
+            <tr *ngFor="let worker of workerWeekList">
               <td
                 *ngIf="isWorkedThisWeek(worker)"
                 data-label="Nom"
@@ -171,7 +173,9 @@
           <tbody>
             <tr *ngFor="let supply of suppliesList">
               <td class="sticky" data-label="Nom">{{ supply.name }}</td>
-              <td data-label="Date">{{ supply.date | date : "dd/MM/YYYY" }}</td>
+              <td data-label="Date">
+                {{ dateService.formatDate(supply.date) }}
+              </td>
               <td
                 data-label="Par"
                 style="cursor: pointer"
@@ -224,7 +228,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let paiement of paiementBankList">
-              <td>{{ paiement.date | date : "dd/MM/YYYY" }}</td>
+              <td>{{ dateService.formatDate(paiement.date) }}</td>
               <td
                 style="cursor: pointer"
                 (click)="onDetailsWorker(paiement.name)"
@@ -262,7 +266,7 @@
           <tbody>
             <tr *ngFor="let checkout of checkoutList">
               <td data-label="Date">
-                {{ checkout.date | date : "dd/MM/YYYY" }}
+                {{ dateService.formatDate(checkout.date) }}
               </td>
               <td data-label="Nom">{{ checkout.name }}</td>
               <td

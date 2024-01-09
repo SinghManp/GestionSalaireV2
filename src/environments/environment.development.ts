@@ -17,7 +17,7 @@ export const environment = {
     decimal: ',',
     precision: 2,
     prefix: '',
-    suffix: ' €',
+    suffix: ' $',
     thousands: ' ',
   },
 };

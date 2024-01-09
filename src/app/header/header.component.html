@@ -78,6 +78,13 @@
       >
         DB : {{ env?.name }}
       </span>
+
+      <span
+        *ngIf="!networkStatus"
+        style="background-color: red; color: white; padding: 0 5px; margin: 5px;"
+      >
+        Pas de connexion internet !
+      </span>
     </div>
     <div *ngIf="isAuth">Bonjour {{ userName }} !</div>
   </div>

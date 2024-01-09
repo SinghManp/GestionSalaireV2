@@ -26,7 +26,7 @@ export class SigninComponent {
     this.signInForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: [
-        'test#202312',
+        '',
         [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)],
       ],
     });

@@ -27,6 +27,8 @@ export class WorkerWeekService {
 
   weekX: any = 'year-' + new Date().getFullYear();
 
+  isWeekInCurrentYear = false;
+
   constructor() {
     // this.getWeekListFromFirebase();
   }
@@ -60,7 +62,6 @@ export class WorkerWeekService {
       diff.lastChanges = newWeek.lastChanges;
       diff.author = newWeek.author;
       diff.authorMail = newWeek.authorMail;
-
 
       push(
         child(
@@ -128,8 +129,15 @@ export class WorkerWeekService {
 
     onValue(ref(getDatabase(), this.weekX), (snapshot) => {
       this.weekList = snapshot.val() ? snapshot.val() : [];
+      if (year == new Date().getFullYear() && this.weekList.length > 0) {
+        this.isWeekInCurrentYear = true;
+      }
       this.emitWeek();
     });
+  }
+
+  getIsWeekInCurrentYear() {
+    return this.isWeekInCurrentYear;
   }
 
   setWeekX(year: any) {

@@ -5,8 +5,8 @@ import { OneWorkerWeek } from 'src/app/models/oneWorkerWeek.model';
 import { Supply } from 'src/app/models/supply.model';
 import { WorkerWeek } from 'src/app/models/workerWeek.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { DateService } from 'src/app/services/date.service';
 import { WorkerWeekService } from 'src/app/services/worker-week.service';
-declare let html2pdf: any;
 
 @Component({
   selector: 'app-single-week',
@@ -34,7 +34,8 @@ export class SingleWeekComponent implements OnInit {
     private route: ActivatedRoute,
     private workerWeekService: WorkerWeekService,
     private router: Router,
-    readonly authService: AuthService
+    readonly authService: AuthService,
+    public dateService: DateService
   ) {}
 
   ngOnInit() {

@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { getAuth, onAuthStateChanged } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment';
 import * as $ from 'jquery';
+import { fromEvent, merge, of, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+  networkStatus: boolean = false;
+  networkStatus$: Subscription = Subscription.EMPTY;
   userName: string = '';
   isAuth: boolean = false;
 
@@ -22,7 +26,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.initEnv();
 
-    onAuthStateChanged(getAuth(), (user) => { 
+    onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         this.isAuth = true;
         this.userName = user.displayName || '';
@@ -31,6 +35,11 @@ export class HeaderComponent implements OnInit {
         this.userName = '';
       }
     });
+    this.checkNetworkStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.networkStatus$.unsubscribe();
   }
 
   closeNavbarMenu() {
@@ -75,5 +84,18 @@ export class HeaderComponent implements OnInit {
 
   onSignOut() {
     this.authService.signOutUser();
+  }
+
+  checkNetworkStatus() {
+    this.networkStatus = navigator.onLine;
+    this.networkStatus$ = merge(
+      of(null),
+      fromEvent(window, 'online'),
+      fromEvent(window, 'offline')
+    )
+      .pipe(map(() => navigator.onLine))
+      .subscribe((status) => {
+        this.networkStatus = status;
+      });
   }
 }

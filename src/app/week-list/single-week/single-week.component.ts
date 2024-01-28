@@ -204,11 +204,7 @@ export class SingleWeekComponent implements OnInit {
   }
 
   isEditable() {
-    return (
-      this.authService.matchRole('admin') ||
-      (this.getCurrentWeekNumber() - this.week?.weekNumber < 3 &&
-        this.week?.year >= new Date().getFullYear())
-    );
+    return this.week?.year >= 2024; //Impossible to edit before 2024 because is an old version of data schema
   }
 
   getCurrentWeekNumber() {

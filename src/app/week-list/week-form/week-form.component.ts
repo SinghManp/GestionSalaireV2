@@ -312,6 +312,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     this.saveCheckoutNames();
     this.saveSupplierNames();
     this.workerWeekForm.get('weekNumber')?.setValue(+this.weekNumber);
+    console.log(this.workerWeekForm.value);
     this.workWeekService.saveWorkersWeek(this.workerWeekForm.value);
     this.workWeekService.updateAllWeeks();
     this.router.navigate(['/week', this.weekNumber]);

@@ -12,7 +12,6 @@ import {
   get,
   child,
   push,
-  update,
 } from 'firebase/database';
 
 @Injectable({
@@ -152,13 +151,6 @@ export class WorkerWeekService {
       onValue(starCountRef, (snapshot) => {
         resolve(snapshot.val());
       });
-
-      // firebase
-      //   .database()
-      //   .ref('history-' + this.weekX + '/')
-      //   .on('value', (data) => {
-      //     resolve(data.val());
-      //   });
     });
   }
 
@@ -217,9 +209,7 @@ export class WorkerWeekService {
               ] = +total.toFixed(2);
             }
             currentCheckout -=
-              this.weekList[week]['workerList'][currentWorkerWeek]['totalCash'];
-            currentCheckout +=
-              this.weekList[week]['workerList'][currentWorkerWeek]['extra'];
+              this.weekList[week]['workerList'][currentWorkerWeek]['paiementCash'];
           }
           if (!workerFound) {
             const balance = parseFloat(
@@ -259,17 +249,6 @@ export class WorkerWeekService {
                 this.weekList[week]['checkoutList'][checkout]['amount'];
             }
           }
-          if (this.weekList[week]['suppliesList']) {
-            for (
-              let supply = 0;
-              supply < this.weekList[week]['suppliesList'].length;
-              supply++
-            ) {
-              currentCheckout =
-                +currentCheckout +
-                this.weekList[week]['suppliesList'][supply]['amount'];
-            }
-          }
           this.weekList[week]['currentCheckout'] = +currentCheckout.toFixed(2);
         }
       }
@@ -277,44 +256,5 @@ export class WorkerWeekService {
       set(ref(getDatabase(), this.weekX), this.weekList);
       this.emitWeek();
     }
-  }
-
-  /** EN COURS DE DEVELOPPEMENT...
-   * Nouvelle version pour la mise à jour en cascade de toutes les semaines
-   */
-  newUpdateAllWeeks() {
-    let i = 2; // A partir de la deuxième semaine !!
-    this.weekList.forEach(() => {
-      const previousWeek = this.weekList.findIndex((e) => {
-        if (e) return e['weekNumber'] == i - 1;
-        else return false;
-      });
-      const currentWeek = this.weekList.findIndex((e) => {
-        if (e) return e['weekNumber'] == i;
-        else return false;
-      });
-      if (currentWeek >= 0) {
-        for (
-          let index1 = 0;
-          index1 < this.weekList[previousWeek]['workerList'].length;
-          index1++
-        ) {
-          const worker =
-            this.weekList[previousWeek]['workerList'][index1]['name'];
-          for (
-            let index2 = 0;
-            index2 < this.weekList[currentWeek]['workerList'].length;
-            index2++
-          ) {
-            const element =
-              this.weekList[currentWeek]['workerList'][index2]['name'];
-            if (worker == element) {
-              break;
-            }
-          }
-        }
-      }
-      i++;
-    });
   }
 }

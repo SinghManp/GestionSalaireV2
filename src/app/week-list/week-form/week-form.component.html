@@ -9,9 +9,7 @@
         <div class="btn-group">
           <button
             class="btn btn-primary"
-            [disabled]="
-              workerWeekForm.invalid || (payerName && payerName.length <= 1)
-            "
+            [disabled]="payerName && payerName.length <= 1"
             type="button"
             (click)="onSaveWorker()"
           >
@@ -19,7 +17,10 @@
           </button>
         </div>
 
-        <span [hidden]="!workerWeekForm.invalid" style="color: red">
+        <span
+          [hidden]="!tryToSave || (tryToSave && workerWeekForm.valid)"
+          style="color: red"
+        >
           Il reste quelques champs importants à remplir !
         </span>
 
@@ -73,10 +74,7 @@
               let i = index
             "
           >
-            <tr
-              [formGroupName]="i"
-              [ngClass]="{ invalidInput: hobbyControl.invalid }"
-            >
+            <tr [formGroupName]="i">
               <button
                 type="button defaultBtn"
                 (click)="onRemoveWorker(i)"
@@ -103,6 +101,12 @@
                   formControlName="workingDays"
                   placeholder="Jour"
                   (ngModelChange)="countWorkerSalary(i)"
+                  (change)="onWorkingDaysChange(i)"
+                  [class.invalid]="
+                    (getWorkerListForm(i, 'workingDays').touched &&
+                      getWorkerListForm(i, 'workingDays').invalid) ||
+                    (tryToSave && getWorkerListForm(i, 'workingDays').invalid)
+                  "
                 />
               </td>
               <td data-label="Salaire">
@@ -147,6 +151,11 @@
                   formControlName="paiementCash"
                   (ngModelChange)="setCashTotal(i)"
                   placeholder="Cash"
+                  [class.invalid]="
+                    (getWorkerListForm(i, 'paiementCash').touched &&
+                      getWorkerListForm(i, 'paiementCash').invalid) ||
+                    (tryToSave && getWorkerListForm(i, 'paiementCash').invalid)
+                  "
                 />
               </td>
               <td data-label="Virement">
@@ -159,6 +168,9 @@
                   formControlName="paiementBank"
                   (click)="showPaiementDate(i)"
                   readonly
+                  [class.invalid]="
+                    getWorkerListForm(i, 'paiementBankList').invalid
+                  "
                 />
               </td>
               <td data-label="Solde" class="allWorker">
@@ -170,11 +182,7 @@
                 />
               </td>
             </tr>
-            <tr
-              [formGroupName]="i"
-              class="{{ 'headDetails' + i }} hideOnMobile"
-              hidden
-            >
+            <tr [formGroupName]="i" class="{{ 'headDetails' + i }}" hidden>
               <td class="text-center {{ 'details' + i }}" hidden>
                 <div class="text-center">
                   Par jour
@@ -185,6 +193,7 @@
                     formControlName="dailySalary"
                     placeholder="Salaire"
                     (ngModelChange)="countWorkerSalary(i)"
+                    (focusout)="onDailySalatyChange(i)"
                   />
                 </div>
               </td>
@@ -203,8 +212,8 @@
               <td class="{{ 'td' + i }}"></td>
               <td class="{{ 'td' + i }}"></td>
               <td class="{{ 'td' + i }}"></td>
-              <td class="{{ 'td' + i }} hideOnMobile"></td>
-              <td class="{{ 'td' + i }} hideOnMobile"></td>
+              <td class="hideOnMobile"></td>
+              <td class="hideOnMobile"></td>
               <td class="hideOnMobile"></td>
               <td>
                 <button
@@ -242,6 +251,14 @@
                             class="input-main"
                             formControlName="amount"
                             (ngModelChange)="onPaiementBankChange(hobbyControl)"
+                            (focusout)="
+                              onPaiementBankAmountChange(hobbyControl, j)
+                            "
+                            [class.invalid]="
+                              getPaiementBankList(hobbyControl)[j].controls[
+                                'amount'
+                              ].invalid
+                            "
                           />
                         </td>
                       </tr>
@@ -253,6 +270,10 @@
                         placeholder="Date"
                         formControlName="date"
                         (input)="onDateChange(hobbyControl, j)"
+                        [class.invalid]="
+                          getPaiementBankList(hobbyControl)[j].controls['date']
+                            .invalid
+                        "
                       />
                     </td>
                   </div>
@@ -338,6 +359,11 @@
                     formControlName="name"
                     placeholder="Nom"
                     list="supplierNamestOptions"
+                    [class.invalid]="
+                      (getSuppliesListForm(i, 'name').touched &&
+                        getSuppliesListForm(i, 'name').invalid) ||
+                      (tryToSave && getSuppliesListForm(i, 'name').invalid)
+                    "
                   />
                 </td>
                 <td data-label="Date">
@@ -346,6 +372,11 @@
                     class="input-main"
                     formControlName="date"
                     placeholder="Date"
+                    [class.invalid]="
+                      (getSuppliesListForm(i, 'date').touched &&
+                        getSuppliesListForm(i, 'date').invalid) ||
+                      (tryToSave && getSuppliesListForm(i, 'date').invalid)
+                    "
                   />
                 </td>
                 <td data-label="Payé par">
@@ -354,6 +385,11 @@
                     formControlName="payedBy"
                     placeholder="Payé par"
                     (change)="countExtra()"
+                    [class.invalid]="
+                      (getSuppliesListForm(i, 'payedBy').touched &&
+                        getSuppliesListForm(i, 'payedBy').invalid) ||
+                      (tryToSave && getSuppliesListForm(i, 'payedBy').invalid)
+                    "
                   >
                     <option value="" disabled>⚠️</option>
                     <option [value]="worker" *ngFor="let worker of payerName">
@@ -367,6 +403,11 @@
                     formControlName="payedFor"
                     placeholder="Payé pour"
                     (change)="countExtra()"
+                    [class.invalid]="
+                      (getSuppliesListForm(i, 'payedFor').touched &&
+                        getSuppliesListForm(i, 'payedFor').invalid) ||
+                      (tryToSave && getSuppliesListForm(i, 'payedFor').invalid)
+                    "
                   >
                     <option value="" disabled>⚠️</option>
                     <option [value]="worker" *ngFor="let worker of payerName">
@@ -374,7 +415,11 @@
                     </option>
                   </select>
                 </td>
-                <td data-label="Montant">
+                <td
+                  data-label="Montant"
+                  class="input-group"
+                  style="width: 100%"
+                >
                   <tr style="border: none">
                     <td style="border: none">
                       <input
@@ -384,6 +429,13 @@
                         formControlName="amount"
                         placeholder="Montant"
                         (ngModelChange)="countExtra()"
+                        (focusout)="onSupplyAmountChange(i)"
+                        [class.invalid]="
+                          (getSuppliesListForm(i, 'amount').touched &&
+                            getSuppliesListForm(i, 'amount').invalid) ||
+                          (tryToSave &&
+                            getSuppliesListForm(i, 'amount').invalid)
+                        "
                       />
                     </td>
                     <td style="border: none">
@@ -435,6 +487,11 @@
                     formControlName="date"
                     placeholder="Date"
                     (input)="onChangeSupplyDate(h)"
+                    [class.invalid]="
+                      (getCheckoutListForm(i, 'date').touched &&
+                        getCheckoutListForm(i, 'date').invalid) ||
+                      (tryToSave && getCheckoutListForm(i, 'date').invalid)
+                    "
                   />
                 </td>
                 <td data-label="Nom">
@@ -444,9 +501,18 @@
                     formControlName="name"
                     placeholder="Nom"
                     list="datalistOptions"
+                    [class.invalid]="
+                      (getCheckoutListForm(i, 'name').touched &&
+                        getCheckoutListForm(i, 'name').invalid) ||
+                      (tryToSave && getCheckoutListForm(i, 'name').invalid)
+                    "
                   />
                 </td>
-                <td data-label="Montant" class="input-group">
+                <td
+                  data-label="Montant"
+                  class="input-group"
+                  style="width: 100%"
+                >
                   <tr style="border: none">
                     <td style="border: none">
                       <input
@@ -456,6 +522,12 @@
                         formControlName="amount"
                         (ngModelChange)="computeCheckoutTotal()"
                         placeholder="Montant"
+                        [class.invalid]="
+                          (getCheckoutListForm(i, 'amount').touched &&
+                            getCheckoutListForm(i, 'amount').invalid) ||
+                          (tryToSave &&
+                            getCheckoutListForm(i, 'amount').invalid)
+                        "
                       />
                     </td>
                     <td style="border: none">

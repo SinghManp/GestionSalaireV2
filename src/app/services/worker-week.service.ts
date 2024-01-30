@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { WorkerWeek } from '../models/workerWeek.model';
 import { Subject } from 'rxjs';
 import { getAuth } from '@angular/fire/auth';
-import { transform, isEqual, isObject } from 'lodash';
+import { transform, isEqual, isObject, forEach } from 'lodash';
 
 import {
   getDatabase,
@@ -209,7 +209,9 @@ export class WorkerWeekService {
               ] = +total.toFixed(2);
             }
             currentCheckout -=
-              this.weekList[week]['workerList'][currentWorkerWeek]['paiementCash'];
+              this.weekList[week]['workerList'][currentWorkerWeek][
+                'paiementCash'
+              ];
           }
           if (!workerFound) {
             const balance = parseFloat(

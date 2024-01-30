@@ -10,6 +10,7 @@ import { WorkerWeekService } from 'src/app/services/worker-week.service';
 import { WorkersService } from 'src/app/services/workers.service';
 import * as $ from 'jquery';
 import { FirebaseDataService } from 'src/app/services/firebase-data.service';
+import { DateService } from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-week-form',
@@ -46,6 +47,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   supplierNames: any = [];
 
   isNewYear: boolean = false;
+  tryToSave: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -53,7 +55,8 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     private workersSerivce: WorkersService,
     private firebaseService: FirebaseDataService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private dateService: DateService
   ) {}
 
   ngOnInit() {
@@ -231,8 +234,8 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   addCheckoutToForm(checkout: Checkout) {
     this.getCheckoutList().push(
       this.formBuilder.group({
-        date: checkout.date,
-        name: checkout.name,
+        date: [checkout.date, Validators.required],
+        name: [checkout.name, Validators.required],
         amount: [checkout.amount, Validators.required],
       })
     );
@@ -241,10 +244,10 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   addSupplyToForm(supply: Supply) {
     this.getSuppliesList().push(
       this.formBuilder.group({
-        name: supply.name,
-        date: supply.date,
-        payedBy: supply.payedBy,
-        payedFor: supply.payedFor,
+        name: [supply.name, Validators.required],
+        date: [supply.date, Validators.required],
+        payedBy: [supply.payedBy, Validators.required],
+        payedFor: [supply.payedFor, Validators.required],
         amount: [supply.amount, Validators.required],
       })
     );
@@ -270,16 +273,22 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   createCheckout() {
     return this.formBuilder.group({
-      date: ['', Validators.nullValidator],
-      name: ['', Validators.nullValidator],
+      date: [
+        this.dateService.customDate(new Date(), 'yyyy-MM-dd'),
+        Validators.required,
+      ],
+      name: ['', Validators.required],
       amount: [0, Validators.required],
     });
   }
 
   createSupply() {
     return this.formBuilder.group({
-      name: ['', Validators.nullValidator],
-      date: ['', Validators.nullValidator],
+      name: ['', Validators.required],
+      date: [
+        this.dateService.customDate(new Date(), 'yyyy-MM-dd'),
+        Validators.required,
+      ],
       payedBy: ['', Validators.required],
       payedFor: ['', Validators.required],
       amount: [0, Validators.required],
@@ -289,7 +298,10 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   paiementBank() {
     return this.formBuilder.group({
       amount: [0, Validators.required],
-      date: '',
+      date: [
+        this.dateService.customDate(new Date(), 'yyyy-MM-dd'),
+        Validators.required,
+      ],
     });
   }
 
@@ -299,7 +311,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
       paiementBankList.forEach((element: any) => {
         arrayP.push(
           this.formBuilder.group({
-            date: element.date,
+            date: [element.date, Validators.required],
             amount: [element.amount, Validators.required],
           })
         );
@@ -309,13 +321,15 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   onSaveWorker() {
-    this.saveCheckoutNames();
-    this.saveSupplierNames();
-    this.workerWeekForm.get('weekNumber')?.setValue(+this.weekNumber);
-    console.log(this.workerWeekForm.value);
-    this.workWeekService.saveWorkersWeek(this.workerWeekForm.value);
-    this.workWeekService.updateAllWeeks();
-    this.router.navigate(['/week', this.weekNumber]);
+    this.tryToSave = true;
+    if (this.workerWeekForm.valid) {
+      this.saveCheckoutNames();
+      this.saveSupplierNames();
+      this.workerWeekForm.get('weekNumber')?.setValue(+this.weekNumber);
+      this.workWeekService.saveWorkersWeek(this.workerWeekForm.value);
+      this.workWeekService.updateAllWeeks();
+      this.router.navigate(['/week', this.weekNumber]);
+    }
   }
 
   saveCheckoutNames() {
@@ -396,7 +410,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     this.workers = this.workersSerivce.getWorkersNames();
     this.payerName = this.workersSerivce.getWorkersNames();
     this.payerName.splice(0, 0, 'EGR');
-
   }
 
   removeWorkerFromList(name: string) {
@@ -429,49 +442,73 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  countWorkerSalary(nb: number) {
-    let worker = this.workerWeekForm.get('workerList.' + nb)?.value;
-    let salary = worker['workingDays'] * worker['dailySalary'];
+  onWorkingDaysChange(i: number) {
+    const path = 'workerList.' + i;
+    const worker = this.workerWeekForm.get(path)?.value;
     this.workerWeekForm
-      .get('workerList.' + nb + '.salary')
-      ?.setValue(+salary.toFixed(2));
+      .get(path + '.workingDays')
+      ?.setValue(worker?.workingDays ?? 0);
+  }
+
+  onSupplyAmountChange(i: any) {
+    console.log('onSupplyAmountChange');
+    const path = 'suppliesList.' + i + '.amount';
+    const supply = this.workerWeekForm.get(path)?.value;
+    this.workerWeekForm.get(path)?.setValue(supply ?? 0);
+  }
+
+  onDailySalatyChange(i: any) {
+    const path = 'workerList.' + i + '.dailySalary';
+    const worker = this.workerWeekForm.get(path)?.value;
+    this.workerWeekForm.get(path)?.setValue(worker ?? 0);
+  }
+
+  onPaiementBankAmountChange(i: any, index: number) {
+    console.log('onPaiementBankAmountChange');
+    const amount = i.get('paiementBankList').value[index].amount;
+    i.get('paiementBankList.' + index + '.amount')?.setValue(amount ?? 0);
+  }
+
+  countWorkerSalary(nb: number) {
+    console.log('nb', nb);
+    const basePath = 'workerList.' + nb;
+    const dailySalaryPath = basePath + '.dailySalary';
+
+    const dailySalary = this.workerWeekForm.get(dailySalaryPath)?.value ?? 0;
+
+    const worker = this.workerWeekForm.get(basePath)?.value;
+    const workingDays = worker?.workingDays ?? 0;
+
+    const salary = workingDays * dailySalary;
+    this.workerWeekForm.get(basePath + '.salary')?.setValue(+salary.toFixed(2));
+
     this.countWorkerTotal(nb);
   }
 
   countExtra() {
-    let suppliesList = this.workerWeekForm.get('suppliesList')?.value;
-    let listPayedBy: any = [];
-    let listPayedFor: any = [];
+    const suppliesList = this.workerWeekForm.get('suppliesList')?.value || [];
+    let listPayedBy = {};
+    let listPayedFor = {};
+
     suppliesList.forEach((supply: any) => {
-      if (supply.payedBy != '' && supply.payedFor != '') {
-        if (supply.payedFor == 'EGR') {
-          listPayedBy[supply.payedBy]
-            ? (listPayedBy[supply.payedBy] = +(
-                listPayedBy[supply.payedBy] + supply.amount
-              ).toFixed(2))
-            : (listPayedBy[supply.payedBy] = supply.amount);
-        } else if (supply.payedBy == 'EGR') {
-          listPayedFor[supply.payedFor]
-            ? (listPayedFor[supply.payedFor] = +(
-                listPayedFor[supply.payedFor] + supply.amount
-              ).toFixed(2))
-            : (listPayedFor[supply.payedFor] = supply.amount);
-        } else {
-          listPayedBy[supply.payedBy]
-            ? (listPayedBy[supply.payedBy] = +(
-                listPayedBy[supply.payedBy] + supply.amount
-              ).toFixed(2))
-            : (listPayedBy[supply.payedBy] = supply.amount);
-          listPayedFor[supply.payedFor]
-            ? (listPayedFor[supply.payedFor] = +(
-                listPayedFor[supply.payedFor] + supply.amount
-              ).toFixed(2))
-            : (listPayedFor[supply.payedFor] = supply.amount);
+      if (supply.payedBy && supply.payedFor) {
+        this.updateAmounts(listPayedBy, supply.payedBy, supply.amount);
+        if (supply.payedFor !== 'EGR' || supply.payedBy !== 'EGR') {
+          this.updateAmounts(listPayedFor, supply.payedFor, supply.amount);
         }
       }
     });
+
     this.updateInputs(listPayedBy, listPayedFor);
     this.computeSuppliesTotal();
+  }
+
+  updateAmounts(list: any, key: any, amount: any) {
+    if (list[key]) {
+      list[key] = +(list[key] + amount).toFixed(2);
+    } else {
+      list[key] = amount;
+    }
   }
 
   updateInputs(listPayedBy: any, listPayedFor: any) {
@@ -516,10 +553,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
         .get('workerList.' + index + '.paiementCash')
         ?.setValue(0);
     }
-
-    // let cash2 = this.workerWeekForm.get(
-    //   'workerList.' + index + '.cashFromSupplies'
-    // )?.value;
 
     this.workerWeekForm
       .get('workerList.' + index + '.totalCash')
@@ -843,5 +876,20 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   getPaiementBankList(worker: any) {
     return worker.get('paiementBankList').controls;
+  }
+
+  getCheckoutListForm(index: number, value: string) {
+    return (this.workerWeekForm.get('checkoutList') as any).controls[index]
+      .controls[value];
+  }
+
+  getSuppliesListForm(index: number, value: string) {
+    return (this.workerWeekForm.get('suppliesList') as any).controls[index]
+      .controls[value];
+  }
+
+  getWorkerListForm(index: number, value: string) {
+    return (this.workerWeekForm.get('workerList') as any).controls[index]
+      .controls[value];
   }
 }

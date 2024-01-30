@@ -7,6 +7,17 @@
       <div class="list-group-item clearfix" *ngFor="let item2 of item.infos">
         <div class="pull-left" style="display: flex; flex-wrap: wrap">
           <div
+            class="list-group-item clearfix"
+            style="margin: 5px; border-radius: 5px"
+            *ngIf="
+              !(item2.workerList?.length > 0) &&
+              !(item2.checkoutList?.length > 0)
+            "
+          >
+            Aucune modification n'a été faite !
+          </div>
+
+          <div
             *ngFor="let worker of item2.workerList; let i = index"
             class="list-group-item clearfix"
             style="margin: 5px; border-radius: 5px"

@@ -11,11 +11,22 @@
             style="margin: 5px; border-radius: 5px"
             *ngIf="
               !(item2.workerList?.length > 0) &&
-              !(item2.checkoutList?.length > 0)
+              !(item2.checkoutList?.length > 0) &&
+              !item2.newWeek
             "
           >
             Aucune modification n'a été faite !
           </div>
+
+
+          <div
+            *ngIf="item2.newWeek"
+            class="list-group-item clearfix"
+            style="margin: 5px; border-radius: 5px"
+          >
+            Une nouvelle semaine a été créée !
+          </div>
+
 
           <div
             *ngFor="let worker of item2.workerList; let i = index"
@@ -92,7 +103,7 @@
                 <div>
                   {{ checkout.amount }}
                 </div>
-                <br />
+                <br/>
               </div>
             </span>
 
@@ -104,17 +115,35 @@
                 <div>Nom :</div>
                 <div *ngIf="checkout.date">Date :</div>
                 <div *ngIf="checkout.amount">Montant :</div>
-                <br />
+                <br/>
               </div>
             </span>
           </div>
         </div>
-        <div class="pull-right small">
+        <div
+          class="pull-right small"
+          *ngIf="!item2.isEditing && !item2.isClosing"
+        >
+
           <div>
-            Mise à jour :
-            {{ item2.lastChanges | date : "dd/MM/yy à HH:mm" }}
+            Date: {{ item2.lastChanges || item2.status?.openStatus?.lastChanges | date : "dd/MM/yy " }}
           </div>
-          <div>Modifié par : {{ item2.author }}</div>
+
+          <div *ngIf="item2.status?.openStatus">
+            Ouvert à : {{ item2.status.openStatus.lastChanges | date : "HH:mm:ss" }}
+          </div>
+
+          <div *ngIf="item2.lastChanges">
+            Enregistré à :
+            {{ item2.lastChanges | date : "HH:mm:ss" }}
+          </div>
+
+
+          <div *ngIf="!item2.lastChanges &&item2.status?.closeStatus">
+            Fermé à : {{ item2.status.closeStatus.lastChanges | date : "HH:mm:ss" }}
+          </div>
+
+          <div>Modifié par : {{ item2.author || item2.status?.openStatus?.author  }}</div>
           <div *ngIf="item2.currentCheckout">
             Cash S : {{ item2.currentCheckout }}
           </div>

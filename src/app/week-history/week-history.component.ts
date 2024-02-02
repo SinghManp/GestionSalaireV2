@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
-import { WorkerWeekService } from '../services/worker-week.service';
-import { DateService } from '../services/date.service';
+import {WorkerWeekService} from '../services/worker-week.service';
+import {DateService} from '../services/date.service';
 
 @Component({
   selector: 'app-week-history',
@@ -58,8 +58,13 @@ export class WeekHistoryComponent {
 
         element.infos.sort((a: any, b: any) => {
           return (
-            new Date(b.lastChanges).getTime() -
-            new Date(a.lastChanges).getTime()
+            (
+              new Date(b.lastChanges).getTime() -
+              new Date(a.lastChanges).getTime()) ||
+            (
+              new Date(b.status?.closeStatus.lastChanges).getTime() -
+              new Date(a.status?.closeStatus.lastChanges).getTime()
+            )
           );
         });
       });

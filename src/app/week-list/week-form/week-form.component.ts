@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Checkout } from 'src/app/models/checkout.model';
-import { OneWorkerWeek } from 'src/app/models/oneWorkerWeek.model';
-import { Supply } from 'src/app/models/supply.model';
-import { WorkerWeek } from 'src/app/models/workerWeek.model';
-import { WorkerWeekService } from 'src/app/services/worker-week.service';
-import { WorkersService } from 'src/app/services/workers.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Checkout} from 'src/app/models/checkout.model';
+import {OneWorkerWeek} from 'src/app/models/oneWorkerWeek.model';
+import {Supply} from 'src/app/models/supply.model';
+import {WorkerWeek} from 'src/app/models/workerWeek.model';
+import {WorkerWeekService} from 'src/app/services/worker-week.service';
+import {WorkersService} from 'src/app/services/workers.service';
 import * as $ from 'jquery';
-import { FirebaseDataService } from 'src/app/services/firebase-data.service';
-import { DateService } from 'src/app/services/date.service';
+import {FirebaseDataService} from 'src/app/services/firebase-data.service';
+import {DateService} from 'src/app/services/date.service';
 
 @Component({
   selector: 'app-week-form',
@@ -19,13 +19,11 @@ import { DateService } from 'src/app/services/date.service';
 })
 export class WeekFormComponent implements OnInit, OnDestroy {
   workerWeekForm!: FormGroup;
-  workers!: string[];
+  workers: any = [];
   payerName: string[] = [];
   list!: OneWorkerWeek[];
   checkoutList: any;
   suppliesList: any;
-  suppliesListPayedByEGR: any;
-  suppliesListPayedForEGR: any;
   weekSubscription!: Subscription;
   weekNumber: number = 1;
   checkoutTotal!: number;
@@ -48,6 +46,12 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   isNewYear: boolean = false;
   tryToSave: boolean = false;
+  isSaved: boolean = false;
+  openAt = new Date().toUTCString();
+
+  timeoutList: any = [];
+
+  minuteur = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,9 +61,13 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private dateService: DateService
-  ) {}
+  ) {
+  }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.initForm();
+    await this.initWorkers();
+
     this.firebaseService.getCheckoutNames().then((names: any) => {
       this.checkoutNames = names;
     });
@@ -70,17 +78,17 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
     if (this.route.snapshot.params['id'] != undefined) {
       this.weekNumber = this.route.snapshot.params['id'];
-      this.workWeekService.getWokersWeek(this.weekNumber);
-      this.initForm();
-      this.existingItem();
-      this.workWeekService.emitWorkersWeek();
+      this.workWeekService.getSingleWeek(this.weekNumber).then(week => {
+        this.existingItem(week);
+      });
     } else {
       this.getLastWeek();
-      this.initForm();
     }
     this.initKeyPress();
     this.computeCheckoutTotal();
     this.computeSuppliesTotal();
+    this.workWeekService.openWeek(this.weekNumber);
+    this.checkIfUserEditing();
   }
 
   async getLastWeek() {
@@ -92,8 +100,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
     // Assuming the last entry in workerWeek array is the last week.
     const lastWeek = workerWeek[workerWeek.length - 1];
-
-    this.initWorkers();
 
     // Update weekNumber and handle year overflow.
     this.weekNumber = lastWeek.weekNumber + 1;
@@ -135,7 +141,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   existingItemNewWeek() {
-    const { year, currentCheckout, workerList } = this.week;
+    const {year, currentCheckout, workerList} = this.week;
 
     if (year) this.workerWeekForm.get('year')?.setValue(year);
     this.workerWeekForm.get('previousCheckout')?.setValue(currentCheckout);
@@ -172,41 +178,39 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   getDailySalary(worker: string) {
     return this.workersSerivce.getSingleWorkerSalary(worker);
   }
-  existingItem() {
-    this.weekSubscription = this.workWeekService.workersWeekSubject.subscribe(
-      (workers: any) => {
-        this.setFormValues(workers);
-        this.initWorkers();
 
-        if (this.list) {
-          this.list.forEach((worker) => {
-            this.addWorkerToFormula(worker);
-            this.removeWorkerFromList(worker['name']);
-          });
-        }
+  existingItem(week: any) {
+    this.setFormValues(week);
 
-        this.checkoutList?.forEach((checkout: any) =>
-          this.addCheckoutToForm(checkout)
-        );
-        this.suppliesList?.forEach((supply: any) =>
-          this.addSupplyToForm(supply)
-        );
-        this.computeAllTotal();
-      }
+    if (this.list) {
+      this.list.forEach((worker) => {
+        this.addWorkerToFormula(worker);
+        this.removeWorkerFromList(worker.name);
+      });
+    }
+
+    this.checkoutList?.forEach((checkout: any) =>
+      this.addCheckoutToForm(checkout)
     );
+
+    this.suppliesList?.forEach((supply: any) =>
+      this.addSupplyToForm(supply)
+    );
+
+    this.computeAllTotal();
   }
 
-  setFormValues(workers: any) {
-    if (workers.year) this.workerWeekForm.get('year')?.setValue(workers.year);
+  setFormValues(week: any) {
+    if (week.year) this.workerWeekForm.get('year')?.setValue(week.year);
     this.workerWeekForm
       .get('previousCheckout')
-      ?.setValue(workers.previousCheckout);
+      ?.setValue(week.previousCheckout);
     this.workerWeekForm
       .get('currentCheckout')
-      ?.setValue(workers.currentCheckout);
-    this.list = workers['workerList'];
-    this.checkoutList = workers['checkoutList'];
-    this.suppliesList = workers['suppliesList'];
+      ?.setValue(week.currentCheckout);
+    this.list = week.workerList;
+    this.checkoutList = week.checkoutList;
+    this.suppliesList = week.suppliesList;
   }
 
   addWorkerToFormula(worker: any) {
@@ -326,7 +330,9 @@ export class WeekFormComponent implements OnInit, OnDestroy {
       this.saveCheckoutNames();
       this.saveSupplierNames();
       this.workerWeekForm.get('weekNumber')?.setValue(+this.weekNumber);
+      this.workWeekService.closeWeek(this.weekNumber, false);
       this.workWeekService.saveWorkersWeek(this.workerWeekForm.value);
+      this.isSaved = true;
       this.workWeekService.updateAllWeeks();
       this.router.navigate(['/week', this.weekNumber]);
     }
@@ -407,9 +413,14 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   initWorkers() {
-    this.workers = this.workersSerivce.getWorkersNames();
-    this.payerName = this.workersSerivce.getWorkersNames();
-    this.payerName.splice(0, 0, 'EGR');
+    return new Promise((resolve, reject) => {
+      this.workersSerivce.getWorkersNames().then((workers: any) => {
+        this.workers = workers;
+        this.payerName = workers.slice();
+        this.payerName.splice(0, 0, 'EGR');
+        resolve(true);
+      });
+    });
   }
 
   removeWorkerFromList(name: string) {
@@ -440,6 +451,15 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     if (this.weekSubscription != undefined) {
       this.weekSubscription.unsubscribe();
     }
+    this.workWeekService.closeWeek(this.weekNumber, !this.isSaved);
+
+    this.clearAllTimeout();
+  }
+
+  clearAllTimeout() {
+    this.timeoutList.forEach((timeout: any) => {
+      clearTimeout(timeout);
+    });
   }
 
   onWorkingDaysChange(i: number) {
@@ -451,7 +471,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   onSupplyAmountChange(i: any) {
-    console.log('onSupplyAmountChange');
     const path = 'suppliesList.' + i + '.amount';
     const supply = this.workerWeekForm.get(path)?.value;
     this.workerWeekForm.get(path)?.setValue(supply ?? 0);
@@ -464,13 +483,11 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   }
 
   onPaiementBankAmountChange(i: any, index: number) {
-    console.log('onPaiementBankAmountChange');
     const amount = i.get('paiementBankList').value[index].amount;
     i.get('paiementBankList.' + index + '.amount')?.setValue(amount ?? 0);
   }
 
   countWorkerSalary(nb: number) {
-    console.log('nb', nb);
     const basePath = 'workerList.' + nb;
     const dailySalaryPath = basePath + '.dailySalary';
 
@@ -891,5 +908,36 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   getWorkerListForm(index: number, value: string) {
     return (this.workerWeekForm.get('workerList') as any).controls[index]
       .controls[value];
+  }
+
+  checkIfUserEditing() {
+    let maimTimeout = setTimeout(() => {
+      let modal = document.getElementById("myModal")
+      modal?.classList.add('in');
+      modal?.setAttribute('style', 'display: block;');
+
+      let timeout = setTimeout(() => {
+        this.router.navigate(['/weeks']);
+      }, 60000);
+
+      this.minuteur = 60;
+      const intervalTime = setInterval(() => {
+        this.minuteur--;
+      }, 1000);
+
+      this.timeoutList.push(intervalTime);
+      this.timeoutList.push(timeout);
+    }, 240000);
+
+    this.timeoutList.push(maimTimeout);
+  }
+
+  userConnected() {
+    this.clearAllTimeout();
+    let modal = document.getElementById("myModal")
+    modal?.classList.remove('in');
+    modal?.setAttribute('style', 'display: none;');
+    this.workWeekService.openWeek(this.weekNumber, false);
+    this.checkIfUserEditing();
   }
 }

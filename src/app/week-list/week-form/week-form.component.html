@@ -2,6 +2,10 @@
   class="container-fluid"
   [ngClass]="payerName && payerName.length > 1 ? '' : 'red'"
 >
+
+  {{timeoutList |json}}
+
+  {{openAt}}
   <form [formGroup]="workerWeekForm">
     <div class="row-fluid">
       <h3>
@@ -581,3 +585,22 @@
     <option [value]="name"></option>
   </span>
 </datalist>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="userConnected()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Etes-vous encore connecté ?</h4>
+      </div>
+      <div class="modal-body">
+        Vous avez {{minuteur}} secondes pour répondre à cette question. <br> Sinon, vous serez redirigé vers la page d'acceuil.
+        <div style="color: red">Vos modifications seront perdues.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="userConnected()">Je suis là</button>
+      </div>
+    </div>
+  </div>
+</div>

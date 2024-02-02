@@ -15,6 +15,7 @@ export class WorkerWeek {
   suppliesList!: Supply[];
   remarksList!: Remark[];
   year!: number;
+  isOpened!: boolean;
 
   constructor(public workerList: OneWorkerWeek[]) {}
 

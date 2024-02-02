@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Checkout } from 'src/app/models/checkout.model';
 import { OneWorkerWeek } from 'src/app/models/oneWorkerWeek.model';
 import { Supply } from 'src/app/models/supply.model';
@@ -13,7 +14,7 @@ import { WorkerWeekService } from 'src/app/services/worker-week.service';
   templateUrl: './single-week.component.html',
   styleUrls: ['./single-week.component.scss'],
 })
-export class SingleWeekComponent implements OnInit {
+export class SingleWeekComponent implements OnInit, OnDestroy {
   week!: WorkerWeek;
   workerWeekList!: OneWorkerWeek[];
   remarkList: any = [];
@@ -30,6 +31,10 @@ export class SingleWeekComponent implements OnInit {
   paiementBankTotal: any;
   paiementBankList: any = [];
 
+  weekSubscription!: Subscription;
+  editingStatusSubscription!: Subscription;
+  editingStatus: any = {};
+
   constructor(
     private route: ActivatedRoute,
     private workerWeekService: WorkerWeekService,
@@ -41,13 +46,52 @@ export class SingleWeekComponent implements OnInit {
   ngOnInit() {
     this.weekNumber = this.route.snapshot.params['id'];
     this.initWeek();
+    this.initEditingStatus();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyWeekSubscription();
+    this.destroyEditingStatusSubscription();
+  }
+
+  initEditingStatus() {
+    this.workerWeekService.getEditingStatus();
+    this.editingStatusSubscription = this.workerWeekService.editingStatusSubject.subscribe(
+      (editingStatus: any) => {
+        this.editingStatus = editingStatus;
+      }
+    );
+    this.workerWeekService.emitEditingStatus();
+  }
+
+  canEdit() {
+    if (this.editingStatus == null){
+      return true;
+    }
+
+    if(this.authService.matchRole('admin')){
+      return true;
+    }
+
+    let lastChanges = new Date(this.editingStatus.lastChanges);
+    let currentDate = new Date();
+    let diff = Math.abs(currentDate.getTime() - lastChanges.getTime());
+    return diff > 240000;
+
+  }
+
+  getTooltip() {
+    if(this.editingStatus == null){
+      return "Modifier la semaine";
+    }
+    return this.editingStatus?.author + " est entrain de modifier la semaine "+ this.editingStatus?.weekNumber;
   }
 
   initWeek() {
-    this.workerWeekService
-      .getSingleWeek(this.weekNumber)
-      .then((workerWeek: any) => {
-        if (workerWeek) {
+    this.workerWeekService.getWokersWeek(this.weekNumber);
+    this.weekSubscription = this.workerWeekService.workersWeekSubject.subscribe(
+      (workerWeek: any) => {
+        if (workerWeek && workerWeek.length != 0) {
           this.week = workerWeek;
           this.workerWeekList = workerWeek.workerList;
           this.checkoutList = workerWeek.checkoutList;
@@ -66,7 +110,17 @@ export class SingleWeekComponent implements OnInit {
             this.goToPreviousWeek();
           }
         }
-      });
+      }
+    );
+    this.workerWeekService.emitWorkersWeek();
+  }
+
+  destroyWeekSubscription() {
+    if (this.weekSubscription) this.weekSubscription.unsubscribe();
+  }
+
+  destroyEditingStatusSubscription() {
+    if (this.editingStatusSubscription) this.editingStatusSubscription.unsubscribe();
   }
 
   editWeek() {
@@ -74,6 +128,7 @@ export class SingleWeekComponent implements OnInit {
   }
 
   goToPreviousWeek() {
+    this.destroyWeekSubscription();
     this.next = false;
     this.weekNumber--;
     if (this.weekNumber < 1) {
@@ -82,6 +137,7 @@ export class SingleWeekComponent implements OnInit {
     this.initWeek();
   }
   goToNextWeek() {
+    this.destroyWeekSubscription();
     this.next = true;
     this.weekNumber++;
     if (this.weekNumber > 53) {
@@ -105,7 +161,7 @@ export class SingleWeekComponent implements OnInit {
     this.workersTotal[5] = 0;
     this.workersTotal[6] = 0;
 
-    this.workerWeekList.forEach((worker) => {
+    this.workerWeekList?.forEach((worker) => {
       this.workersTotal[0] += +worker.previousBalance;
       this.workersTotal[1] += +worker.extra;
       this.workersTotal[2] += +worker.paiementCash;
@@ -138,25 +194,23 @@ export class SingleWeekComponent implements OnInit {
     this.paiementBankTotal = 0;
     this.remarkList = [];
     this.paiementBankList = [];
-    this.workerWeekList.forEach((worker) => {
+    this.workerWeekList?.forEach((worker) => {
       if (worker.remark) {
         this.remarkList.push({
           name: worker.name,
           remark: worker.remark,
         });
       }
-      if (worker.paiementBankList) {
-        worker.paiementBankList.forEach((paiement: any) => {
-          if (paiement.amount > 0) {
-            this.paiementBankList.push({
-              name: worker.name,
-              amount: paiement.amount,
-              date: paiement.date,
-            });
-            this.paiementBankTotal += paiement.amount;
-          }
-        });
-      }
+      worker.paiementBankList?.forEach((paiement: any) => {
+        if (paiement.amount > 0) {
+          this.paiementBankList.push({
+            name: worker.name,
+            amount: paiement.amount,
+            date: paiement.date,
+          });
+          this.paiementBankTotal += paiement.amount;
+        }
+      });
     });
   }
 

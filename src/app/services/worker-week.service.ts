@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { WorkerWeek } from '../models/workerWeek.model';
-import { Subject } from 'rxjs';
-import { getAuth } from '@angular/fire/auth';
-import { transform, isEqual, isObject, forEach } from 'lodash';
+import {Injectable} from '@angular/core';
+import {WorkerWeek} from '../models/workerWeek.model';
+import {Subject} from 'rxjs';
+import {getAuth} from '@angular/fire/auth';
+import {transform, isEqual, isObject} from 'lodash';
 
 import {
   getDatabase,
@@ -23,14 +23,13 @@ export class WorkerWeekService {
   workersWeekSubject = new Subject<WorkerWeek[]>();
   weekList!: any[];
   weeksSubject = new Subject<WorkerWeek[]>();
+  editingStatusSubject = new Subject<any>();
+  editingStatus: any = null;
 
   weekX: any = 'year-' + new Date().getFullYear();
 
   isWeekInCurrentYear = false;
-
-  constructor() {
-    // this.getWeekListFromFirebase();
-  }
+  weekEditingStatus: any = {openStatus: {}, closeStatus: {}};
 
   emitWorkersWeek() {
     this.workersWeekSubject.next(this.weekRetrieve);
@@ -40,36 +39,76 @@ export class WorkerWeekService {
     this.weeksSubject.next(this.weekList);
   }
 
+  emitEditingStatus() {
+    this.editingStatusSubject.next(this.editingStatus);
+  }
+
   saveWorkersWeek(newWeek: any) {
-    newWeek.lastChanges = new Date().toUTCString();
-    newWeek.author = getAuth().currentUser?.displayName;
-    newWeek.authorMail = getAuth().currentUser?.email;
-    this.saveHistory(newWeek);
+    if (newWeek) {
+      newWeek.lastChanges = new Date().toUTCString();
+      newWeek.author = getAuth().currentUser?.displayName;
+      newWeek.authorMail = getAuth().currentUser?.email;
+      this.saveHistory(newWeek);
 
-    set(ref(getDatabase(), this.weekX + '/' + newWeek.weekNumber), newWeek);
+      set(ref(getDatabase(), this.weekX + '/' + newWeek.weekNumber), newWeek);
 
-    this.emitWorkersWeek();
+      this.emitWorkersWeek();
+    }
+  }
+
+  openWeek(weekNumber: any, reset = true) {
+    if (weekNumber) {
+      const editingStatus = {
+        weekNumber,
+        author: getAuth().currentUser?.displayName,
+        lastChanges: new Date().toUTCString(),
+        isEditing: true,
+      };
+
+      if (reset) this.weekEditingStatus.openStatus = editingStatus;
+      set(ref(getDatabase(), 'editing-status'), editingStatus);
+    }
+  }
+
+  closeWeek(weekNumber: any, save = true) {
+    const closeStatus = {
+      author: getAuth().currentUser?.displayName,
+      lastChanges: new Date().toUTCString(),
+      isClosing: true,
+    };
+    this.weekEditingStatus.closeStatus = closeStatus;
+    if (save) {
+      push(
+        child(ref(getDatabase()), 'history-' + this.weekX + '/' + weekNumber),
+        {status: {closeStatus, openStatus: this.weekEditingStatus.openStatus}}
+      );
+    }
+    set(ref(getDatabase(), 'editing-status'), {});
   }
 
   saveHistory(newWeek: any) {
-    let oldWeek = this.weekList?.find(
+    const oldWeek = this.weekList?.find(
       (element: any) => element?.weekNumber == newWeek.weekNumber
     );
-    if (oldWeek) {
-      let diff = this.difference(oldWeek, newWeek);
 
-      diff.lastChanges = newWeek.lastChanges;
-      diff.author = newWeek.author;
-      diff.authorMail = newWeek.authorMail;
-
-      push(
-        child(
-          ref(getDatabase()),
-          'history-' + this.weekX + '/' + newWeek['weekNumber']
-        ),
-        diff
-      );
+    let diff: any = {
+      newWeek: true,
+      weekNumber: newWeek.weekNumber,
     }
+
+    if (oldWeek) diff = this.difference(oldWeek, newWeek);
+
+    diff.lastChanges = newWeek.lastChanges;
+    diff.author = newWeek.author;
+    diff.authorMail = newWeek.authorMail;
+    diff.status = this.weekEditingStatus;
+
+    push(
+      child(
+        ref(getDatabase()), 'history-' + this.weekX + '/' + newWeek['weekNumber']
+      ),
+      diff
+    );
   }
 
   /**
@@ -93,7 +132,7 @@ export class WorkerWeekService {
 
   getWokersWeek(id: number) {
     onValue(ref(getDatabase(), this.weekX + '/' + id), (snapshot) => {
-      this.weekRetrieve = snapshot.val() ? snapshot.val() : [];
+      this.weekRetrieve = snapshot.val();
       this.emitWorkersWeek();
     });
   }
@@ -132,6 +171,13 @@ export class WorkerWeekService {
         this.isWeekInCurrentYear = true;
       }
       this.emitWeek();
+    });
+  }
+
+  getEditingStatus() {
+    onValue(ref(getDatabase(), 'editing-status'), (snapshot) => {
+      this.editingStatus = snapshot.val();
+      this.emitEditingStatus();
     });
   }
 
@@ -183,46 +229,46 @@ export class WorkerWeekService {
               let previousBalance1 = parseFloat(
                 this.weekList[week]['workerList'][currentWorkerWeek][
                   'previousBalance'
-                ]
+                  ]
               );
               let currentBalance = parseFloat(
                 this.weekList[week]['workerList'][currentWorkerWeek][
                   'currentBalance'
-                ]
+                  ]
               );
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'previousBalance'
-              ] = parseFloat(
+                ] = parseFloat(
                 this.weekList[week - 1]['workerList'][previousWorkerWeek][
                   'currentBalance'
-                ]
+                  ]
               );
               let previousBalance2 = parseFloat(
                 this.weekList[week]['workerList'][currentWorkerWeek][
                   'previousBalance'
-                ]
+                  ]
               );
               let total: number =
                 +currentBalance - +previousBalance1 + (previousBalance2 + 0);
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'currentBalance'
-              ] = +total.toFixed(2);
+                ] = +total.toFixed(2);
             }
             currentCheckout -=
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'paiementCash'
-              ];
+                ];
           }
           if (!workerFound) {
             const balance = parseFloat(
               this.weekList[week - 1]['workerList'][previousWorkerWeek][
                 'currentBalance'
-              ]
+                ]
             );
             const dailySalary = parseFloat(
               this.weekList[week - 1]['workerList'][previousWorkerWeek][
                 'dailySalary'
-              ]
+                ]
             );
             let workerNotFound = {
               name: worker,

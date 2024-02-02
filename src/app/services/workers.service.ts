@@ -31,6 +31,15 @@ export class WorkersService {
     });
   }
 
+  getAllWorkersFromFirebase() {
+    return new Promise((resolve, reject) => {
+      get(child(ref(getDatabase()), '/workers')).then((snapshot) => {
+        this.workers = snapshot.val() ? snapshot.val() : [];
+        resolve(this.workers);
+      });
+    });
+  }
+
   getSingleWorker(id: number): Promise<Worker> {
     return new Promise((resolve) => {
       get(child(ref(getDatabase()), '/workers/' + id)).then((snapshot) => {
@@ -69,7 +78,11 @@ export class WorkersService {
     this.emitWorkers();
   }
 
-  getWorkersNames() {
+  async getWorkersNames() {
+    if (this.workers.length == 0) {
+      await this.getAllWorkersFromFirebase();
+    }
+
     let workerName: string[] = [];
     this.workers.forEach((worker) => {
       workerName.push(worker.name);

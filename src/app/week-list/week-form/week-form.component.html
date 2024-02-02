@@ -2,10 +2,6 @@
   class="container-fluid"
   [ngClass]="payerName && payerName.length > 1 ? '' : 'red'"
 >
-
-  {{timeoutList |json}}
-
-  {{openAt}}
   <form [formGroup]="workerWeekForm">
     <div class="row-fluid">
       <h3>

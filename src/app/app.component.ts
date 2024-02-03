@@ -20,9 +20,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
-        this.showUpdate();
         this.router.navigate(['/week']).then(() => {
           window.location.reload();
+          this.showUpdate();
           const timeout = setTimeout(() => {
             this.hideUpdate();
           }, 5000);

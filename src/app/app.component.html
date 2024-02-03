@@ -1,7 +1,6 @@
 <div class="content-container">
   <div class="main-content">
     <app-header></app-header>
-    {{newUpdate}}
     <div class="alert alert-success show" role="alert" style="width: 80%;margin-left: 10%" *ngIf="newUpdate">
       <strong>Bonne nouvelle !</strong> L'application a été mise à jour.
       <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideUpdate()">

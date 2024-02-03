@@ -57,15 +57,9 @@ export class WeekHistoryComponent {
         });
 
         element.infos.sort((a: any, b: any) => {
-          return (
-            (
-              new Date(b.lastChanges).getTime() -
-              new Date(a.lastChanges).getTime()) ||
-            (
-              new Date(b.status?.closeStatus.lastChanges).getTime() -
-              new Date(a.status?.closeStatus.lastChanges).getTime()
-            )
-          );
+          const aDate = a.lastChanges || a.status?.closeStatus.lastChanges;
+          const bDate = b.lastChanges || b.status?.closeStatus.lastChanges;
+          return new Date(bDate).getTime() - new Date(aDate).getTime();
         });
       });
     });

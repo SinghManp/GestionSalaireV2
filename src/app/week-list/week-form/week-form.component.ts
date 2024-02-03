@@ -77,7 +77,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     });
 
     if (this.route.snapshot.params['id'] != undefined) {
-      this.weekNumber = this.route.snapshot.params['id'];
+      this.weekNumber = +this.route.snapshot.params['id'];
       this.workWeekService.getSingleWeek(this.weekNumber).then(week => {
         this.existingItem(week);
       });
@@ -89,6 +89,26 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     this.computeSuppliesTotal();
     this.workWeekService.openWeek(this.weekNumber);
     this.checkIfUserEditing();
+
+    this.ifCloseWindow = this.ifCloseWindow.bind(this);
+    window.addEventListener('beforeunload', this.ifCloseWindow);
+  }
+
+  ifCloseWindow(e: BeforeUnloadEvent) {
+    if (typeof this.workWeekService.closeWeek === 'function') {
+      this.workWeekService.closeWeek(this.weekNumber, !this.isSaved);
+    }
+    e.returnValue = '';
+  }
+
+  ngOnDestroy() {
+    if (this.weekSubscription != undefined) {
+      this.weekSubscription.unsubscribe();
+    }
+    this.workWeekService.closeWeek(this.weekNumber, !this.isSaved);
+
+    this.clearAllTimeout();
+    window.removeEventListener('beforeunload', this.ifCloseWindow);
   }
 
   async getLastWeek() {
@@ -445,15 +465,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   removeBankPaiement(i: any, index: number) {
     i.get('paiementBankList').removeAt(index);
     this.onPaiementBankChange(i);
-  }
-
-  ngOnDestroy() {
-    if (this.weekSubscription != undefined) {
-      this.weekSubscription.unsubscribe();
-    }
-    this.workWeekService.closeWeek(this.weekNumber, !this.isSaved);
-
-    this.clearAllTimeout();
   }
 
   clearAllTimeout() {

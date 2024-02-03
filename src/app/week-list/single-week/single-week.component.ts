@@ -76,7 +76,7 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
     let lastChanges = new Date(this.editingStatus.lastChanges);
     let currentDate = new Date();
     let diff = Math.abs(currentDate.getTime() - lastChanges.getTime());
-    return diff > 240000;
+    return diff > 250000;
 
   }
 

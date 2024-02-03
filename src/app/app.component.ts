@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FirebaseApp} from '@angular/fire/app';
 import {getAuth} from '@angular/fire/auth';
 import {SwUpdate} from '@angular/service-worker';
@@ -9,8 +9,9 @@ import {Router} from "@angular/router";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   newUpdate: boolean = false;
+  timeOutList: any = [];
 
   constructor(private afApp: FirebaseApp, private swUpdate: SwUpdate, private router: Router) {
     getAuth(this.afApp);
@@ -22,12 +23,19 @@ export class AppComponent implements OnInit {
         this.showUpdate();
         this.router.navigate(['/week']).then(() => {
           window.location.reload();
-          setTimeout(() => {
+          const timeout = setTimeout(() => {
             this.hideUpdate();
           }, 5000);
+          this.timeOutList.push(timeout);
         });
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.timeOutList.forEach((timeout: any) => {
+      clearTimeout(timeout);
+    });
   }
 
   showUpdate() {

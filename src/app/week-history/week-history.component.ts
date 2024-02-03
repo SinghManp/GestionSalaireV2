@@ -62,6 +62,7 @@ export class WeekHistoryComponent {
           return new Date(bDate).getTime() - new Date(aDate).getTime();
         });
       });
+      console.log(this.history)
     });
   }
 

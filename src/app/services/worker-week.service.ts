@@ -56,7 +56,7 @@ export class WorkerWeekService {
     }
   }
 
-  openWeek(weekNumber: any, reset = true) {
+  openWeek(weekNumber: number, reset = true) {
     if (weekNumber) {
       const editingStatus = {
         weekNumber,
@@ -70,7 +70,7 @@ export class WorkerWeekService {
     }
   }
 
-  closeWeek(weekNumber: any, save = true) {
+  closeWeek(weekNumber: number, save = true) {
     const closeStatus = {
       author: getAuth().currentUser?.displayName,
       lastChanges: new Date().toUTCString(),
@@ -78,9 +78,10 @@ export class WorkerWeekService {
     };
     this.weekEditingStatus.closeStatus = closeStatus;
     if (save) {
+      delete this.weekEditingStatus.openStatus.weekNumber
       push(
         child(ref(getDatabase()), 'history-' + this.weekX + '/' + weekNumber),
-        {status: {closeStatus, openStatus: this.weekEditingStatus.openStatus}}
+        {status: {closeStatus, openStatus: this.weekEditingStatus.openStatus, weekNumber: weekNumber}}
       );
     }
     set(ref(getDatabase(), 'editing-status'), {});

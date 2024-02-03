@@ -39,9 +39,10 @@
   </div>
 </div>
 
-
-<div *ngIf="editingStatus && this.authService.matchRole('admin')" style="color: red">
-  {{editingStatus.author + " est entrain de modifier la semaine "+ editingStatus.weekNumber}}
+<div *ngIf="editingStatus && authService.matchRole('admin')" style="color: red" class="hideOnPrint">
+  {{editingStatus.author + " est entrain de modifier la semaine "+ editingStatus.weekNumber}} !
+  <br>La semaine a commencé à être modifiée à {{editingStatus.lastChanges | date: 'HH:mm:ss'}}
+  <br>Attendre au moins 5 min avant de modifier.
 </div>
 
 <div class="mainC">

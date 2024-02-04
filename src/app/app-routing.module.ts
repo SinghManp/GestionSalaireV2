@@ -11,6 +11,7 @@ import { WeekListComponent } from './week-list/week-list.component';
 import { WeekFormComponent } from './week-list/week-form/week-form.component';
 import { SingleWeekComponent } from './week-list/single-week/single-week.component';
 import { WeekHistoryComponent } from './week-history/week-history.component';
+import {NewVersionMessageComponent} from "./new-version-message/new-version-message.component";
 
 const routes: Routes = [
   { path: "signIn", component: SigninComponent },
@@ -73,6 +74,11 @@ const routes: Routes = [
     path: "history",
     canActivate: [AuthGuardService],
     component: WeekHistoryComponent,
+  },
+  {
+    path: "new",
+    canActivate: [AuthGuardService],
+    component: NewVersionMessageComponent,
   },
   { path: "", redirectTo: "weeks", pathMatch: "full" },
   { path: "**", redirectTo: "weeks" },

@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   newUpdate: boolean = false;
   timeOutList: any = [];
 
@@ -20,29 +20,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(() => {
-        this.router.navigate(['/week']).then(() => {
+        this.router.navigate(['/new']).then(() => {
           window.location.reload();
-          this.showUpdate();
-          const timeout = setTimeout(() => {
-            this.hideUpdate();
-          }, 5000);
-          this.timeOutList.push(timeout);
         });
       });
     }
-  }
-
-  ngOnDestroy() {
-    this.timeOutList.forEach((timeout: any) => {
-      clearTimeout(timeout);
-    });
-  }
-
-  showUpdate() {
-    this.newUpdate = true;
-  }
-
-  hideUpdate() {
-    this.newUpdate = false;
   }
 }

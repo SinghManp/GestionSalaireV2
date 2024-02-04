@@ -1,6 +1,6 @@
 {
   "name": "gestion-salaire-v2",
-  "version": "2.1.30",
+  "version": "2.1.33",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

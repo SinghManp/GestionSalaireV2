@@ -131,7 +131,7 @@ export class WorkerWeekService {
     });
   }
 
-  getWokersWeek(id: number) {
+  getWorkersWeek(id: number) {
     onValue(ref(getDatabase(), this.weekX + '/' + id), (snapshot) => {
       this.weekRetrieve = snapshot.val();
       this.emitWorkersWeek();

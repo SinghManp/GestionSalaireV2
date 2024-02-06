@@ -1,13 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Checkout } from 'src/app/models/checkout.model';
-import { OneWorkerWeek } from 'src/app/models/oneWorkerWeek.model';
-import { Supply } from 'src/app/models/supply.model';
-import { WorkerWeek } from 'src/app/models/workerWeek.model';
-import { AuthService } from 'src/app/services/auth.service';
-import { DateService } from 'src/app/services/date.service';
-import { WorkerWeekService } from 'src/app/services/worker-week.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Checkout} from 'src/app/models/checkout.model';
+import {OneWorkerWeek} from 'src/app/models/oneWorkerWeek.model';
+import {Supply} from 'src/app/models/supply.model';
+import {WorkerWeek} from 'src/app/models/workerWeek.model';
+import {AuthService} from 'src/app/services/auth.service';
+import {DateService} from 'src/app/services/date.service';
+import {WorkerWeekService} from 'src/app/services/worker-week.service';
+import {PdfService} from "../../services/pdf.service";
 
 @Component({
   selector: 'app-single-week',
@@ -40,12 +41,16 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
     private workerWeekService: WorkerWeekService,
     private router: Router,
     readonly authService: AuthService,
-    public dateService: DateService
+    public dateService: DateService,
+    private pdfService: PdfService
   ) {}
 
   ngOnInit() {
     this.weekNumber = this.route.snapshot.params['id'];
-    this.initWeek();
+    this.workerWeekService.getWorkersWeek(1);//todo: Remove this line and setTimeout
+    setTimeout(() => {
+      this.initWeek();
+    }, 100);
     this.initEditingStatus();
   }
 
@@ -65,11 +70,11 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
   }
 
   canEdit() {
-    if (this.editingStatus == null){
+    if (this.editingStatus == null) {
       return true;
     }
 
-    if(this.authService.matchRole('admin')){
+    if (this.authService.matchRole('admin')) {
       return true;
     }
 
@@ -81,14 +86,14 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
   }
 
   getTooltip() {
-    if(this.editingStatus == null){
+    if (this.editingStatus == null) {
       return "Modifier la semaine";
     }
-    return this.editingStatus?.author + " est entrain de modifier la semaine "+ this.editingStatus?.weekNumber;
+    return this.editingStatus?.author + " est entrain de modifier la semaine " + this.editingStatus?.weekNumber;
   }
 
   initWeek() {
-    this.workerWeekService.getWokersWeek(this.weekNumber);
+    this.workerWeekService.getWorkersWeek(this.weekNumber);
     this.weekSubscription = this.workerWeekService.workersWeekSubject.subscribe(
       (workerWeek: any) => {
         if (workerWeek && workerWeek.length != 0) {
@@ -136,6 +141,7 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
     }
     this.initWeek();
   }
+
   goToNextWeek() {
     this.destroyWeekSubscription();
     this.next = true;
@@ -272,6 +278,6 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
   }
 
   onPrint() {
-    window.print();
+    this.pdfService.generatePdf(this.week);
   }
 }

@@ -278,6 +278,6 @@ export class SingleWeekComponent implements OnInit, OnDestroy {
   }
 
   onPrint() {
-    this.pdfService.generatePdf(this.week);
+    this.pdfService.generateWeekPdf(this.week);
   }
 }

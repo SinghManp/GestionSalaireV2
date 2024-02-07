@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DateService } from 'src/app/services/date.service';
-import { WorkersService } from 'src/app/services/workers.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DateService} from 'src/app/services/date.service';
+import {WorkersService} from 'src/app/services/workers.service';
+import {PdfService} from "../../services/pdf.service";
 
 @Component({
   selector: 'app-worker-details',
@@ -24,8 +25,10 @@ export class WorkerDetailsComponent implements OnInit {
     private workerkService: WorkersService,
     private route: ActivatedRoute,
     private router: Router,
-    public dateService: DateService
-  ) {}
+    public dateService: DateService,
+    private pdfService: PdfService
+  ) {
+  }
 
   ngOnInit() {
     this.workerName = this.route.snapshot.params['id'];
@@ -135,6 +138,6 @@ export class WorkerDetailsComponent implements OnInit {
   }
 
   onPrint() {
-    window.print();
+    this.pdfService.generateWorkerPdf(this.year, this.details, this.supplyList, this.bankPaiementList, this.remarksList);
   }
 }

@@ -21,7 +21,11 @@ export class DateService {
     return format(date, formatString);
   }
 
-  getWeekNumber(date: any) { 
+  getWeekNumber(date: any) {
     return format(date, 'ww - yyyy', { locale: fr });
+  }
+
+  getCurrentDate(){
+    return format(new Date(), 'dd/MM/yyyy HH:mm:ss');
   }
 }

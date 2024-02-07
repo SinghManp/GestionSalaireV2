@@ -131,3 +131,14 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+
+.modal-dialog {
+  max-width: 400px!important;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+

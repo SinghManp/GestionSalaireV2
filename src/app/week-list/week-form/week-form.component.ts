@@ -928,7 +928,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
       modal?.setAttribute('style', 'display: block;');
 
       let timeout = setTimeout(() => {
-        this.router.navigate(['/weeks']);
+        this.goToHome();
       }, 60000);
 
       this.minuteur = 60;
@@ -950,5 +950,9 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     modal?.setAttribute('style', 'display: none;');
     this.workWeekService.openWeek(this.weekNumber, false);
     this.checkIfUserEditing();
+  }
+
+  goToHome() {
+    this.router.navigate(['/weeks']);
   }
 }

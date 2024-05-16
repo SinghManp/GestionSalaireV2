@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {WorkerWeekService} from '../services/worker-week.service';
-import {DateService} from '../services/date.service';
+import { WorkerWeekService } from '../services/worker-week.service';
+import { DateService } from '../services/date.service';
 
 @Component({
   selector: 'app-week-history',
@@ -23,7 +23,8 @@ export class WeekHistoryComponent {
             a.push(innerValue);
           });
           let b = {
-            weekNumber: a[0].weekNumber,
+            weekNumber: a.find((element: any) => element?.weekNumber)
+              ?.weekNumber,
             infos: a,
           };
           this.history.push(b);
@@ -31,7 +32,7 @@ export class WeekHistoryComponent {
       });
 
       this.history.sort((a: any, b: any) => {
-        return b.weekNumber - a.weekNumber;
+        return b?.weekNumber - a?.weekNumber;
       });
 
       this.history.forEach((element: any) => {
@@ -62,6 +63,8 @@ export class WeekHistoryComponent {
           return new Date(bDate).getTime() - new Date(aDate).getTime();
         });
       });
+
+      console.log(this.history);
     });
   }
 

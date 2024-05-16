@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {WorkerWeek} from '../models/workerWeek.model';
-import {Subject} from 'rxjs';
-import {getAuth} from '@angular/fire/auth';
-import {transform, isEqual, isObject} from 'lodash';
+import { Injectable } from '@angular/core';
+import { WorkerWeek } from '../models/workerWeek.model';
+import { Subject } from 'rxjs';
+import { getAuth } from '@angular/fire/auth';
+import { transform, isEqual, isObject } from 'lodash';
 
 import {
   getDatabase,
@@ -29,7 +29,7 @@ export class WorkerWeekService {
   weekX: any = 'year-' + new Date().getFullYear();
 
   isWeekInCurrentYear = false;
-  weekEditingStatus: any = {openStatus: {}, closeStatus: {}};
+  weekEditingStatus: any = { openStatus: {}, closeStatus: {} };
 
   emitWorkersWeek() {
     this.workersWeekSubject.next(this.weekRetrieve);
@@ -78,10 +78,16 @@ export class WorkerWeekService {
     };
     this.weekEditingStatus.closeStatus = closeStatus;
     if (save) {
-      delete this.weekEditingStatus.openStatus.weekNumber
+      delete this.weekEditingStatus.openStatus.weekNumber;
       push(
         child(ref(getDatabase()), 'history-' + this.weekX + '/' + weekNumber),
-        {status: {closeStatus, openStatus: this.weekEditingStatus.openStatus, weekNumber: weekNumber}}
+        {
+          status: {
+            closeStatus,
+            openStatus: this.weekEditingStatus.openStatus,
+            weekNumber: weekNumber,
+          },
+        }
       );
     }
     set(ref(getDatabase(), 'editing-status'), {});
@@ -95,9 +101,20 @@ export class WorkerWeekService {
     let diff: any = {
       newWeek: true,
       weekNumber: newWeek.weekNumber,
-    }
+    };
 
-    if (oldWeek) diff = this.difference(oldWeek, newWeek);
+    if (oldWeek) {
+      diff = this.difference(oldWeek, newWeek);
+    } else {
+      console.log(newWeek);
+      let newWeekCopy = this.getNotEmptyElements(newWeek);
+      console.log(newWeekCopy);
+      diff.workerList = newWeekCopy.workerList;
+      diff.checkoutList = newWeekCopy.checkoutList;
+      diff.suppliesList = newWeekCopy.suppliesList;
+      diff.currentCheckout = newWeekCopy.currentCheckout;
+      diff.previousCheckout = newWeekCopy.previousCheckout;
+    }
 
     diff.lastChanges = newWeek.lastChanges;
     diff.author = newWeek.author;
@@ -106,10 +123,60 @@ export class WorkerWeekService {
 
     push(
       child(
-        ref(getDatabase()), 'history-' + this.weekX + '/' + newWeek['weekNumber']
+        ref(getDatabase()),
+        'history-' + this.weekX + '/' + newWeek['weekNumber']
       ),
       diff
     );
+  }
+
+  getNotEmptyElements(week: any) {
+    let weekCopy = JSON.parse(JSON.stringify(week));
+
+    for (let i = 0; i < weekCopy.workerList.length; i++) {
+      for (let key in weekCopy.workerList[i]) {
+        if (
+          weekCopy.workerList[i][key] == 0 ||
+          weekCopy.workerList[i][key] == ''
+        ) {
+          delete weekCopy.workerList[i][key];
+        }
+        if (
+          key == 'paiementBankList' &&
+          weekCopy.workerList[i][key].lenght == 1 &&
+          weekCopy.workerList[i][key][0].amount == 0
+        ) {
+          delete weekCopy.workerList[i][key];
+        }
+      }
+    }
+
+    //supprimer un worker si le champ le champ cashFromSupplies, paiementBank, paiementCash , extra et remark n'existe pas
+    for (let i = 0; i < weekCopy.workerList.length; i++) {
+      if (
+        !weekCopy.workerList[i].cashFromSupplies &&
+        !weekCopy.workerList[i].paiementBank &&
+        !weekCopy.workerList[i].paiementCash &&
+        !weekCopy.workerList[i].extra &&
+        !weekCopy.workerList[i].remark
+      ) {
+        delete weekCopy.workerList[i];
+      }
+    }
+
+    for (let i = 0; i < weekCopy.checkoutList.length; i++) {
+      if (weekCopy.checkoutList[i].amount == 0) {
+        delete weekCopy.checkoutList[i];
+      }
+    }
+
+    for (let i = 0; i < weekCopy.suppliesList.length; i++) {
+      if (weekCopy.suppliesList[i].amount == 0) {
+        delete weekCopy.suppliesList[i];
+      }
+    }
+
+    return weekCopy;
   }
 
   /**
@@ -230,46 +297,46 @@ export class WorkerWeekService {
               let previousBalance1 = parseFloat(
                 this.weekList[week]['workerList'][currentWorkerWeek][
                   'previousBalance'
-                  ]
+                ]
               );
               let currentBalance = parseFloat(
                 this.weekList[week]['workerList'][currentWorkerWeek][
                   'currentBalance'
-                  ]
+                ]
               );
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'previousBalance'
-                ] = parseFloat(
+              ] = parseFloat(
                 this.weekList[week - 1]['workerList'][previousWorkerWeek][
                   'currentBalance'
-                  ]
+                ]
               );
               let previousBalance2 = parseFloat(
                 this.weekList[week]['workerList'][currentWorkerWeek][
                   'previousBalance'
-                  ]
+                ]
               );
               let total: number =
                 +currentBalance - +previousBalance1 + (previousBalance2 + 0);
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'currentBalance'
-                ] = +total.toFixed(2);
+              ] = +total.toFixed(2);
             }
             currentCheckout -=
               this.weekList[week]['workerList'][currentWorkerWeek][
                 'paiementCash'
-                ];
+              ];
           }
           if (!workerFound) {
             const balance = parseFloat(
               this.weekList[week - 1]['workerList'][previousWorkerWeek][
                 'currentBalance'
-                ]
+              ]
             );
             const dailySalary = parseFloat(
               this.weekList[week - 1]['workerList'][previousWorkerWeek][
                 'dailySalary'
-                ]
+              ]
             );
             let workerNotFound = {
               name: worker,

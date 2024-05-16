@@ -1,136 +1,195 @@
 <h2>L'historique</h2>
 
 <div *ngFor="let item of history">
-  Semaine : {{ item.weekNumber }}
+  Semaine : {{ item?.weekNumber }}
   <div class="col-xs-12">
     <div class="list-group">
-      <div class="list-group-item clearfix" *ngFor="let item2 of item.infos">
-        <div class="pull-left" style="display: flex; flex-wrap: wrap">
-          <div
-            class="list-group-item clearfix"
-            style="margin: 5px; border-radius: 5px"
-            *ngIf="
-              !(item2.workerList?.length > 0) &&
-              !(item2.checkoutList?.length > 0) &&
-              !item2.newWeek
-            "
-          >
-            Aucune modification n'a été faite !
-          </div>
-
-
-          <div
-            *ngIf="item2.newWeek"
-            class="list-group-item clearfix"
-            style="margin: 5px; border-radius: 5px"
-          >
-            Une nouvelle semaine a été créée !
-          </div>
-
-
-          <div
-            *ngFor="let worker of item2.workerList; let i = index"
-            class="list-group-item clearfix"
-            style="margin: 5px; border-radius: 5px"
-          >
-            <div class="pull-left" style="margin-right: 15px">
-              {{ worker.name }}
-            </div>
-
-            <div class="pull-right">
-              <div *ngIf="worker.dailySalary">
-                {{ worker.dailySalary }}
-              </div>
-              <div *ngIf="worker.workingDays">
-                {{ worker.workingDays }}
-              </div>
-              <div *ngIf="worker.salary">
-                {{ worker.salary }}
-              </div>
-              <div *ngIf="worker.cashFromSupplies">
-                {{ worker.cashFromSupplies }}
-              </div>
-              <div *ngIf="worker.extra">
-                {{ worker.extra }}
-              </div>
-              <div *ngIf="worker.paiementCash">
-                {{ worker.paiementCash }}
-              </div>
-              <div *ngIf="worker.paiementBank">
-                {{ worker.paiementBank }}
-              </div>
-              <div *ngIf="worker.currentBalance">
-                {{ worker.currentBalance }}
-              </div>
-              <div *ngIf="worker.remark">
-                {{ worker.remark }}
-              </div>
-            </div>
-
-            <div
-              class="pull-right"
-              style="text-align: right; margin-right: 10px"
+      <div class="list-group-item clearfix" *ngFor="let item2 of item.infos" style="border-color:  black;">
+        <div class="pull-left">
+          <div style="display: flex; flex-wrap: wrap">
+            <h5
+              class="list-group-item clearfix title"
+              style="margin: 5px; border-radius: 5px"
+              *ngIf="
+                !(item2.workerList?.length > 0) &&
+                !(item2.checkoutList?.length > 0) &&
+                !(item2.suppliesList?.length > 0) &&
+                !item2.newWeek
+              "
             >
-              <div *ngIf="worker.dailySalary">S/J :</div>
-              <div *ngIf="worker.workingDays">Jour :</div>
-              <div *ngIf="worker.salary">Salaire :</div>
-              <div *ngIf="worker.cashFromSupplies">Fourniture :</div>
-              <div *ngIf="worker.extra">Supplément :</div>
-              <div *ngIf="worker.paiementCash">Cash :</div>
-              <div *ngIf="worker.paiementBank">Banque :</div>
-              <div *ngIf="worker.currentBalance">Solde :</div>
-              <div *ngIf="worker.remark">Remarques :</div>
+              Aucune modification n'a été faite !
+            </h5>
+
+            <h5
+              *ngIf="item2.newWeek"
+              class="list-group-item clearfix title"
+              style="margin: 5px; border-radius: 5px"
+            >
+              Une nouvelle semaine a été créée !
+            </h5>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap">
+            <div
+              *ngFor="let worker of item2.workerList; let i = index"
+              class="list-group-item clearfix changes"
+              style="margin: 5px; border-radius: 5px"
+            >
+              <div class="pull-left" style="margin-right: 15px">
+                {{ worker?.name }}
+              </div>
+
+              <div class="pull-right">
+                <div *ngIf="worker?.dailySalary">
+                  {{ worker.dailySalary }}
+                </div>
+                <div *ngIf="worker?.workingDays">
+                  {{ worker.workingDays }}
+                </div>
+                <div *ngIf="worker?.salary">
+                  {{ worker.salary }}
+                </div>
+                <div *ngIf="worker?.cashFromSupplies">
+                  {{ worker.cashFromSupplies }}
+                </div>
+                <div *ngIf="worker?.extra">
+                  {{ worker.extra }}
+                </div>
+                <div *ngIf="worker?.paiementCash">
+                  {{ worker.paiementCash }}
+                </div>
+                <div *ngIf="worker?.paiementBank">
+                  {{ worker.paiementBank }}
+                </div>
+                <div *ngIf="worker?.currentBalance">
+                  {{ worker.currentBalance }}
+                </div>
+                <div *ngIf="worker?.remark">
+                  {{ worker.remark }}
+                </div>
+              </div>
+
+              <div
+                class="pull-right"
+                style="text-align: right; margin-right: 10px"
+              >
+                <div *ngIf="worker?.dailySalary">S/J :</div>
+                <div *ngIf="worker?.workingDays">Jour :</div>
+                <div *ngIf="worker?.salary">Salaire :</div>
+                <div *ngIf="worker?.cashFromSupplies">Fourniture :</div>
+                <div *ngIf="worker?.extra">Supplément :</div>
+                <div *ngIf="worker?.paiementCash">Cash :</div>
+                <div *ngIf="worker?.paiementBank">Banque :</div>
+                <div *ngIf="worker?.currentBalance">Solde :</div>
+                <div *ngIf="worker?.remark">Remarques :</div>
+              </div>
             </div>
           </div>
-          <div
-            class="list-group-item clearfix"
-            style="margin: 5px; border-radius: 5px"
-            *ngIf="item2.checkoutList?.length > 0"
-          >
-            <div class="pull-left" style="margin-right: 15px">Acompte :</div>
 
-            <span class="pull-right">
-              <div
-                style="margin-right: 15px"
-                *ngFor="let checkout of item2.checkoutList; let i = index"
-              >
-                <div>
-                  {{ checkout.name }}
-                </div>
-                <div *ngIf="checkout.date">
-                  {{ dateService.formatDate(checkout.date) }}
-                </div>
-                <div>
-                  {{ checkout.amount }}
-                </div>
-                <br/>
-              </div>
-            </span>
+          <div style="display: flex; flex-wrap: wrap">
+            <h5
+              class="list-group-item clearfix title"
+              style="margin: 5px; border-radius: 5px"
+              *ngIf="item2.suppliesList?.length > 0"
+            >
+              Fourniture
+            </h5>
+          </div>
 
-            <span class="pull-right">
-              <div
-                style="text-align: right; margin-right: 10px"
-                *ngFor="let checkout of item2.checkoutList; let i = index"
-              >
-                <div>Nom :</div>
-                <div *ngIf="checkout.date">Date :</div>
-                <div *ngIf="checkout.amount">Montant :</div>
-                <br/>
-              </div>
-            </span>
+          <div style="display: flex; flex-wrap: wrap">
+            <div
+              class="list-group-item clearfix changes"
+              style="margin: 5px; border-radius: 5px"
+              *ngFor="let supply of item2.suppliesList; let i = index"
+            >
+              <span class="pull-right">
+                <div style="margin-right: 15px">
+                  <div>
+                    {{ supply?.name }}
+                  </div>
+                  <div *ngIf="supply?.date">
+                    {{ dateService.formatDate(supply?.date) }}
+                  </div>
+                  <div>
+                    {{ supply?.amount }}
+                  </div>
+                  <div>
+                    {{ supply?.payedBy }}
+                  </div>
+                  <div>
+                    {{ supply?.payedFor }}
+                  </div>
+                </div>
+              </span>
+
+              <span class="pull-right">
+                <div style="text-align: right; margin-right: 10px">
+                  <div>Nom :</div>
+                  <div *ngIf="supply?.date">Date :</div>
+                  <div *ngIf="supply?.amount">Montant :</div>
+                  <div *ngIf="supply?.payedBy">Par :</div>
+                  <div *ngIf="supply?.payedFor">Pour :</div>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap">
+            <h5
+              class="list-group-item clearfix title"
+              style="margin: 5px; border-radius: 5px"
+              *ngIf="item2.checkoutList?.length > 0"
+            >
+              Account
+            </h5>
+          </div>
+
+          <div style="display: flex; flex-wrap: wrap">
+            <div
+              class="list-group-item clearfix changes"
+              style="margin: 5px; border-radius: 5px"
+              *ngFor="let checkout of item2.checkoutList ; let i = index"
+            >
+              <span class="pull-right">
+                <div style="margin-right: 15px">
+                  <div>
+                    {{ checkout?.name }}
+                  </div>
+                  <div *ngIf="checkout?.date">
+                    {{ dateService.formatDate(checkout?.date) }}
+                  </div>
+                  <div>
+                    {{ checkout?.amount }}
+                  </div>
+                </div>
+              </span>
+
+              <span class="pull-right">
+                <div style="text-align: right; margin-right: 10px">
+                  <div>Nom :</div>
+                  <div *ngIf="checkout?.date">Date :</div>
+                  <div *ngIf="checkout?.amount">Montant :</div>
+                </div>
+              </span>
+            </div>
           </div>
         </div>
+
         <div
           class="pull-right small"
           *ngIf="!item2.isEditing && !item2.isClosing"
         >
-
           <div>
-            Date: {{ item2.lastChanges || item2.status?.openStatus?.lastChanges | date : "dd/MM/yy " }}
+            Date:
+            {{
+            item2.lastChanges || item2.status?.openStatus?.lastChanges
+              | date : "dd/MM/yy "
+            }}
           </div>
 
           <div *ngIf="item2.status?.openStatus">
-            Ouvert à : {{ item2.status.openStatus.lastChanges | date : "HH:mm:ss" }}
+            Ouvert à :
+            {{ item2.status.openStatus.lastChanges | date : "HH:mm:ss" }}
           </div>
 
           <div *ngIf="item2.lastChanges">
@@ -138,14 +197,19 @@
             {{ item2.lastChanges | date : "HH:mm:ss" }}
           </div>
 
-
-          <div *ngIf="!item2.lastChanges &&item2.status?.closeStatus">
-            Fermé à : {{ item2.status.closeStatus.lastChanges | date : "HH:mm:ss" }}
+          <div *ngIf="!item2.lastChanges && item2.status?.closeStatus">
+            Fermé à :
+            {{ item2.status.closeStatus.lastChanges | date : "HH:mm:ss" }}
           </div>
 
-          <div>Modifié par : {{ item2.author || item2.status?.openStatus?.author  }}</div>
-          <div *ngIf="item2.currentCheckout">
-            Cash S : {{ item2.currentCheckout }}
+          <div>
+            Modifié par : {{ item2.author || item2.status?.openStatus?.author }}
+          </div>
+          <div *ngIf="item2.currentCheckout" class="list-group-item clearfix changes">
+            Cash S :
+            <span style="color: red">
+              {{ item2.currentCheckout }}
+            </span>
           </div>
         </div>
       </div>

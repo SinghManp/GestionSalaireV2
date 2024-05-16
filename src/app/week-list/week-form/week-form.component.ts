@@ -78,15 +78,17 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
     if (this.route.snapshot.params['id'] != undefined) {
       this.weekNumber = +this.route.snapshot.params['id'];
-      this.workWeekService.getSingleWeek(this.weekNumber).then(week => {
+      this.workWeekService.getSingleWeek(this.weekNumber).then((week) => {
         this.existingItem(week);
       });
     } else {
       this.getLastWeek();
     }
     this.initKeyPress();
-    this.computeCheckoutTotal();
-    this.computeSuppliesTotal();
+    setTimeout(() => {
+      this.computeCheckoutTotal();
+      this.computeSuppliesTotal();
+    }, 500);
     this.workWeekService.openWeek(this.weekNumber);
     this.checkIfUserEditing();
 
@@ -213,9 +215,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
       this.addCheckoutToForm(checkout)
     );
 
-    this.suppliesList?.forEach((supply: any) =>
-      this.addSupplyToForm(supply)
-    );
+    this.suppliesList?.forEach((supply: any) => this.addSupplyToForm(supply));
 
     this.computeAllTotal();
   }
@@ -225,9 +225,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     this.workerWeekForm
       .get('previousCheckout')
       ?.setValue(week.previousCheckout);
-    this.workerWeekForm
-      .get('currentCheckout')
-      ?.setValue(week.currentCheckout);
+    this.workerWeekForm.get('currentCheckout')?.setValue(week.currentCheckout);
     this.list = week.workerList;
     this.checkoutList = week.checkoutList;
     this.suppliesList = week.suppliesList;
@@ -615,6 +613,9 @@ export class WeekFormComponent implements OnInit, OnDestroy {
   countWorkerTotal(workerIndex: any) {
     let total: number = 0;
     let worker = this.workerWeekForm.get('workerList')?.value[workerIndex];
+    if (worker == undefined) {
+      return;
+    }
 
     total += worker.salary;
     total += worker.previousBalance;
@@ -827,15 +828,6 @@ export class WeekFormComponent implements OnInit, OnDestroy {
     }
   }
 
-  onChangeSupplyDate(supply: any) {
-    // let val = supply.value;
-    // let convertDate = this.stringToDateFormat(val.date);
-    // if (val.date != convertDate) {
-    //   val.date = convertDate;
-    //   supply.setValue(val);
-    // }
-  }
-
   stringToDateFormat(date: string) {
     if (date[1] == '/') {
       date = 0 + date;
@@ -923,7 +915,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   checkIfUserEditing() {
     let maimTimeout = setTimeout(() => {
-      let modal = document.getElementById("myModal")
+      let modal = document.getElementById('myModal');
       modal?.classList.add('in');
       modal?.setAttribute('style', 'display: block;');
 
@@ -945,7 +937,7 @@ export class WeekFormComponent implements OnInit, OnDestroy {
 
   userConnected() {
     this.clearAllTimeout();
-    let modal = document.getElementById("myModal")
+    let modal = document.getElementById('myModal');
     modal?.classList.remove('in');
     modal?.setAttribute('style', 'display: none;');
     this.workWeekService.openWeek(this.weekNumber, false);

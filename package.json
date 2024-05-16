@@ -1,13 +1,13 @@
 {
   "name": "gestion-salaire-v2",
-  "version": "2.1.37",
+  "version": "2.1.39",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "npm version patch --no-git-tag-version && firebase deploy"
+    "deploy": "nvm use 16 && npm version patch --no-git-tag-version && nvm use 21 && firebase deploy"
   },
   "private": true,
   "dependencies": {

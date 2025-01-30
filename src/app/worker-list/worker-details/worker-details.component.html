@@ -1,11 +1,12 @@
+<app-print-popup *ngIf="printPage" (close)="hidePrintPage()" [printOptions]="printOptions" [printType]="'worker'"></app-print-popup>
 <h1>
   {{ workerName }} -
   <select id="year" [(ngModel)]="year" (change)="initDetails()">
     <option *ngFor="let item of yearList" [value]="item">{{ item }}</option>
   </select>
   <div class="btn-group hideOnPrint" style="margin: 0 0 10px 15px">
-    <button class="btn btn-secondary" (click)="onPrint()">
-      <span class="glyphicon glyphicon-print"></span>
+    <button class="btn btn-secondary" (click)="showPrintPage()">
+      <span class="glyphicon glyphicon-print"></span> Imprimer
     </button>
   </div>
 </h1>

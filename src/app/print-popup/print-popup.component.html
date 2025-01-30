@@ -1,0 +1,45 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h4>Options d'impression</h4>
+    <p>Veuillez choisir les informations à imprimer ainsi que si celles-ci doivent commencer sur une nouvelle page.</p>
+
+    <div *ngIf="printType=='worker'">
+      <h5>
+      <span *ngIf="printOptions.details.length>0">{{ printOptions.details[0].worker.name }}</span> -
+      <span>{{ printOptions.year }}</span>
+      </h5>
+
+      <form class="table" [formGroup]="printForm">
+        <div class="row header">
+          <div class="cell">Les semaines</div>
+          <div class="cell"> Imprimer</div>
+          <div class="cell"> Nouvelle page</div>
+        </div>
+        <div class="row " *ngIf="printOptions.details.length>0">
+          <div class="cell">Semaines</div>
+          <div class="cell"><input type="checkbox" formControlName="details"/></div>
+          <div class="cell"></div>
+        </div>
+        <div class="row" *ngIf="printOptions.supplyList.length>0">
+          <div class="cell">Fournitures</div>
+          <div class="cell"><input type="checkbox" formControlName="supplyList"/></div>
+          <div class="cell"><input type="checkbox" formControlName="supplyListBreakPage"/></div>
+        </div>
+        <div class="row" *ngIf="printOptions.bankPaiementList.length>0">
+          <div class="cell">Virements</div>
+          <div class="cell"><input type="checkbox" formControlName="bankPaiementList"/></div>
+          <div class="cell"><input type="checkbox" formControlName="bankPaiementListBreakPage"/></div>
+        </div>
+        <div class="row" *ngIf="printOptions.remarksList.length>0">
+          <div class="cell">Remarques</div>
+          <div class="cell"><input type="checkbox" formControlName="remarksList"/></div>
+          <div class="cell"><input type="checkbox" formControlName="remarksListBreakPage"/></div>
+        </div>
+      </form>
+    </div>
+
+
+    <button class="btn btn-default" (click)="closeModal()">Annuler</button>
+    <button class="btn btn-success" (click)="print()" style="margin-left: 20px">Imprimer</button>
+  </div>
+</div>

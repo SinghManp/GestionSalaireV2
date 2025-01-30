@@ -107,7 +107,7 @@ export class PdfService {
     pdfMake.createPdf(docDefinition).print();
   }
 
-  generateWorkerPdf(year: any, details: any, supplyList: any, bankPaymentList: any, remarks: any) {
+  generateWorkerPdf(year: any, details: any, supplyList: any, bankPaymentList: any, remarks: any, options: any) {
     pdfMake.fonts = {
       helvetica: {
         normal:
@@ -121,7 +121,7 @@ export class PdfService {
 
     let docDefinition: any = {
       footer: function (currentPage: any, pageCount: any) {
-        return{
+        return {
           columns: [
             // {
             //   text: currentDate,
@@ -129,10 +129,10 @@ export class PdfService {
             //   margin: [20, 0, 0, 0]
             // },
             {
-            text: currentPage.toString() + ' / ' + pageCount,
-            alignment: 'right',
-            margin: [0, 0, 20, 0]
-          }]
+              text: currentPage.toString() + ' / ' + pageCount,
+              alignment: 'right',
+              margin: [0, 0, 20, 0]
+            }]
         }
       },
       content: [
@@ -140,13 +140,23 @@ export class PdfService {
           text: `${details[0].worker.name} - ${year}`, style: 'header',
           margin: [0, 0, 0, 15]
         },
-        this.createWorkerWeeksTable(details, supplyList.length),
-        {text: supplyList.length > 0 ? `Fournitures` : '', style: 'subheader'},
-        this.createWorkerSuppliesTable(supplyList),
-        {text: bankPaymentList.length > 0 ? `Détails des virements` : '', style: 'subheader'},
-        this.createWorkerPaiementTable(bankPaymentList),
-        {text: remarks.length > 0 ? `Remarques` : '', style: 'subheader'},
-        this.createWorkerRemarkTable(remarks)
+        options.details ? this.createWorkerWeeksTable(details, supplyList.length) : {},
+        {
+          text: supplyList.length > 0 && options.supplyList ? `Fournitures` : '',
+          style: 'subheader',
+          pageBreak: options.supplyListBreakPage ? 'before' : ''
+        },
+        options.supplyList ? this.createWorkerSuppliesTable(supplyList) : {},
+        {
+          text: bankPaymentList.length && options.bankPaiementList > 0 ? `Détails des virements` : '',
+          style: 'subheader', pageBreak: options.bankPaiementListBreakPage ? 'before' : ''
+        },
+        options.bankPaiementList ? this.createWorkerPaiementTable(bankPaymentList) : {},
+        {
+          text: remarks.length > 0 && options.remarksList ? `Remarques` : '', style: 'subheader',
+          pageBreak: options.remarksListBreakPage ? 'before' : ''
+        },
+        options.remarksList ? this.createWorkerRemarkTable(remarks) : {}
       ],
       styles: {
         header: {

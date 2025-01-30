@@ -214,6 +214,7 @@ table td {
 thead {
   background-color: rgb(63 122 173);
   color: white;
+
   .sticky {
     background-color: rgb(63 122 173);
   }
@@ -221,6 +222,7 @@ thead {
 
 tfoot {
   background-color: rgb(255 186 86);
+
   .sticky {
     background-color: rgb(255 186 86);
   }
@@ -289,38 +291,20 @@ table th {
 }
 
 @media print {
+  * {
+    visibility: hidden;
+    display: none
+  }
+
   .mainC {
     flex-direction: column;
     width: 100% !important;
   }
 
-  .col1 {
+  .col1, .col2 {
     width: 100% !important;
   }
 
-  .col2 {
-    // display: flex;
-    // flex-wrap: wrap;
-    width: 100% !important;
-
-    // .paimentBank,
-    // .account {
-    //   flex: 1;
-    // }
-
-    // .paimentBank {
-    //   width: 100% !important;
-    // }
-
-    // .account {
-    //   width: 100% !important;
-    //   margin-left: 1% !important;
-    // }
-
-    // .remark {
-    //   width: 100% !important;
-    // }
-  }
 
   * {
     padding: 0;
@@ -347,7 +331,3 @@ table th {
     color: red !important;
   }
 }
-
-// .pageBreak {
-//   page-break-after: always;
-// }

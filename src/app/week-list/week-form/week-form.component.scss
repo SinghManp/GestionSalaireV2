@@ -1,144 +1,145 @@
 body {
-  font-family: "Open Sans", sans-serif;
-  line-height: 1.25;
+    font-family: "Open Sans", sans-serif;
+    line-height: 1.25;
 }
 
 table {
-  border: 1px solid #ccc;
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  margin-top: 2%;
-  margin-bottom: 1%;
-  width: 100%;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    margin-top: 2%;
+    margin-bottom: 1%;
+    width: 100%;
 }
 
 .tableScroll {
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 table caption {
-  // font-size: 1.5em;
-  // margin: .5em 0 .75em;
+    // font-size: 1.5em;
+    // margin: .5em 0 .75em;
 }
 
 table tr {
-  // background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  // padding: .0em;
+    // background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    // padding: .0em;
 }
 
 table th,
 table td {
-  padding: 0.35em;
-  text-align: center;
+    padding: 0.35em;
+    text-align: center;
 }
 
 table th {
-  background-color: #f8f8f8;
-  font-size: 0.85em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  .sticky {
     background-color: #f8f8f8;
-  }
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+
+    .sticky {
+        background-color: #f8f8f8;
+    }
 }
 
 #allTotal td span {
-  background-color: #ecd8d8;
+    background-color: #ecd8d8;
 }
 
 .cash {
-  background-color: rgb(247, 194, 194);
+    background-color: rgb(247, 194, 194);
 }
 
 .input-textarea {
-  width: 100%;
-  padding: 1px 3px !important;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 1px 3px !important;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .input-main {
-  width: 100%;
-  padding: 1px 3px !important;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  text-align: center;
-  text-align-last: center;
+    width: 100%;
+    padding: 1px 3px !important;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+    text-align-last: center;
 }
 
 .input-main:read-only {
-  background-color: rgb(226, 226, 226);
+    background-color: rgb(226, 226, 226);
 }
 
 select {
-  background-color: white !important;
+    background-color: white !important;
 }
 
 .red {
-  background-color: red !important;
+    background-color: red !important;
 }
 
 .sticky {
-  position: sticky;
-  left: 0;
-  background-color: white;
+    position: sticky;
+    left: 0;
+    background-color: white;
 }
 
 .invalid {
-  border: 2px solid red !important;
+    border: 2px solid red !important;
 }
 
 @media screen and (max-width: 600px) {
-  .hideOnMobile {
-    background-color: red !important;
-    display: none !important;
-  }
+    .hideOnMobile {
+        background-color: red !important;
+        display: none !important;
+    }
 }
 
 @media screen and (max-width: 1000px) {
-  table td,
-  table th {
-    min-width: 95px;
-  }
+    table td,
+    table th {
+        min-width: 95px;
+    }
 }
 
 input[readonly] {
-  outline: none;
-  border: none;
+    outline: none;
+    border: none;
 }
 
 .clickable {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .invalidInput {
-  background-color: red;
+    background-color: red;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
 input[type="number"] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 
 .modal-dialog {
-  max-width: 400px!important;
+    max-width: 400px !important;
 }
 
 .modal-footer {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 

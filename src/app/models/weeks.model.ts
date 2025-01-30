@@ -1,5 +1,5 @@
-import { WorkerWeek } from './workerWeek.model';
+import {WorkerWeek} from './workerWeek.model';
 
 export class Weeks {
-  weekList?: WorkerWeek[];
+    weekList?: WorkerWeek[];
 }

@@ -1,333 +1,161 @@
 select {
-  // -webkit-appearance: none;
-  border: none;
-  margin-right: 10px;
-  outline: 0;
+    // -webkit-appearance: none;
+    border: none;
+    margin-right: 10px;
+    outline: 0;
 }
 
-//   body {
-//     font-family: "Open Sans", sans-serif;
-//     line-height: 1.25;
-//   }
-
-//   table {
-//     border: 1px solid #ccc;
-//     border-collapse: collapse;
-//     margin: 0;
-//     padding: 0;
-//     margin-top: 2%;
-//     margin-bottom: 1%;
-//     width: 100%;
-//     table-layout: fixed;
-//   }
-
-//   table caption {
-//     font-size: 1.5em;
-//     margin: 0.5em 0 0.75em;
-//   }
-
-//   table tr {
-//     // background-color: #f8f8f8;
-//     border: 1px solid #ddd;
-//     padding: 0.35em;
-//   }
-
-//   // th {
-//   //   position: sticky;
-//   //   top: 0; /* Don't forget this, required for the stickiness */
-//   //   // box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-//   // }
-
-//   table th,
-//   table td {
-//     padding: 0.625em;
-//     text-align: center;
-//     &.amount {
-//       text-align: right;
-//       padding-right: 3%;
-//     }
-//   }
-
-//   table th {
-//     // background-color: #f8f8f8;
-//     font-size: 0.85em;
-//     letter-spacing: 0.1em;
-//     text-transform: uppercase;
-//   }
-
-//   @media screen and (max-width: 740px) {
-//     table td {
-//       font-size: 0.8em;
-//     }
-//     table th {
-//       font-size: 0.7em;
-//     }
-//   }
-
-//   @media screen and (max-width: 600px) {
-//     table {
-//       border: 0;
-//     }
-
-//     table caption {
-//       font-size: 1.3em;
-//     }
-
-//     table thead {
-//       border: none;
-//       clip: rect(0 0 0 0);
-//       height: 1px;
-//       margin: -1px;
-//       overflow: hidden;
-//       padding: 0;
-//       position: absolute;
-//       width: 1px;
-//     }
-
-//     table tr {
-//       border-bottom: 3px solid #ddd;
-//       display: block;
-//       margin-bottom: 0.625em;
-//     }
-
-//     table td {
-//       border-bottom: 1px solid #ddd;
-//       display: block;
-//       font-size: 0.8em;
-//       text-align: right;
-//     }
-
-//     table td::before {
-//       /*
-//         * aria-label has no advantage, it won't be read inside a table
-//         content: attr(aria-label);
-//         */
-//       content: attr(data-label);
-//       float: left;
-//       font-weight: bold;
-//       text-transform: uppercase;
-//     }
-
-//     table td:last-child {
-//       border-bottom: 0;
-//     }
-
-//     .hideOnMobile {
-//       display: none !important;
-//     }
-//   }
-
-//   .flex-container {
-//     list-style: none;
-//     text-decoration: none;
-//     -ms-box-orient: horizontal;
-//     display: flex;
-//     justify-content: flex-start;
-//   }
-//   .wrap {
-//     -webkit-flex-wrap: wrap;
-//     flex-wrap: wrap;
-//   }
-
-//   .flex-item {
-//     width: 300px;
-//     margin: 10px;
-//   }
-
-//   .flex-main-item {
-//     max-width: 1200px;
-//     margin: 10px;
-//   }
-
-//   .flex-middle-item {
-//     max-width: 600px;
-//     margin: 10px;
-//   }
-
-//   thead {
-//     background-color: rgb(250, 201, 161) !important;
-//     position: sticky;
-//     top: 0; /* Don't forget this, required for the stickiness */
-//   }
-
-//   tfoot {
-//     background-color: rgb(255, 255, 205) !important;
-//   }
-
-//   .negativeAmount {
-//     color: red !important;
-//   }
-
-//   @media print {
-//     thead {
-//       background-color: rgb(250, 201, 161) !important;
-//     }
-
-//     tfoot {
-//       background-color: rgb(255, 255, 205) !important;
-//     }
-
-//     .negativeAmount {
-//       color: red !important;
-//     }
-
-//     * {
-//       margin: 0 !important;
-//       padding: 0 !important;
-//     }
-//   }
-
 table {
-  border: 1px solid rgb(239, 239, 239);
-  border-collapse: separate;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+    border: 1px solid rgb(239, 239, 239);
+    border-collapse: separate;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 .tableScroll {
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 table tr {
-  padding: 0.35em;
+    padding: 0.35em;
 }
 
 table th,
 table td {
-  padding: 0.625em;
-  text-align: center;
-  // max-width: 50px;
-  overflow: hidden;
+    padding: 0.625em;
+    text-align: center;
+    // max-width: 50px;
+    overflow: hidden;
 }
 
 table td {
-  border: 1px solid rgb(239, 239, 239);
+    border: 1px solid rgb(239, 239, 239);
 }
 
 .sticky {
-  position: sticky;
-  left: 0;
-  background-color: white;
+    position: sticky;
+    left: 0;
+    background-color: white;
 }
 
 thead {
-  background-color: rgb(63 122 173);
-  color: white;
-
-  .sticky {
     background-color: rgb(63 122 173);
-  }
+    color: white;
+
+    .sticky {
+        background-color: rgb(63 122 173);
+    }
 }
 
 tfoot {
-  background-color: rgb(255 186 86);
-
-  .sticky {
     background-color: rgb(255 186 86);
-  }
+
+    .sticky {
+        background-color: rgb(255 186 86);
+    }
 }
 
 table th {
-  font-size: 0.85em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
 #allTotal td span {
-  background-color: #ecd8d8;
+    background-color: #ecd8d8;
 }
 
 .negativeAmount {
-  color: red;
+    color: red;
 }
 
 .changeWeekBtn {
-  background-color: rgb(63 122 173);
-  color: white;
+    background-color: rgb(63 122 173);
+    color: white;
 }
 
 .mb-15 {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .mainC {
-  display: flex;
-  padding-right: 15px;
-  padding-left: 15px;
+    display: flex;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .col1 {
-  width: 70%;
-  padding: 0 5px;
+    width: 70%;
+    padding: 0 5px;
 }
 
 .col2 {
-  width: 30%;
-  padding: 0 5px;
+    width: 30%;
+    padding: 0 5px;
 }
 
 .action-btn {
-  width: 100%;
-  padding: 0 20px;
-  display: flex;
-  // justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    // justify-content: space-between;
 }
 
 @media screen and (max-width: 1000px) {
-  table td,
-  table th {
-    min-width: 95px;
-  }
+    table td,
+    table th {
+        min-width: 95px;
+    }
 
-  .mainC {
-    flex-direction: column;
-  }
+    .mainC {
+        flex-direction: column;
+    }
 
-  .col1,
-  .col2 {
-    width: 100% !important;
-  }
+    .col1,
+    .col2 {
+        width: 100% !important;
+    }
 }
 
 @media print {
-  * {
-    visibility: hidden;
-    display: none
-  }
+    * {
+        visibility: hidden;
+        display: none
+    }
 
-  .mainC {
-    flex-direction: column;
-    width: 100% !important;
-  }
+    .mainC {
+        flex-direction: column;
+        width: 100% !important;
+    }
 
-  .col1, .col2 {
-    width: 100% !important;
-  }
+    .col1, .col2 {
+        width: 100% !important;
+    }
 
 
-  * {
-    padding: 0;
-  }
+    * {
+        padding: 0;
+    }
 
-  @page {
-    margin: 0;
-  }
+    @page {
+        margin: 0;
+    }
 
-  thead {
-    background-color: rgb(250, 201, 161) !important;
-  }
+    thead {
+        background-color: rgb(250, 201, 161) !important;
+    }
 
-  th,
-  td {
-    padding: 3px !important;
-  }
+    th,
+    td {
+        padding: 3px !important;
+    }
 
-  tfoot {
-    background-color: rgb(255, 255, 205) !important;
-  }
+    tfoot {
+        background-color: rgb(255, 255, 205) !important;
+    }
 
-  .negativeAmount {
-    color: red !important;
-  }
+    .negativeAmount {
+        color: red !important;
+    }
 }

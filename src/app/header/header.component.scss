@@ -1,89 +1,90 @@
 .darkMode {
-  padding: 13px;
+    padding: 13px;
 }
 
 .banner {
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 15px;
-  height: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 15px;
+    height: 10px;
 }
 
 .navbar-nav > .active > a,
 .navbar-nav > .active > a:hover,
 a:hover,
 .navbar-nav > .active > a:focus {
-  background-color: transparent !important;
+    background-color: transparent !important;
 }
 
 .navbar-nav > .active > a::after,
 .navbar-nav a:hover::after {
-  content: "";
-  display: block;
-  height: 3px;
-  width: 30px;
-  background-color: rgb(255, 186, 86);
-  position: absolute;
-  margin-top: 1px;
+    content: "";
+    display: block;
+    height: 3px;
+    width: 30px;
+    background-color: rgb(255, 186, 86);
+    position: absolute;
+    margin-top: 1px;
 }
 
 .navbar-nav > .active > a {
-  position: relative;
-  z-index: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .navbar {
-  background-color: rgb(63, 122, 173);
+    background-color: rgb(63, 122, 173);
 }
+
 .navbar-nav li a {
-  color: white;
+    color: white;
 }
 
 .navbar-toggle .icon-bar {
-  background-color: white;
+    background-color: white;
 }
 
 .navbar-toggle {
-  float: none;
+    float: none;
 }
 
 .navbar-header {
-  padding: 0 10px;
+    padding: 0 10px;
 }
 
 .navbar-header img {
-  float: right;
-  padding-top: 10px;
+    float: right;
+    padding-top: 10px;
 }
 
 .mobile-home {
-  display: none;
-  background-color: transparent;
-  border: none;
-  color: white;
+    display: none;
+    background-color: transparent;
+    border: none;
+    color: white;
 }
 
 .mobile-home.active::after {
-  content: "";
-  display: block;
-  height: 3px;
-  width: 30px;
-  background-color: rgb(255, 186, 86);
-  position: absolute;
-  margin-top: 1px;
+    content: "";
+    display: block;
+    height: 3px;
+    width: 30px;
+    background-color: rgb(255, 186, 86);
+    position: absolute;
+    margin-top: 1px;
 }
 
 @media (min-width: 767px) {
-  .hideBigScreen {
-    display: none;
-  }
+    .hideBigScreen {
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
-  .darkMode {
-    display: none;
-  }
-  .mobile-home{
-    display: inline;
-  }
+    .darkMode {
+        display: none;
+    }
+    .mobile-home {
+        display: inline;
+    }
 }

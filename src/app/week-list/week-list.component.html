@@ -1,45 +1,45 @@
 <div class="row">
-  <div class="col-xs-12">
-    <h2>
-      Semaines
-      <select id="year" [(ngModel)]="year" (change)="changeYear()">
-        <option *ngFor="let item of yearList" [value]="item">
-          {{ item }}
-        </option>
-      </select>
-      <button class="btn btn-success" (click)="newWeek()" *ngIf="canAddNewWeek">
-        <span class="glyphicon glyphicon-plus"></span>
-      </button>
-      <h5 class="pull-right">
-        Semaine actuelle: {{ dateService.getWeekNumber(currentWeek) }}
-      </h5>
-    </h2>
-  </div>
-  <div class="col-xs-12">
-    <div class="list-group">
-      <button
-        class="list-group-item clearfix"
-        *ngFor="let week of weeks"
-        (click)="goToWeek(week.weekNumber)"
-      >
+    <div class="col-xs-12">
+        <h2>
+            Semaines
+            <select id="year" [(ngModel)]="year" (change)="changeYear()">
+                <option *ngFor="let item of yearList" [value]="item">
+                    {{ item }}
+                </option>
+            </select>
+            <button class="btn btn-success" (click)="newWeek()" *ngIf="canAddNewWeek">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <h5 class="pull-right">
+                Semaine actuelle: {{ dateService.getWeekNumber(currentWeek) }}
+            </h5>
+        </h2>
+    </div>
+    <div class="col-xs-12">
+        <div class="list-group">
+            <button
+                class="list-group-item clearfix"
+                *ngFor="let week of weeks"
+                (click)="goToWeek(week.weekNumber)"
+            >
         <span class="pull-left">
           <h3>
             S {{ week["weekNumber"] | number : "2.0-0" }} -
-            {{ week["year"] }}
+              {{ week["year"] }}
           </h3>
         </span>
-        <span class="pull-right">
+                <span class="pull-right">
           <h5>
             Dernière mise à jour :
-            {{ week["lastChanges"] | date : "dd/MM/yy à HH:mm" }}
+              {{ week["lastChanges"] | date : "dd/MM/yy à HH:mm" }}
           </h5>
           <h5>Modifié par : {{ week["author"] }}</h5>
         </span>
-      </button>
-      <div *ngIf="weeks.length == 0 && !isLoading">
-        Aucune semaine pour {{ year }}
-      </div>
-      <div *ngIf="isLoading">Chargement ...</div>
+            </button>
+            <div *ngIf="weeks.length == 0 && !isLoading">
+                Aucune semaine pour {{ year }}
+            </div>
+            <div *ngIf="isLoading">Chargement ...</div>
+        </div>
     </div>
-  </div>
 </div>

@@ -1,3 +1,4 @@
 export class Remark {
-  constructor(private name: string, private message: string) {}
+    constructor(private name: string, private message: string) {
+    }
 }

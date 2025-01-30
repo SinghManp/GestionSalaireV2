@@ -1,10 +1,9 @@
 {
-  "rules": {
-    ".read": "auth!=null",
-    ".write": "auth!=null",
-
-    "teams": {
-      ".indexOn": "name"
+    "rules": {
+        ".read": "auth!=null",
+        ".write": "auth!=null",
+        "teams": {
+            ".indexOn": "name"
+        }
     }
-  }
 }

@@ -1,7 +1,8 @@
 export class Worker {
-  constructor(public name: string, public salaire: number) {}
+    constructor(public name: string, public salaire: number) {
+    }
 
-  get getName(): string {
-    return this.name;
-  }
+    get getName(): string {
+        return this.name;
+    }
 }

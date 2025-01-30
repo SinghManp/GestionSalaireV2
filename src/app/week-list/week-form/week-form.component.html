@@ -1,569 +1,569 @@
 <div
-  class="container-fluid"
-  [ngClass]="payerName && payerName.length > 1 ? '' : 'red'"
+    class="container-fluid"
+    [ngClass]="payerName && payerName.length > 1 ? '' : 'red'"
 >
-  <form [formGroup]="workerWeekForm">
-    <div class="row-fluid">
-      <h3>
-        Semaine : {{ weekNumber }} - {{ workerWeekForm.get("year")?.value }}
-        <div class="btn-group">
-          <button
-            class="btn btn-primary"
-            [disabled]="payerName && payerName.length <= 1"
-            type="button"
-            (click)="onSaveWorker()"
-          >
-            Enregistrer
-          </button>
-        </div>
+    <form [formGroup]="workerWeekForm">
+        <div class="row-fluid">
+            <h3>
+                Semaine : {{ weekNumber }} - {{ workerWeekForm.get("year")?.value }}
+                <div class="btn-group">
+                    <button
+                        class="btn btn-primary"
+                        [disabled]="payerName && payerName.length <= 1"
+                        type="button"
+                        (click)="onSaveWorker()"
+                    >
+                        Enregistrer
+                    </button>
+                </div>
 
-        <span
-          [hidden]="!tryToSave || (tryToSave && workerWeekForm.valid)"
-          style="color: red"
-        >
+                <span
+                    [hidden]="!tryToSave || (tryToSave && workerWeekForm.valid)"
+                    style="color: red"
+                >
           Il reste quelques champs importants à remplir !
         </span>
 
-        <div class="form-inline pull-right">
-          <h6 class="form-inline">
+                <div class="form-inline pull-right">
+                    <h6 class="form-inline">
             <span
             >Solde cash
-              {{
-              weekNumber - 1 == 0
-                ? workerWeekForm.get("year")?.value - 1
-                : "S " + (weekNumber - 1)
-              }}
-              :
+                {{
+                    weekNumber - 1 == 0
+                        ? workerWeekForm.get("year")?.value - 1
+                        : "S " + (weekNumber - 1)
+                }}
+                :
             </span>
-            <input currencyMask formControlName="previousCheckout" readonly/>
-          </h6>
-          <h6 class="form-inline pull-right">
-            <span>Solde cash S {{ weekNumber }} : </span>
-            <input currencyMask formControlName="currentCheckout" readonly/>
-          </h6>
-        </div>
-      </h3>
+                        <input currencyMask formControlName="previousCheckout" readonly/>
+                    </h6>
+                    <h6 class="form-inline pull-right">
+                        <span>Solde cash S {{ weekNumber }} : </span>
+                        <input currencyMask formControlName="currentCheckout" readonly/>
+                    </h6>
+                </div>
+            </h3>
 
-      <h5 style="color: green" *ngIf="isNewYear">
-        Bonne année 🎉 <br/>
-        Pensez à retirer tous les ouvriers qui ne travaillent plus. <br/>
-        Cette action rendra le formulaire plus clair et plus simple à remplir.
-        😊
-      </h5>
+            <h5 style="color: green" *ngIf="isNewYear">
+                Bonne année 🎉 <br/>
+                Pensez à retirer tous les ouvriers qui ne travaillent plus. <br/>
+                Cette action rendra le formulaire plus clair et plus simple à remplir.
+                😊
+            </h5>
 
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 tableScroll">
-        <table id="workers">
-          <thead>
-          <tr>
-            <th *ngIf="isNewYear"></th>
-            <th class="text-center sticky">Nom</th>
-            <th class="text-center">Jour</th>
-            <th class="text-center">Salaire</th>
-            <th class="text-center hideOnMobile">Solde</th>
-            <th class="text-center hideOnMobile">Suppl.</th>
-            <th class="text-center hideOnMobile">Fournitures</th>
-            <th class="text-center">Cash</th>
-            <th class="text-center">Virement</th>
-            <th class="text-center">Solde</th>
-          </tr>
-          </thead>
-          <tbody
-            formArrayName="workerList"
-            *ngFor="
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 tableScroll">
+                <table id="workers">
+                    <thead>
+                    <tr>
+                        <th *ngIf="isNewYear"></th>
+                        <th class="text-center sticky">Nom</th>
+                        <th class="text-center">Jour</th>
+                        <th class="text-center">Salaire</th>
+                        <th class="text-center hideOnMobile">Solde</th>
+                        <th class="text-center hideOnMobile">Suppl.</th>
+                        <th class="text-center hideOnMobile">Fournitures</th>
+                        <th class="text-center">Cash</th>
+                        <th class="text-center">Virement</th>
+                        <th class="text-center">Solde</th>
+                    </tr>
+                    </thead>
+                    <tbody
+                        formArrayName="workerList"
+                        *ngFor="
               let hobbyControl of getWorkerList()?.controls;
               let i = index
             "
-          >
-          <tr [formGroupName]="i">
-            <button
-              type="button defaultBtn"
-              (click)="onRemoveWorker(i)"
-              *ngIf="isNewYear"
-            >
-              <span class="glyphicon glyphicon-trash"></span>
-            </button>
-            <td data-label="Nom" class="sticky">
-              <input
-                type="text"
-                class="input-main text-center clickable"
-                formControlName="name"
-                placeholder="Nom"
-                readonly
-                (click)="showDetails(i)"
-              />
-            </td>
-            <td data-label="Jour">
-              <input
-                id="nbDays"
-                inputmode="numeric"
-                type="number"
-                class="input-main text-center"
-                formControlName="workingDays"
-                placeholder="Jour"
-                (ngModelChange)="countWorkerSalary(i)"
-                (change)="onWorkingDaysChange(i)"
-                [class.invalid]="
+                    >
+                    <tr [formGroupName]="i">
+                        <button
+                            type="button defaultBtn"
+                            (click)="onRemoveWorker(i)"
+                            *ngIf="isNewYear"
+                        >
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <td data-label="Nom" class="sticky">
+                            <input
+                                type="text"
+                                class="input-main text-center clickable"
+                                formControlName="name"
+                                placeholder="Nom"
+                                readonly
+                                (click)="showDetails(i)"
+                            />
+                        </td>
+                        <td data-label="Jour">
+                            <input
+                                id="nbDays"
+                                inputmode="numeric"
+                                type="number"
+                                class="input-main text-center"
+                                formControlName="workingDays"
+                                placeholder="Jour"
+                                (ngModelChange)="countWorkerSalary(i)"
+                                (change)="onWorkingDaysChange(i)"
+                                [class.invalid]="
                     (getWorkerListForm(i, 'workingDays').touched &&
                       getWorkerListForm(i, 'workingDays').invalid) ||
                     (tryToSave && getWorkerListForm(i, 'workingDays').invalid)
                   "
-              />
-            </td>
-            <td data-label="Salaire">
-              <input
-                currencyMask
-                class="input-main text-center"
-                formControlName="salary"
-                readonly
-              />
-            </td>
-            <td data-label="Solde" class="hideOnMobile">
-              <input
-                currencyMask
-                class="input-main"
-                formControlName="previousBalance"
-                readonly
-              />
-            </td>
-            <td data-label="Supplément" class="hideOnMobile">
-              <input
-                currencyMask
-                class="input-main"
-                formControlName="extra"
-                readonly
-                (ngModelChange)="countWorkerSalary(i)"
-              />
-            </td>
-            <td data-label="Fournitures" class="hideOnMobile">
-              <input
-                currencyMask
-                class="input-main"
-                formControlName="cashFromSupplies"
-                readonly
-              />
-            </td>
-            <td data-label="Cash" id="{{ 'cash' + i }}">
-              <input
-                id="nbDays"
-                currencyMask
-                inputmode="numeric"
-                class="input-main text-center"
-                formControlName="paiementCash"
-                (ngModelChange)="setCashTotal(i)"
-                placeholder="Cash"
-                [class.invalid]="
+                            />
+                        </td>
+                        <td data-label="Salaire">
+                            <input
+                                currencyMask
+                                class="input-main text-center"
+                                formControlName="salary"
+                                readonly
+                            />
+                        </td>
+                        <td data-label="Solde" class="hideOnMobile">
+                            <input
+                                currencyMask
+                                class="input-main"
+                                formControlName="previousBalance"
+                                readonly
+                            />
+                        </td>
+                        <td data-label="Supplément" class="hideOnMobile">
+                            <input
+                                currencyMask
+                                class="input-main"
+                                formControlName="extra"
+                                readonly
+                                (ngModelChange)="countWorkerSalary(i)"
+                            />
+                        </td>
+                        <td data-label="Fournitures" class="hideOnMobile">
+                            <input
+                                currencyMask
+                                class="input-main"
+                                formControlName="cashFromSupplies"
+                                readonly
+                            />
+                        </td>
+                        <td data-label="Cash" id="{{ 'cash' + i }}">
+                            <input
+                                id="nbDays"
+                                currencyMask
+                                inputmode="numeric"
+                                class="input-main text-center"
+                                formControlName="paiementCash"
+                                (ngModelChange)="setCashTotal(i)"
+                                placeholder="Cash"
+                                [class.invalid]="
                     (getWorkerListForm(i, 'paiementCash').touched &&
                       getWorkerListForm(i, 'paiementCash').invalid) ||
                     (tryToSave && getWorkerListForm(i, 'paiementCash').invalid)
                   "
-              />
-            </td>
-            <td data-label="Virement">
-              <input
-                id="{{ 'open' + i }}"
-                currencyMask
-                class="input-main text-center clickable"
-                (ngModelChange)="countWorkerSalary(i)"
-                placeholder="Bank"
-                formControlName="paiementBank"
-                (click)="showPaiementDate(i)"
-                readonly
-                [class.invalid]="
+                            />
+                        </td>
+                        <td data-label="Virement">
+                            <input
+                                id="{{ 'open' + i }}"
+                                currencyMask
+                                class="input-main text-center clickable"
+                                (ngModelChange)="countWorkerSalary(i)"
+                                placeholder="Bank"
+                                formControlName="paiementBank"
+                                (click)="showPaiementDate(i)"
+                                readonly
+                                [class.invalid]="
                     getWorkerListForm(i, 'paiementBankList').invalid
                   "
-              />
-            </td>
-            <td data-label="Solde" class="allWorker">
-              <input
-                currencyMask
-                class="input-main text-center"
-                formControlName="currentBalance"
-                readonly
-              />
-            </td>
-          </tr>
-          <tr [formGroupName]="i" class="{{ 'headDetails' + i }}" hidden>
-            <td class="text-center {{ 'details' + i }}" hidden>
-              <div class="text-center">
-                Par jour
-                <input
-                  hidden
-                  currencyMask
-                  class="input-main text-center"
-                  formControlName="dailySalary"
-                  placeholder="Salaire"
-                  (ngModelChange)="countWorkerSalary(i)"
-                  (focusout)="onDailySalatyChange(i)"
-                />
-              </div>
-            </td>
-            <td class="{{ 'details' + i }}" hidden colspan="2">
-              Remarque :
-              <textarea
-                style="resize: vertical"
-                rows="1"
-                hidden
-                type="text"
-                class="input-textarea"
-                formControlName="remark"
-                placeholder="Remarque"
-              ></textarea>
-            </td>
-            <td class="{{ 'td' + i }}"></td>
-            <td class="{{ 'td' + i }}"></td>
-            <td class="{{ 'td' + i }}"></td>
-            <td class="hideOnMobile"></td>
-            <td class="hideOnMobile"></td>
-            <td class="hideOnMobile"></td>
-            <td>
-              <button
-                class="pull-right defaultBtn"
-                type="button"
-                (click)="addBankPaiement(hobbyControl)"
-              >
-                <span class="glyphicon glyphicon-plus"></span>
-              </button>
-            </td>
-            <td colspan="2">
-              <div class="divPaiementBank" formArrayName="paiementBankList">
-                <div
-                  class="divPaiementBank"
-                  *ngFor="
+                            />
+                        </td>
+                        <td data-label="Solde" class="allWorker">
+                            <input
+                                currencyMask
+                                class="input-main text-center"
+                                formControlName="currentBalance"
+                                readonly
+                            />
+                        </td>
+                    </tr>
+                    <tr [formGroupName]="i" class="{{ 'headDetails' + i }}" hidden>
+                        <td class="text-center {{ 'details' + i }}" hidden>
+                            <div class="text-center">
+                                Par jour
+                                <input
+                                    hidden
+                                    currencyMask
+                                    class="input-main text-center"
+                                    formControlName="dailySalary"
+                                    placeholder="Salaire"
+                                    (ngModelChange)="countWorkerSalary(i)"
+                                    (focusout)="onDailySalatyChange(i)"
+                                />
+                            </div>
+                        </td>
+                        <td class="{{ 'details' + i }}" hidden colspan="2">
+                            Remarque :
+                            <textarea
+                                style="resize: vertical"
+                                rows="1"
+                                hidden
+                                type="text"
+                                class="input-textarea"
+                                formControlName="remark"
+                                placeholder="Remarque"
+                            ></textarea>
+                        </td>
+                        <td class="{{ 'td' + i }}"></td>
+                        <td class="{{ 'td' + i }}"></td>
+                        <td class="{{ 'td' + i }}"></td>
+                        <td class="hideOnMobile"></td>
+                        <td class="hideOnMobile"></td>
+                        <td class="hideOnMobile"></td>
+                        <td>
+                            <button
+                                class="pull-right defaultBtn"
+                                type="button"
+                                (click)="addBankPaiement(hobbyControl)"
+                            >
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                        <td colspan="2">
+                            <div class="divPaiementBank" formArrayName="paiementBankList">
+                                <div
+                                    class="divPaiementBank"
+                                    *ngFor="
                       let item of getPaiementBankList(hobbyControl);
                       let j = index
                     "
-                  [formGroupName]="j"
-                >
-                  <td>
-                    <tr style="border: none">
-                  <td>
-                    <button
-                      type="button defaultBtn"
-                      (click)="removeBankPaiement(hobbyControl, j)"
-                    >
-                      <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                  </td>
-                  <td>
-                    <input
-                      currencyMask
-                      inputmode="numeric"
-                      class="input-main"
-                      formControlName="amount"
-                      (ngModelChange)="onPaiementBankChange(hobbyControl)"
-                      (focusout)="
+                                    [formGroupName]="j"
+                                >
+                                    <td>
+                                        <tr style="border: none">
+                                    <td>
+                                        <button
+                                            type="button defaultBtn"
+                                            (click)="removeBankPaiement(hobbyControl, j)"
+                                        >
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <input
+                                            currencyMask
+                                            inputmode="numeric"
+                                            class="input-main"
+                                            formControlName="amount"
+                                            (ngModelChange)="onPaiementBankChange(hobbyControl)"
+                                            (focusout)="
                               onPaiementBankAmountChange(hobbyControl, j)
                             "
-                      [class.invalid]="
+                                            [class.invalid]="
                               getPaiementBankList(hobbyControl)[j].controls[
                                 'amount'
                               ].invalid
                             "
-                    />
-                  </td>
-          </tr>
-          </td>
-          <td>
-            <input
-              type="date"
-              class="input-main text-center"
-              placeholder="Date"
-              formControlName="date"
-              (input)="onDateChange(hobbyControl, j)"
-              [class.invalid]="
+                                        />
+                                    </td>
+                    </tr>
+                    </td>
+                    <td>
+                        <input
+                            type="date"
+                            class="input-main text-center"
+                            placeholder="Date"
+                            formControlName="date"
+                            (input)="onDateChange(hobbyControl, j)"
+                            [class.invalid]="
                           getPaiementBankList(hobbyControl)[j].controls['date']
                             .invalid
                         "
-            />
-          </td>
-      </div>
-    </div>
-    </td>
-    </tr>
-    </tbody>
-    <tfoot>
-    <tr id="allTotal">
-      <th *ngIf="isNewYear"></th>
-      <th class="sticky">
-        <span class="input-main">TOTAL</span>
-      </th>
-      <th></th>
-      <th>
-        <span class="input-main">{{ conversion(allSalary) }} €</span>
-      </th>
-      <th class="hideOnMobile">
+                        />
+                    </td>
+            </div>
+        </div>
+        </td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr id="allTotal">
+            <th *ngIf="isNewYear"></th>
+            <th class="sticky">
+                <span class="input-main">TOTAL</span>
+            </th>
+            <th></th>
+            <th>
+                <span class="input-main">{{ conversion(allSalary) }} €</span>
+            </th>
+            <th class="hideOnMobile">
                 <span class="input-main"
                 >{{ conversion(allPreviousSoldeTotal) }} €</span
                 >
-      </th>
-      <th class="hideOnMobile">
+            </th>
+            <th class="hideOnMobile">
                 <span class="input-main"
                 >{{ conversion(allExtraTotal) }} €</span
                 >
-      </th>
-      <th class="hideOnMobile">
+            </th>
+            <th class="hideOnMobile">
                 <span class="input-main"
                 >{{ conversion(allCashFromSuppliesTotal) }} €</span
                 >
-      </th>
-      <th>
+            </th>
+            <th>
                 <span class="input-main"
                 >{{ conversion(allPaiementCashTotal) }} €</span
                 >
-      </th>
-      <th>
-        <span class="input-main">{{ conversion(allBankTotal) }} €</span>
-      </th>
-      <th>
+            </th>
+            <th>
+                <span class="input-main">{{ conversion(allBankTotal) }} €</span>
+            </th>
+            <th>
                 <span class="input-main"
                 >{{ conversion(allCurrentSoldeTotal) }} €</span
                 >
-      </th>
-    </tr>
-    </tfoot>
-    </table>
-    <div *ngIf="workers && workers.length > 0">
-      <select
-        class="input-main"
-        (change)="onSelect($event)"
-        style="width: 150px"
-      >
-        <option>Ajouter un ouvrier</option>
-        <option *ngFor="let worker of workers">{{ worker }}</option>
-      </select>
-    </div>
+            </th>
+        </tr>
+        </tfoot>
+        </table>
+        <div *ngIf="workers && workers.length > 0">
+            <select
+                class="input-main"
+                (change)="onSelect($event)"
+                style="width: 150px"
+            >
+                <option>Ajouter un ouvrier</option>
+                <option *ngFor="let worker of workers">{{ worker }}</option>
+            </select>
+        </div>
 </div>
 
 <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
-  <h5>Fournitures</h5>
-  <div class="tableScroll">
-    <table id="supply" [hidden]="!suppliesList">
-      <thead>
-      <tr>
-        <th class="text-center sticky">Fournisseur</th>
-        <th class="text-center">Date</th>
-        <th class="text-center">Payé par</th>
-        <th class="text-center">Pour</th>
-        <th class="text-center">Montant</th>
-      </tr>
-      </thead>
-      <tbody
-        formArrayName="suppliesList"
-        *ngFor="let h of getSuppliesList()?.controls; let i = index"
-      >
-      <tr [formGroupName]="i">
-        <td data-label="Fournisseur" class="sticky">
-          <input
-            type="text"
-            class="input-main"
-            formControlName="name"
-            placeholder="Nom"
-            list="supplierNamestOptions"
-            [class.invalid]="
+    <h5>Fournitures</h5>
+    <div class="tableScroll">
+        <table id="supply" [hidden]="!suppliesList">
+            <thead>
+            <tr>
+                <th class="text-center sticky">Fournisseur</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Payé par</th>
+                <th class="text-center">Pour</th>
+                <th class="text-center">Montant</th>
+            </tr>
+            </thead>
+            <tbody
+                formArrayName="suppliesList"
+                *ngFor="let h of getSuppliesList()?.controls; let i = index"
+            >
+            <tr [formGroupName]="i">
+                <td data-label="Fournisseur" class="sticky">
+                    <input
+                        type="text"
+                        class="input-main"
+                        formControlName="name"
+                        placeholder="Nom"
+                        list="supplierNamestOptions"
+                        [class.invalid]="
                       (getSuppliesListForm(i, 'name').touched &&
                         getSuppliesListForm(i, 'name').invalid) ||
                       (tryToSave && getSuppliesListForm(i, 'name').invalid)
                     "
-          />
-        </td>
-        <td data-label="Date">
-          <input
-            type="date"
-            class="input-main"
-            formControlName="date"
-            placeholder="Date"
-            [class.invalid]="
+                    />
+                </td>
+                <td data-label="Date">
+                    <input
+                        type="date"
+                        class="input-main"
+                        formControlName="date"
+                        placeholder="Date"
+                        [class.invalid]="
                       (getSuppliesListForm(i, 'date').touched &&
                         getSuppliesListForm(i, 'date').invalid) ||
                       (tryToSave && getSuppliesListForm(i, 'date').invalid)
                     "
-          />
-        </td>
-        <td data-label="Payé par">
-          <select
-            class="input-main"
-            formControlName="payedBy"
-            placeholder="Payé par"
-            (change)="countExtra()"
-            [class.invalid]="
+                    />
+                </td>
+                <td data-label="Payé par">
+                    <select
+                        class="input-main"
+                        formControlName="payedBy"
+                        placeholder="Payé par"
+                        (change)="countExtra()"
+                        [class.invalid]="
                       (getSuppliesListForm(i, 'payedBy').touched &&
                         getSuppliesListForm(i, 'payedBy').invalid) ||
                       (tryToSave && getSuppliesListForm(i, 'payedBy').invalid)
                     "
-          >
-            <option value="" disabled>⚠️</option>
-            <option [value]="worker" *ngFor="let worker of payerName">
-              {{ worker }}
-            </option>
-          </select>
-        </td>
-        <td data-label="Pour">
-          <select
-            class="input-main"
-            formControlName="payedFor"
-            placeholder="Payé pour"
-            (change)="countExtra()"
-            [class.invalid]="
+                    >
+                        <option value="" disabled>⚠️</option>
+                        <option [value]="worker" *ngFor="let worker of payerName">
+                            {{ worker }}
+                        </option>
+                    </select>
+                </td>
+                <td data-label="Pour">
+                    <select
+                        class="input-main"
+                        formControlName="payedFor"
+                        placeholder="Payé pour"
+                        (change)="countExtra()"
+                        [class.invalid]="
                       (getSuppliesListForm(i, 'payedFor').touched &&
                         getSuppliesListForm(i, 'payedFor').invalid) ||
                       (tryToSave && getSuppliesListForm(i, 'payedFor').invalid)
                     "
-          >
-            <option value="" disabled>⚠️</option>
-            <option [value]="worker" *ngFor="let worker of payerName">
-              {{ worker }}
-            </option>
-          </select>
-        </td>
-        <td
-          data-label="Montant"
-          class="input-group"
-          style="width: 100%"
-        >
-      <tr style="border: none">
-        <td style="border: none">
-          <input
-            inputmode="numeric"
-            currencyMask
-            class="input-main"
-            formControlName="amount"
-            placeholder="Montant"
-            (ngModelChange)="countExtra()"
-            (focusout)="onSupplyAmountChange(i)"
-            [class.invalid]="
+                    >
+                        <option value="" disabled>⚠️</option>
+                        <option [value]="worker" *ngFor="let worker of payerName">
+                            {{ worker }}
+                        </option>
+                    </select>
+                </td>
+                <td
+                    data-label="Montant"
+                    class="input-group"
+                    style="width: 100%"
+                >
+            <tr style="border: none">
+                <td style="border: none">
+                    <input
+                        inputmode="numeric"
+                        currencyMask
+                        class="input-main"
+                        formControlName="amount"
+                        placeholder="Montant"
+                        (ngModelChange)="countExtra()"
+                        (focusout)="onSupplyAmountChange(i)"
+                        [class.invalid]="
                           (getSuppliesListForm(i, 'amount').touched &&
                             getSuppliesListForm(i, 'amount').invalid) ||
                           (tryToSave &&
                             getSuppliesListForm(i, 'amount').invalid)
                         "
-          />
-        </td>
-        <td style="border: none">
-          <button
-            class="defaultBtn"
+                    />
+                </td>
+                <td style="border: none">
+                    <button
+                        class="defaultBtn"
+                        type="button"
+                        (click)="onRemoveSupply(i)"
+                    >
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </td>
+            </tr>
+            </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group col-md-4">
+        <button
+            class="btn btn-default"
+            (click)="addNewSupply()"
             type="button"
-            (click)="onRemoveSupply(i)"
-          >
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </td>
-      </tr>
-      </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="form-group col-md-4">
-    <button
-      class="btn btn-default"
-      (click)="addNewSupply()"
-      type="button"
-    >
-      Ajouter une fourniture
-    </button>
-  </div>
+        >
+            Ajouter une fourniture
+        </button>
+    </div>
 </div>
 
 <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12">
-  <h5>Acompte / retrait</h5>
-  <div class="tableScroll">
-    <table id="checkout" [hidden]="!checkoutList">
-      <thead>
-      <tr>
-        <th>Date</th>
-        <th>Nom</th>
-        <th>Montant</th>
-      </tr>
-      </thead>
-      <tbody
-        formArrayName="checkoutList"
-        *ngFor="let h of getCheckoutList()?.controls; let i = index"
-      >
-      <tr [formGroupName]="i">
-        <td data-label="Date">
-          <input
-            type="date"
-            class="input-main"
-            formControlName="date"
-            placeholder="Date"
-            [class.invalid]="
+    <h5>Acompte / retrait</h5>
+    <div class="tableScroll">
+        <table id="checkout" [hidden]="!checkoutList">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Nom</th>
+                <th>Montant</th>
+            </tr>
+            </thead>
+            <tbody
+                formArrayName="checkoutList"
+                *ngFor="let h of getCheckoutList()?.controls; let i = index"
+            >
+            <tr [formGroupName]="i">
+                <td data-label="Date">
+                    <input
+                        type="date"
+                        class="input-main"
+                        formControlName="date"
+                        placeholder="Date"
+                        [class.invalid]="
                       (getCheckoutListForm(i, 'date').touched &&
                         getCheckoutListForm(i, 'date').invalid) ||
                       (tryToSave && getCheckoutListForm(i, 'date').invalid)
                     "
-          />
-        </td>
-        <td data-label="Nom">
-          <input
-            type="text"
-            class="input-main"
-            formControlName="name"
-            placeholder="Nom"
-            list="datalistOptions"
-            [class.invalid]="
+                    />
+                </td>
+                <td data-label="Nom">
+                    <input
+                        type="text"
+                        class="input-main"
+                        formControlName="name"
+                        placeholder="Nom"
+                        list="datalistOptions"
+                        [class.invalid]="
                       (getCheckoutListForm(i, 'name').touched &&
                         getCheckoutListForm(i, 'name').invalid) ||
                       (tryToSave && getCheckoutListForm(i, 'name').invalid)
                     "
-          />
-        </td>
-        <td
-          data-label="Montant"
-          class="input-group"
-          style="width: 100%"
-        >
-      <tr style="border: none">
-        <td style="border: none">
-          <input
-            currencyMask
-            inputmode="numeric"
-            class="input-main"
-            formControlName="amount"
-            (ngModelChange)="computeCheckoutTotal()"
-            placeholder="Montant"
-            [class.invalid]="
+                    />
+                </td>
+                <td
+                    data-label="Montant"
+                    class="input-group"
+                    style="width: 100%"
+                >
+            <tr style="border: none">
+                <td style="border: none">
+                    <input
+                        currencyMask
+                        inputmode="numeric"
+                        class="input-main"
+                        formControlName="amount"
+                        (ngModelChange)="computeCheckoutTotal()"
+                        placeholder="Montant"
+                        [class.invalid]="
                           (getCheckoutListForm(i, 'amount').touched &&
                             getCheckoutListForm(i, 'amount').invalid) ||
                           (tryToSave &&
                             getCheckoutListForm(i, 'amount').invalid)
                         "
-          />
-        </td>
-        <td style="border: none">
-          <button
-            class="defaultBtn"
+                    />
+                </td>
+                <td style="border: none">
+                    <button
+                        class="defaultBtn"
+                        type="button"
+                        (click)="onRemoveCheckout(i)"
+                    >
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </td>
+            </tr>
+            </td>
+            </tr>
+            </tbody>
+            <tbody class="hideOnMobile">
+            <tr id="allTotal">
+                <td>
+                    <span class="input-main">TOTAL</span>
+                </td>
+                <td></td>
+                <td>
+                    <span class="input-main">{{ allCheckoutTotal }} €</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group col-md-4">
+        <button
+            class="btn btn-default"
+            (click)="addNewCheckout()"
             type="button"
-            (click)="onRemoveCheckout(i)"
-          >
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
-        </td>
-      </tr>
-      </td>
-      </tr>
-      </tbody>
-      <tbody class="hideOnMobile">
-      <tr id="allTotal">
-        <td>
-          <span class="input-main">TOTAL</span>
-        </td>
-        <td></td>
-        <td>
-          <span class="input-main">{{ allCheckoutTotal }} €</span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="form-group col-md-4">
-    <button
-      class="btn btn-default"
-      (click)="addNewCheckout()"
-      type="button"
-    >
-      Ajouter une entrée
-    </button>
-  </div>
+        >
+            Ajouter une entrée
+        </button>
+    </div>
 </div>
 </div>
 </form>
@@ -583,21 +583,21 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" style="text-align: center" id="myModalLabel">Attention! </h4>
-      </div>
-      <div class="modal-body" style="text-align: center">
-        Déconnexion automatique dans <br><br>
-        <div class="text-primary" style="font-size: large">{{minuteur}} sec</div>
-        <br>
-        <div style="color: rgba(255,0,0,0.6); font-size: small">Vos modifications seront perdues.</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-link" (click)="goToHome()">Déconnexion</button>
-        <button type="button" class="btn btn-primary" (click)="userConnected()">Rester connecté</button>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="text-align: center" id="myModalLabel">Attention! </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                Déconnexion automatique dans <br><br>
+                <div class="text-primary" style="font-size: large">{{ minuteur }} sec</div>
+                <br>
+                <div style="color: rgba(255,0,0,0.6); font-size: small">Vos modifications seront perdues.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" (click)="goToHome()">Déconnexion</button>
+                <button type="button" class="btn btn-primary" (click)="userConnected()">Rester connecté</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

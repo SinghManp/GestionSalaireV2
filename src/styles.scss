@@ -1,116 +1,119 @@
 /* You can add global styles to this file, and also import other style files */
 body.dark-mode {
-  background-color: #181c21;
-  color: #cccccc;
+    background-color: #181c21;
+    color: #cccccc;
 }
 
 .dark-mode {
-  body,
-  body.dark-mode,
-  select {
-    background-color: #181c21;
-    color: #cccccc;
-  }
-
-  .navbar,
-  .list-group-item,
-  pre,
-  th,
-  td {
-    background-color: #121212 !important;
-    color: #cccccc !important;
-    border-color: #363636;
-  }
-
-  .negativeAmount {
-    color: red !important;
-  }
-
-  table,
-  th,
-  td {
-    border: 1px solid #2b2b2b;
-  }
-
-  th,
-  thead,
-  tfoot {
-    background-color: #2b2b2b !important;
-    .sticky {
-      background-color: #2b2b2b !important;
+    body,
+    body.dark-mode,
+    select {
+        background-color: #181c21;
+        color: #cccccc;
     }
-  }
-  .tdList {
-    background-color: #2b2b2b !important;
-  }
 
-  .sticky {
-    background-color: #121212 !important;
-  }
+    .navbar,
+    .list-group-item,
+    pre,
+    th,
+    td {
+        background-color: #121212 !important;
+        color: #cccccc !important;
+        border-color: #363636;
+    }
 
-  .list-group-item:hover {
-    background-color: #232323 !important;
-  }
+    .negativeAmount {
+        color: red !important;
+    }
 
-  h3 {
-    color: #cccccc !important;
-  }
+    table,
+    th,
+    td {
+        border: 1px solid #2b2b2b;
+    }
 
-  .navbar-default .navbar-nav > .active > a,
-  .navbar-default .navbar-nav > .active > a:hover,
-  .navbar-default .navbar-nav > .active > a:focus {
-    background-color: #232323 !important;
-    color: #cccccc;
-  }
+    th,
+    thead,
+    tfoot {
+        background-color: #2b2b2b !important;
 
-  td > .input-main:read-only,
-  .btn-default,
-  select.input-main {
-    background-color: #121212 !important;
-    color: #cccccc;
-  }
+        .sticky {
+            background-color: #2b2b2b !important;
+        }
+    }
 
-  th > .input-main:read-only {
-    background-color: #2b2b2b !important;
-  }
+    .tdList {
+        background-color: #2b2b2b !important;
+    }
 
-  input {
-    background-color: #414141;
-    border: none !important;
-  }
-  #allTotal .input-main {
-    border: none;
-  }
+    .sticky {
+        background-color: #121212 !important;
+    }
 
-  .btn {
-    background-color: #121212 !important;
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    outline: none !important;
-  }
+    .list-group-item:hover {
+        background-color: #232323 !important;
+    }
 
-  .btn:hover {
-    background-color: #cccccc !important;
-    color: #121212 !important;
-  }
+    h3 {
+        color: #cccccc !important;
+    }
 
-  .defaultBtn:hover {
-    background-color: #cccccc;
-    opacity: 0.5;
-    color: #121212;
-  }
+    .navbar-default .navbar-nav > .active > a,
+    .navbar-default .navbar-nav > .active > a:hover,
+    .navbar-default .navbar-nav > .active > a:focus {
+        background-color: #232323 !important;
+        color: #cccccc;
+    }
 
-  .defaultBtn:active {
-    opacity: 1;
-  }
+    td > .input-main:read-only,
+    .btn-default,
+    select.input-main {
+        background-color: #121212 !important;
+        color: #cccccc;
+    }
+
+    th > .input-main:read-only {
+        background-color: #2b2b2b !important;
+    }
+
+    input {
+        background-color: #414141;
+        border: none !important;
+    }
+
+    #allTotal .input-main {
+        border: none;
+    }
+
+    .btn {
+        background-color: #121212 !important;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        outline: none !important;
+    }
+
+    .btn:hover {
+        background-color: #cccccc !important;
+        color: #121212 !important;
+    }
+
+    .defaultBtn:hover {
+        background-color: #cccccc;
+        opacity: 0.5;
+        color: #121212;
+    }
+
+    .defaultBtn:active {
+        opacity: 1;
+    }
 }
 
 h2 {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 @media print {
-  .hideOnPrint {
-    display: none;
-  }
+    .hideOnPrint {
+        display: none;
+    }
 }

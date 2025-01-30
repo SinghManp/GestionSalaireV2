@@ -1,191 +1,197 @@
 table {
-  border: 1px solid rgb(239, 239, 239);
-  border-collapse: separate;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+    border: 1px solid rgb(239, 239, 239);
+    border-collapse: separate;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 }
 
 .tableScroll {
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 table tr {
-  padding: 0.35em;
+    padding: 0.35em;
 }
 
 table th,
 table td {
-  padding: 0.625em;
-  text-align: center;
-  max-width: 50px;
-  overflow: hidden;
+    padding: 0.625em;
+    text-align: center;
+    max-width: 50px;
+    overflow: hidden;
 }
 
 table td {
-  border: 1px solid rgb(239, 239, 239);
+    border: 1px solid rgb(239, 239, 239);
 }
 
 .sticky {
-  position: sticky;
-  left: 0;
-  background-color: white;
+    position: sticky;
+    left: 0;
+    background-color: white;
 }
 
 thead {
-  background-color: rgb(63 122 173);
-  color: white;
-  .sticky {
     background-color: rgb(63 122 173);
-  }
+    color: white;
+
+    .sticky {
+        background-color: rgb(63 122 173);
+    }
 }
 
 tfoot {
-  background-color: rgb(255 186 86);
-  .sticky {
     background-color: rgb(255 186 86);
-  }
+
+    .sticky {
+        background-color: rgb(255 186 86);
+    }
 }
 
 table th {
-  font-size: 0.85em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
 }
 
 #allTotal td span {
-  background-color: #ecd8d8;
+    background-color: #ecd8d8;
 }
 
 .negativeAmount {
-  color: red;
+    color: red;
 }
 
 .changeWeekBtn {
-  background-color: rgb(63 122 173);
-  color: white;
+    background-color: rgb(63 122 173);
+    color: white;
 }
 
 .mb-15 {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .mainC {
-  display: flex;
-  padding-right: 15px;
-  padding-left: 15px;
+    display: flex;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .col1 {
-  width: 70%;
-  padding: 0 5px;
+    width: 70%;
+    padding: 0 5px;
 }
 
 .col2 {
-  width: 30%;
-  padding: 0 5px;
+    width: 30%;
+    padding: 0 5px;
 }
 
 .action-btn {
-  width: 100%;
-  padding: 0 20px;
-  display: flex;
-  // justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    // justify-content: space-between;
 }
 
 .tdList {
-  background-color: rgb(241, 241, 241);
+    background-color: rgb(241, 241, 241);
 }
 
 .remark-item {
-  display: flex;
+    display: flex;
 
-  div:nth-child(1) {
-    flex: 1;
-    text-align: right;
-    font-weight: bold;
-  }
-  div:nth-child(2) {
-    flex: 5;
-  }
+    div:nth-child(1) {
+        flex: 1;
+        text-align: right;
+        font-weight: bold;
+    }
+
+    div:nth-child(2) {
+        flex: 5;
+    }
 }
 
 @media screen and (max-width: 1000px) {
-  table td,
-  table th {
-    min-width: 95px;
-  }
+    table td,
+    table th {
+        min-width: 95px;
+    }
 
-  .mainC {
-    flex-direction: column;
-  }
+    .mainC {
+        flex-direction: column;
+    }
 
-  .col1,
-  .col2 {
-    width: 100% !important;
-  }
+    .col1,
+    .col2 {
+        width: 100% !important;
+    }
 }
 
 @media print {
-  * { visibility: hidden; display: none }
-  .mainC {
-    flex-direction: column;
-    width: 100% !important;
-  }
-
-  .col1 {
-    width: 100% !important;
-  }
-
-  .col2 {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100% !important;
-
-    .paimentBank,
-    .account {
-      flex: 1;
+    * {
+        visibility: hidden;
+        display: none
+    }
+    .mainC {
+        flex-direction: column;
+        width: 100% !important;
     }
 
-    .paimentBank {
-      width: 100% !important;
+    .col1 {
+        width: 100% !important;
     }
 
-    .account {
-      width: 100% !important;
-      margin-left: 1% !important;
+    .col2 {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100% !important;
+
+        .paimentBank,
+        .account {
+            flex: 1;
+        }
+
+        .paimentBank {
+            width: 100% !important;
+        }
+
+        .account {
+            width: 100% !important;
+            margin-left: 1% !important;
+        }
+
+        .remark {
+            width: 100% !important;
+        }
     }
 
-    .remark {
-      width: 100% !important;
+    * {
+        padding: 0;
     }
-  }
 
-  * {
-    padding: 0;
-  }
+    @page {
+        margin: 0;
+    }
 
-  @page {
-    margin: 0;
-  }
+    thead {
+        background-color: rgb(250, 201, 161) !important;
+        font-size: small !important;
+    }
 
-  thead {
-    background-color: rgb(250, 201, 161) !important;
-    font-size: small !important;
-  }
+    th,
+    td {
+        padding: 3px !important;
+        font-size: small !important;
+    }
 
-  th,
-  td {
-    padding: 3px !important;
-    font-size: small !important;
-  }
+    tfoot {
+        background-color: rgb(255, 255, 205) !important;
+        font-size: small !important;
+    }
 
-  tfoot {
-    background-color: rgb(255, 255, 205) !important;
-    font-size: small !important;
-  }
-
-  .negativeAmount {
-    color: red !important;
-  }
+    .negativeAmount {
+        color: red !important;
+    }
 }

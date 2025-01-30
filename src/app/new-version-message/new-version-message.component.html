@@ -1,9 +1,9 @@
-<div class="alert alert-success show" role="alert" style="width: 80%;margin-left: 10%; margin-top: 20px" *ngIf="newUpdate">
-  <strong>Bonne nouvelle !</strong><br> L'application a été mise à jour.<br>
-  Vous pouvez maintenant choisir des options d'impression pour les semaines.
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideUpdate()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="alert alert-success show" role="alert" style="width: 80%;margin-left: 10%; margin-top: 20px"
+     *ngIf="newUpdate">
+    <strong>Bonne nouvelle !</strong><br> L'application a été mise à jour.<br>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="hideUpdate()">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 
 <app-week-list></app-week-list>

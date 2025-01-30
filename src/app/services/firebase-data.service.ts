@@ -1,34 +1,36 @@
-import { Injectable } from '@angular/core';
-import { getDatabase, ref, set, get, child } from 'firebase/database';
+import {Injectable} from '@angular/core';
+import {getDatabase, ref, set, get, child} from 'firebase/database';
+
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class FirebaseDataService {
-  constructor() {}
+    constructor() {
+    }
 
-  getSuppliersNames() {
-    return new Promise((resolve) => {
-      get(child(ref(getDatabase()), 'suppliersNames')).then((snapshot) => {
-        const checkoutNames = snapshot.val() ? snapshot.val() : [];
-        resolve(checkoutNames);
-      });
-    });
-  }
+    getSuppliersNames() {
+        return new Promise((resolve) => {
+            get(child(ref(getDatabase()), 'suppliersNames')).then((snapshot) => {
+                const checkoutNames = snapshot.val() ? snapshot.val() : [];
+                resolve(checkoutNames);
+            });
+        });
+    }
 
-  updateSuppliersNames(list: String[]) {
-    set(ref(getDatabase(), 'suppliersNames'), list);
-  }
+    updateSuppliersNames(list: String[]) {
+        set(ref(getDatabase(), 'suppliersNames'), list);
+    }
 
-  getCheckoutNames() {
-    return new Promise((resolve) => {
-      get(child(ref(getDatabase()), 'checkoutNames')).then((snapshot) => {
-        const checkoutNames = snapshot.val() ? snapshot.val() : [];
-        resolve(checkoutNames);
-      });
-    });
-  }
+    getCheckoutNames() {
+        return new Promise((resolve) => {
+            get(child(ref(getDatabase()), 'checkoutNames')).then((snapshot) => {
+                const checkoutNames = snapshot.val() ? snapshot.val() : [];
+                resolve(checkoutNames);
+            });
+        });
+    }
 
-  updateCheckoutNames(list: String[]) {
-    set(ref(getDatabase(), 'checkoutNames'), list);
-  }
+    updateCheckoutNames(list: String[]) {
+        set(ref(getDatabase(), 'checkoutNames'), list);
+    }
 }

@@ -127,6 +127,7 @@ table th {
 }
 
 @media print {
+  * { visibility: hidden; display: none }
   .mainC {
     flex-direction: column;
     width: 100% !important;

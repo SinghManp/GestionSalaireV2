@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DateService} from 'src/app/services/date.service';
 import {WorkersService} from 'src/app/services/workers.service';
-import {PdfService} from "../../services/pdf.service";
 
 @Component({
   selector: 'app-worker-details',
@@ -21,12 +20,14 @@ export class WorkerDetailsComponent implements OnInit {
   isRemarks: boolean = false;
   bankPaiementList: any = [];
 
+  printPage = false;
+  printOptions : any;
+
   constructor(
     private workerkService: WorkersService,
     private route: ActivatedRoute,
     private router: Router,
     public dateService: DateService,
-    private pdfService: PdfService
   ) {
   }
 
@@ -137,7 +138,19 @@ export class WorkerDetailsComponent implements OnInit {
     this.router.navigate(['week', id]);
   }
 
-  onPrint() {
-    this.pdfService.generateWorkerPdf(this.year, this.details, this.supplyList, this.bankPaiementList, this.remarksList);
+  showPrintPage() {
+    this.printOptions  = {
+      year : this.year,
+      details : this.details,
+      supplyList : this.supplyList,
+      bankPaiementList : this.bankPaiementList,
+      remarksList : this.remarksList
+    }
+    this.printPage = true;
   }
+
+  hidePrintPage() {
+    this.printPage = false;
+  }
+
 }

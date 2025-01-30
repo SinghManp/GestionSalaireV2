@@ -26,6 +26,7 @@ import { WeekFormComponent } from './week-list/week-form/week-form.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { VersionComponent } from './version/version.component';
 import { NewVersionMessageComponent } from './new-version-message/new-version-message.component';
+import { PrintPopupComponent } from './print-popup/print-popup.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { NewVersionMessageComponent } from './new-version-message/new-version-me
     WeekFormComponent,
     VersionComponent,
     NewVersionMessageComponent,
+    PrintPopupComponent,
   ],
   imports: [
     BrowserModule,
